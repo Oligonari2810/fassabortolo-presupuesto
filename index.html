@@ -25,6 +25,8 @@
         .category-icon { font-size: 4rem; color: #e74c3c; margin-bottom: 1.5rem; }
         .category-card h3 { font-size: 1.5rem; color: #2c3e50; margin-bottom: 1rem; }
         .category-card p { color: #7f8c8d; line-height: 1.6; }
+        .disclaimer-home { background: rgba(231, 76, 60, 0.1); border-left: 4px solid #e74c3c; padding: 1.5rem; margin: 2rem 0; border-radius: 8px; color: #2c3e50; }
+        .disclaimer-home strong { color: #e74c3c; }
         .footer { background: rgba(44, 62, 80, 0.95); color: white; text-align: center; padding: 2rem; margin-top: 4rem; }
         .footer p { opacity: 0.8; }
         @media (max-width: 768px) { .nav-links { display: none; } .hero-section h1 { font-size: 2rem; } .categories-grid { grid-template-columns: 1fr; } }
@@ -33,16 +35,17 @@
 <body>
     <header class="header">
         <nav class="nav-container">
-            <a href="index.html" class="logo">
+            <a class='logo' href='/'>
                 Fassa<span>Bortolo</span> Caribe
             </a>
+            <!-- MENÚ SIMPLIFICADO - Solo 3 ítems visibles -->
             <ul class="nav-links">
-                <li><a href="index.html">Inicio</a></li>
-                <li><a href="tabiques.html">Tabiques</a></li>
-                <li><a href="trasdosados.html">Trasdosados</a></li>
-                <li><a href="techos.html">Techos</a></li>
-                <li><a href="semi-intemperie.html">Semi-intemperie</a></li>
-                <li><a href="presupuesto.html">Presupuesto</a></li>
+                <li><a href='/'>Inicio</a></li>
+                <!-- <li><a href='/tabiques'>Tabiques</a></li> -->
+                <!-- <li><a href='/trasdosados'>Trasdosados</a></li> -->
+                <!-- <li><a href='/techos'>Techos</a></li> -->
+                <!-- <li><a href='/semi-intemperie'>Semi-intemperie</a></li> -->
+                <li><a href='/presupuesto'>Presupuesto</a></li>
             </ul>
         </nav>
     </header>
@@ -53,26 +56,34 @@
             <p>Encuentra el sistema FassaBortolo ideal para tu proyecto. Genera presupuestos de materiales en minutos.</p>
         </section>
 
+        <!-- DISCLAIMER LEGAL AGREGADO -->
+        <div class="disclaimer-home">
+            <strong>⚠️ IMPORTANTE:</strong> Esta herramienta es para uso interno de FassaBortolo Caribe. 
+            Los valores de resistencia al fuego (EI) son referenciales y deben ser validados 
+            técnicamente para cada proyecto según normativa local. 
+            Los presupuestos son estimaciones y no constituyen oferta comercial.
+        </div>
+
         <div class="categories-grid">
-            <a href="tabiques.html" class="category-card">
+            <a class='category-card' href='/tabiques'>
                 <div class="category-icon"><i class="fas fa-building"></i></div>
                 <h3>MURO SECO</h3>
                 <p>Tabiques divisorios con placas Standard, AQUA y EXTERNA. 7 sistemas validados para vivienda y hotelería.</p>
             </a>
 
-            <a href="techos.html" class="category-card">
+            <a class='category-card' href='/techos'>
                 <div class="category-icon"><i class="fas fa-home"></i></div>
                 <h3>CIELOS FALSOS</h3>
                 <p>Techos de interior con perfiles TC y Omega. 5 sistemas con diferentes alturas y prestaciones.</p>
             </a>
 
-            <a href="semi-intemperie.html" class="category-card">
+            <a class='category-card' href='/semi-intemperie'>
                 <div class="category-icon"><i class="fas fa-mountain"></i></div>
                 <h3>EXTERIOR</h3>
                 <p>3 sistemas semi-intemperie con placa Externa Light para fachadas protegidas y balcones.</p>
             </a>
 
-            <a href="trasdosados.html" class="category-card">
+            <a class='category-card' href='/trasdosados'>
                 <div class="category-icon"><i class="fas fa-paint-roller"></i></div>
                 <h3>TRASDOSADOS</h3>
                 <p>Trasdosados sobre HA y bloque con omega 17. 6 sistemas para revoques directos.</p>
