@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Techos - FassaBortolo Caribe</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f8f9fa; min-height: 100vh; }
+        .header { background: white; padding: 1rem 0; box-shadow: 0 2px 10px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 1000; }
+        .nav-container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 1.5rem; font-weight: bold; color: #2c3e50; text-decoration: none; }
+        .logo span { color: #e74c3c; }
+        .nav-links { display: flex; gap: 2rem; list-style: none; }
+        .nav-links a { text-decoration: none; color: #2c3e50; font-weight: 500; transition: color 0.3s; }
+        .nav-links a:hover { color: #e74c3c; }
+        .nav-links a.active { color: #e74c3c; font-weight: bold; }
+        .main-container { max-width: 1400px; margin: 0 auto; padding: 2rem; }
+        .page-header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 2rem; border-radius: 15px; margin-bottom: 2rem; text-align: center; }
+        .page-header h1 { font-size: 2.5rem; margin-bottom: 0.5rem; }
+        .filters-section { background: white; padding: 2rem; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.1); margin-bottom: 2rem; }
+        .filters-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-bottom: 1.5rem; }
+        .filter-group { display: flex; flex-direction: column; }
+        .filter-group label { font-weight: 600; color: #2c3e50; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; }
+        .filter-group select { padding: 0.75rem; border: 2px solid #e9ecef; border-radius: 8px; font-size: 1rem; transition: border-color 0.3s; }
+        .filter-group select:focus { outline: none; border-color: #e74c3c; }
+        .filter-actions { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+        .btn { padding: 0.75rem 1.5rem; border: none; border-radius: 8px; font-size: 1rem; cursor: pointer; transition: all 0.3s; text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem; }
+        .btn-primary { background: #e74c3c; color: white; }
+        .btn-primary:hover { background: #c0392b; transform: translateY(-2px); }
+        .btn-secondary { background: #6c757d; color: white; }
+        .btn-secondary:hover { background: #5a6268; }
+        .systems-table { background: white; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.1); overflow: hidden; }
+        .table-header { background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%); color: white; padding: 1.5rem 2rem; }
+        .table-header h2 { font-size: 1.5rem; display: flex; align-items: center; gap: 0.5rem; }
+        table { width: 100%; border-collapse: collapse; }
+        th { background: #f8f9fa; padding: 1rem; text-align: left; font-weight: 600; color: #2c3e50; border-bottom: 2px solid #dee2e6; }
+        td { padding: 1rem; border-bottom: 1px solid #dee2e6; vertical-align: middle; }
+        tr:hover { background: #f8f9fa; }
+        .system-name { font-weight: 600; color: #2c3e50; }
+        .system-code { font-size: 0.9rem; color: #6c757d; margin-top: 0.25rem; }
+        .action-buttons { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+        .btn-small { padding: 0.5rem 1rem; font-size: 0.9rem; }
+        .btn-info { background: #17a2b8; color: white; }
+        .btn-info:hover { background: #138496; }
+        .btn-success { background: #28a745; color: white; }
+        .btn-success:hover { background: #218838; }
+        .no-results { text-align: center; padding: 3rem; color: #6c757d; }
+        .no-results i { font-size: 3rem; margin-bottom: 1rem; opacity: 0.5; }
+        .volume-badge { background: #28a745; color: white; padding: 0.3rem 0.8rem; border-radius: 15px; font-size: 0.8rem; font-weight: bold; }
+        .alert-icon { color: #e74c3c; margin-left: 0.5rem; }
+        @media (max-width: 768px) { .nav-links { display: none; } .filters-grid { grid-template-columns: 1fr; } .filter-actions { flex-direction: column; } .action-buttons { flex-direction: column; } table { font-size: 0.9rem; } th, td { padding: 0.75rem 0.5rem; } }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <nav class="nav-container">
+            <a href="index.html" class="logo">
+                Fassa<span>Bortolo</span> Caribe
+            </a>
+            <ul class="nav-links">
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="tabiques.html">Tabiques</a></li>
+                <li><a href="trasdosados.html">Trasdosados</a></li>
+                <li><a href="techos.html" class="active">Techos</a></li>
+                <li><a href="semi-intemperie.html">Semi-intemperie</a></li>
+                <li><a href="presupuesto.html">Presupuesto</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="main-container">
+        <div class="page-header">
+            <h1><i class="fas fa-home"></i> Sistemas de Cielo Falso</h1>
+            <p>Selector de techos con placa Gypsotech sobre perfiles TC y Omega</p>
+        </div>
+
+        <section class="filters-section">
+            <div class="filters-grid">
+                <div class="filter-group">
+                    <label><i class="fas fa-cogs"></i> Estructura</label>
+                    <select id="estructuraFilter">
+                        <option value="">Todas</option>
+                        <option value="TC47">TC 47</option>
+                        <option value="TC48">TC 48</option>
+                        <option value="O17">Omega 17</option>
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <label><i class="fas fa-layer-group"></i> Placa</label>
+                    <select id="placaFilter">
+                        <option value="">Todas</option>
+                        <option value="STD">Standard 13mm</option>
+                        <option value="STD15">Standard 15mm</option>
+                        <option value="AQUA">AQUA 13mm</option>
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <label><i class="fas fa-arrows-alt-v"></i> Altura Útil</label>
+                    <select id="alturaFilter">
+                        <option value="">Todas</option>
+                        <option value="baja">5-10 cm (Omega)</option>
+                        <option value="media">15-30 cm (TC)</option>
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <label><i class="fas fa-volume-down"></i> Aislamiento</label>
+                    <select id="acusticoFilter">
+                        <option value="">Todos</option>
+                        <option value="64.0">64.0 dBA</option>
+                        <option value="65.0">65.0 dBA</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="filter-actions">
+                <button class="btn btn-primary" onclick="applyFilters()">
+                    <i class="fas fa-filter"></i> Aplicar Filtros
+                </button>
+                <button class="btn btn-secondary" onclick="clearFilters()">
+                    <i class="fas fa-times"></i> Limpiar Filtros
+                </button>
+            </div>
+        </section>
+
+        <section class="systems-table">
+            <div class="table-header">
+                <h2><i class="fas fa-list"></i> Sistemas de Cielo Falso Disponibles</h2>
+            </div>
+            
+            <div style="overflow-x: auto;">
+                <table id="systemsTable">
+                    <thead>
+                        <tr>
+                            <th>Sistema</th>
+                            <th>Código</th>
+                            <th><i class="fas fa-cogs"></i> Estructura</th>
+                            <th><i class="fas fa-layer-group"></i> Placa</th>
+                            <th><i class="fas fa-arrows-alt-v"></i> Altura Útil</th>
+                            <th><i class="fas fa-volume-down"></i> R<sub>A</sub></th>
+                            <th><i class="fas fa-fire"></i> Fuego</th>
+                            <th><i class="fas fa-cogs"></i> Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="systemsTableBody"></tbody>
+                </table>
+            </div>
+
+            <div id="noResults" class="no-results" style="display: none;">
+                <i class="fas fa-search"></i>
+                <h3>No se encontraron sistemas</h3>
+                <p>Intenta ajustar los filtros.</p>
+            </div>
+        </section>
+    </main>
+
+    <footer style="background: #2c3e50; color: white; text-align: center; padding: 2rem; margin-top: 4rem;">
+        <p>&copy; 2025 FassaBortolo Caribe. Herramienta interna de presupuesto de sistemas.</p>
+    </footer>
+
+    <script>
+        // DATOS COMPLETOS DE SISTEMAS DE TECHO
+        const sistemasTecho = [
+            {
+                id: 'C-TC47-13',
+                nombre: 'Cielo Falso TC 47 + STD 13mm',
+                codigo: 'C-TC47-13',
+                estructura: 'TC47',
+                placa: 'STD',
+                alturaUtil: '15-30 cm',
+                espesor: '47',
+                aislamientoAcustico: '65.0',
+                resistenciaFuego: 'EI-60',
+                descripcion: 'Cielo falso estándar con perfil TC 47. Altura útil 15-30cm. **SISTEMA MÁS USADO EN VIVIENDA**',
+                materiales: [
+                    { material: 'Placa STD BA 13mm', cantidad: '1.10', unidad: 'm²' },
+                    { material: 'TC 47 Z1', cantidad: '2.00', unidad: 'ml' },
+                    { material: 'Omega 17 Z1', cantidad: '0.50', unidad: 'ml' },
+                    { material: 'Tornillo 3.5×25', cantidad: '16', unidad: 'ud' },
+                    { material: 'Horquilla cuelgue TC 47', cantidad: '2.5', unidad: 'ud' },
+                    { material: 'Suspensión TC 47 (180mm)', cantidad: '2.5', unidad: 'ud' },
+                    { material: 'Varilla roscada Ø6×1000', cantidad: '0.30', unidad: 'm' }
+                ],
+                certificaciones: ['EN-520', 'A1', 'EMICODE EC1'],
+                volumen: 'muy alto'
+            },
+            {
+                id: 'C-TC48-13',
+                nombre: 'Cielo Falso TC 48 + STD 13mm',
+                codigo: 'C-TC48-13',
+                estructura: 'TC48',
+                placa: 'STD',
+                alturaUtil: '15-30 cm',
+                espesor: '48',
+                aislamientoAcustico: '65.0',
+                resistenciaFuego: 'EI-60',
+                descripcion: 'Cielo falso con perfil TC 48. Similar al TC47 pero con ligera variación en el perfil.',
+                materiales: [
+                    { material: 'Placa STD BA 13mm', cantidad: '1.10', unidad: 'm²' },
+                    { material: 'TC 48 Z1', cantidad: '2.00', unidad: 'ml' },
+                    { material: 'Omega 17 Z1', cantidad: '0.50', unidad: 'ml' },
+                    { material: 'Tornillo 3.5×25', cantidad: '16', unidad: 'ud' },
+                    { material: 'Horquilla cuelgue TC 48', cantidad: '2.5', unidad: 'ud' },
+                    { material: 'Suspensión TC 48 (180mm)', cantidad: '2.5', unidad: 'ud' },
+                    { material: 'Varilla roscada Ø6×1000', cantidad: '0.30', unidad: 'm' }
+                ],
+                certificaciones: ['EN-520', 'A1'],
+                volumen: 'muy alto'
+            },
+            {
+                id: 'C-TC47-AQ',
+                nombre: 'Cielo Falso TC 47 + AQUA 13mm',
+                codigo: 'C-TC47-AQ',
+                estructura: 'TC47',
+                placa: 'AQUA',
+                alturaUtil: '15-30 cm',
+                espesor: '47',
+                aislamientoAcustico: '64.0',
+                resistenciaFuego: 'EI-60',
+                descripcion: 'Cielo falso AQUA para baños, cocinas y áreas húmedas. Misma estructura que TC47-STD.',
+                materiales: [
+                    { material: 'Placa AQUA 13mm', cantidad: '1.10', unidad: 'm²' },
+                    { material: 'TC 47 Z1', cantidad: '2.00', unidad: 'ml' },
+                    { material: 'Omega 17 Z1', cantidad: '0.50', unidad: 'ml' },
+                    { material: 'Tornillo Inox 3.5×25', cantidad: '16', unidad: 'ud' },
+                    { material: 'Horquilla cuelgue TC 47', cantidad: '2.5', unidad: 'ud' },
+                    { material: 'Suspensión TC 47 (180mm)', cantidad: '2.5', unidad: 'ud' },
+                    { material: 'Varilla roscada Ø6×1000', cantidad: '0.30', unidad: 'm' }
+                ],
+                certificaciones: ['EN-520', 'AQUA ≤10%', 'A1'],
+                volumen: 'medio'
+            },
+            {
+                id: 'C-O17-13',
+                nombre: 'Cielo Bajo Omega 17 + STD 13mm',
+                codigo: 'C-O17-13',
+                estructura: 'O17',
+                placa: 'STD',
+                alturaUtil: '5-10 cm',
+                espesor: '30',
+                aislamientoAcustico: '62.0',
+                resistenciaFuego: 'EI-60',
+                descripcion: 'Cielo bajo con omega 17. Altura útil reducida (5-10cm). Para pasillos y zonas con poco espacio.',
+                materiales: [
+                    { material: 'Placa STD BA 13mm', cantidad: '1.10', unidad: 'm²' },
+                    { material: 'Omega 17 Z1', cantidad: '2.00', unidad: 'ml' },
+                    { material: 'Tornillo 3.5×25', cantidad: '16', unidad: 'ud' },
+                    { material: 'Anclaje directo (304029)', cantidad: '8', unidad: 'ud' },
+                    { material: 'Clip Z1 U201928300A', cantidad: '2.0', unidad: 'ud' }
+                ],
+                certificaciones: ['EN-520', 'A1'],
+                volumen: 'bajo'
+            },
+            {
+                id: 'C-TC47-15',
+                nombre: 'Cielo Falso TC 47 + STD 15mm',
+                codigo: 'C-TC47-15',
+                estructura: 'TC47',
+                placa: 'STD15',
+                alturaUtil: '15-30 cm',
+                espesor: '47',
+                aislamientoAcustico: '66.0',
+                resistenciaFuego: 'EI-90',
+                descripcion: 'Cielo falso con placa de 15mm. Mayor resistencia al fuego y mejor acústica. Suites ejecutivas.',
+                materiales: [
+                    { material: 'Placa STD BA 15mm', cantidad: '1.10', unidad: 'm²' },
+                    { material: 'TC 47 Z1', cantidad: '2.00', unidad: 'ml' },
+                    { material: 'Omega 17 Z1', cantidad: '0.50', unidad: 'ml' },
+                    { material: 'Tornillo 3.5×35', cantidad: '14', unidad: 'ud' },
+                    { material: 'Horquilla cuelgue TC 47', cantidad: '2.5', unidad: 'ud' },
+                    { material: 'Suspensión TC 47 (180mm)', cantidad: '2.5', unidad: 'ud' },
+                    { material: 'Varilla roscada Ø6×1000', cantidad: '0.30', unidad: 'm' }
+                ],
+                certificaciones: ['EN-520', 'A1', 'EI-90'],
+                volumen: 'bajo'
+            }
+        ];
+
+        let sistemasFiltrados = [...sistemasTecho];
+
+        function renderTable() {
+            const tbody = document.getElementById('systemsTableBody');
+            const noResults = document.getElementById('noResults');
+            
+            if (sistemasFiltrados.length === 0) {
+                tbody.innerHTML = '';
+                noResults.style.display = 'block';
+                return;
+            }
+            
+            noResults.style.display = 'none';
+            
+            tbody.innerHTML = sistemasFiltrados.map(sistema => `
+                <tr>
+                    <td>
+                        <div class="system-name">${sistema.nombre}</div>
+                        <div class="system-code">Código: ${sistema.codigo}</div>
+                        ${sistema.volumen === 'muy alto' ? '<i class="fas fa-star alert-icon" title="Sistema estándar de la empresa"></i>' : ''}
+                        ${sistema.volumen === 'alto' ? '<i class="fas fa-arrow-up alert-icon" title="Volumen alto"></i>' : ''}
+                    </td>
+                    <td><strong>${sistema.codigo}</strong></td>
+                    <td>${sistema.estructura}</td>
+                    <td>${sistema.placa}</td>
+                    <td><strong>${sistema.alturaUtil}</strong></td>
+                    <td>${sistema.aislamientoAcustico} dBA</td>
+                    <td>EI-${sistema.resistenciaFuego}</td>
+                    <td>
+                        <div class="action-buttons">
+                            <a href="detalle.html?id=${sistema.id}" class="btn btn-info btn-small">
+                                <i class="fas fa-eye"></i> Ver
+                            </a>
+                            <button class="btn btn-success btn-small" onclick="addToBudget('${sistema.id}')">
+                                <i class="fas fa-plus-circle"></i> Añadir
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function addToBudget(systemId) {
+            const sistema = sistemasTecho.find(s => s.id === systemId);
+            let budget = JSON.parse(localStorage.getItem('fassa_budget') || '[]');
+            
+            const existing = budget.find(i => i.id === systemId);
+            if (existing) {
+                existing.quantity += 50;
+            } else {
+                budget.push({ id: sistema.id, name: sistema.nombre, quantity: 50 });
+            }
+            
+            localStorage.setItem('fassa_budget', JSON.stringify(budget));
+            updateBudgetCount();
+            alert(`✅ ${sistema.nombre} añadido (50m²)`);
+        }
+
+        function updateBudgetCount() {
+            const budget = JSON.parse(localStorage.getItem('fassa_budget') || '[]');
+            const count = budget.reduce((sum, item) => sum + item.quantity, 0);
+            const badge = document.getElementById('budgetCount');
+            if (badge) badge.textContent = `${count} m²`;
+        }
+
+        function applyFilters() {
+            const estructura = document.getElementById('estructuraFilter').value;
+            const placa = document.getElementById('placaFilter').value;
+            const altura = document.getElementById('alturaFilter').value;
+            const acustico = document.getElementById('acusticoFilter').value;
+            
+            sistemasFiltrados = sistemasTecho.filter(sistema => {
+                if (estructura && sistema.estructura !== estructura) return false;
+                if (placa && sistema.placa !== placa) return false;
+                if (altura && !sistema.alturaUtil.includes(altura === 'baja' ? '5-10' : '15-30')) return false;
+                if (acustico && sistema.aislamientoAcustico !== acustico) return false;
+                return true;
+            });
+            
+            renderTable();
+        }
+
+        function clearFilters() {
+            document.getElementById('estructuraFilter').value = '';
+            document.getElementById('placaFilter').value = '';
+            document.getElementById('alturaFilter').value = '';
+            document.getElementById('acusticoFilter').value = '';
+            sistemasFiltrados = [...sistemasTecho];
+            renderTable();
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            renderTable();
+            updateBudgetCount();
+        });
+    </script>
+</body>
+</html>
