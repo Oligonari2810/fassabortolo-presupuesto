@@ -98,7 +98,7 @@
     const EUR = n => new Intl.NumberFormat('es-ES',{style:'currency',currency:'EUR'}).format(n||0);
 
     async function loadIndex(){
-      const res = await fetch('sistemas-index.json');
+      const res = await fetch('sistemas/sistemas-index.json');
       const idx = await res.json();
       return idx.systems || [];
     }
@@ -115,7 +115,7 @@
     }
 
     async function loadCSV(filename){
-      const res = await fetch('Sistemas/'+filename);
+      const res = await fetch('sistemas/'+filename);
       if(!res.ok) throw new Error('No se pudo cargar '+filename);
       return await res.text();
     }
