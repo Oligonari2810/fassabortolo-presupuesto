@@ -1,99 +1,26 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FassaBortolo Caribe - Calculadora de Presupuestos</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 2rem;
-        }
-        .container {
-            text-align: center;
-            color: white;
-            max-width: 800px;
-        }
-        .logo {
-            font-size: 3.5rem;
-            font-weight: bold;
-            margin-bottom: 1rem;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-        }
-        .logo span {
-            color: #e74c3c;
-        }
-        .subtitle {
-            font-size: 1.3rem;
-            margin-bottom: 3rem;
-            opacity: 0.95;
-        }
-        .btn-presupuesto {
-            display: inline-block;
-            background: #e74c3c;
-            color: white;
-            padding: 1.5rem 4rem;
-            font-size: 1.5rem;
-            font-weight: bold;
-            text-decoration: none;
-            border-radius: 50px;
-            box-shadow: 0 10px 30px rgba(231, 76, 60, 0.4);
-            transition: all 0.3s ease;
-            cursor: pointer;
-            border: none;
-        }
-        .btn-presupuesto:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 40px rgba(231, 76, 60, 0.6);
-            background: #c0392b;
-        }
-        .btn-presupuesto i {
-            margin-right: 0.5rem;
-        }
-        .disclaimer {
-            margin-top: 3rem;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            padding: 1.5rem;
-            border-radius: 15px;
-            font-size: 0.9rem;
-            opacity: 0.9;
-        }
-        .disclaimer strong {
-            color: #e74c3c;
-        }
-        @media (max-width: 768px) {
-            .logo { font-size: 2.5rem; }
-            .subtitle { font-size: 1.1rem; }
-            .btn-presupuesto { 
-                padding: 1.2rem 3rem; 
-                font-size: 1.2rem;
-            }
-        }
-    </style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>FassaBortolo Caribe – Presupuesto</title>
+  <style>
+    body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;margin:0;background:#f8f9fa;display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh}
+    .card{background:#fff;border-radius:14px;box-shadow:0 10px 30px rgba(0,0,0,.15);padding:48px 56px;text-align:center;max-width:420px;width:90%}
+    .logo{font-size:2rem;font-weight:800;color:#2c3e50;margin-bottom:8px}
+    .logo span{color:#e74c3c}
+    .tagline{color:#7f8c8d;font-size:1rem;margin-bottom:32px}
+    .btn{display:inline-block;padding:14px 28px;border:0;border-radius:10px;background:#e74c3c;color:#fff;font-size:1rem;font-weight:600;text-decoration:none;transition:.25s}
+    .btn:hover{background:#c0392b}
+    footer{margin-top:24px;font-size:.8rem;color:#95a5a6}
+  </style>
 </head>
 <body>
-    <div class="container">
-        <h1 class="logo">Fassa<span>Bortolo</span> Caribe</h1>
-        <p class="subtitle">Calculadora de Presupuestos para Sistemas Constructivos</p>
-        
-        <a href="presupuesto.html" class="btn-presupuesto">
-            <i class="fas fa-calculator"></i>
-            Ir a Presupuesto
-        </a>
-        
-        <div class="disclaimer">
-            <strong>⚠️ IMPORTANTE:</strong> Esta herramienta es para uso interno de FassaBortolo Caribe. 
-            Los presupuestos son estimaciones y no constituyen oferta comercial.
-        </div>
-    </div>
+  <div class="card">
+    <div class="logo">Fassa<span>Bortolo</span> Caribe</div>
+    <div class="tagline">Calculadora interna de presupuestos</div>
+    <a class="btn" href="presupuesto.html">Ir a Presupuesto</a>
+  </div>
+  <footer>© 2025 FassaBortolo Caribe – Uso interno</footer>
 </body>
 </html>

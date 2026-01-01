@@ -1,571 +1,241 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculadora de Presupuestos - FassaBortolo Caribe</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #f5f5f5;
-            color: #2c3e50;
-            line-height: 1.6;
-        }
-        .header {
-            background: #2c3e50;
-            color: white;
-            padding: 1.5rem 0;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-        .header-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .logo {
-            font-size: 1.8rem;
-            font-weight: bold;
-        }
-        .logo span { color: #e74c3c; }
-        .btn-back {
-            background: #e74c3c;
-            color: white;
-            padding: 0.7rem 1.5rem;
-            border-radius: 5px;
-            text-decoration: none;
-            transition: background 0.3s;
-        }
-        .btn-back:hover { background: #c0392b; }
-        .container {
-            max-width: 1200px;
-            margin: 2rem auto;
-            padding: 0 2rem;
-        }
-        .card {
-            background: white;
-            border-radius: 10px;
-            padding: 2rem;
-            margin-bottom: 2rem;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-        .card h2 {
-            color: #2c3e50;
-            margin-bottom: 1.5rem;
-            border-bottom: 3px solid #e74c3c;
-            padding-bottom: 0.5rem;
-        }
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 600;
-            color: #2c3e50;
-        }
-        .form-group input,
-        .form-group select {
-            width: 100%;
-            padding: 0.8rem;
-            border: 2px solid #ddd;
-            border-radius: 5px;
-            font-size: 1rem;
-            transition: border-color 0.3s;
-        }
-        .form-group input:focus,
-        .form-group select:focus {
-            outline: none;
-            border-color: #e74c3c;
-        }
-        .btn {
-            background: #e74c3c;
-            color: white;
-            padding: 0.8rem 2rem;
-            border: none;
-            border-radius: 5px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background 0.3s;
-            margin-right: 1rem;
-        }
-        .btn:hover { background: #c0392b; }
-        .btn-secondary {
-            background: #7f8c8d;
-        }
-        .btn-secondary:hover { background: #5f6c6d; }
-        .file-upload-area {
-            border: 2px dashed #ddd;
-            border-radius: 10px;
-            padding: 3rem;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        .file-upload-area:hover {
-            border-color: #e74c3c;
-            background: #fff5f5;
-        }
-        .file-upload-area.dragover {
-            border-color: #e74c3c;
-            background: #fff5f5;
-        }
-        .file-input { display: none; }
-        .manual-input {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
-        }
-        .table-container {
-            overflow-x: auto;
-            margin-top: 2rem;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 1rem;
-        }
-        th, td {
-            padding: 0.8rem;
-            text-align: left;
-            border-bottom: 1px solid #ddd;
-        }
-        th {
-            background: #2c3e50;
-            color: white;
-            font-weight: 600;
-        }
-        tr:hover { background: #f9f9f9; }
-        .total-row {
-            font-weight: bold;
-            background: #ecf0f1;
-            font-size: 1.1rem;
-        }
-        .total-row td { border-top: 3px solid #e74c3c; }
-        .loading {
-            text-align: center;
-            padding: 2rem;
-            color: #7f8c8d;
-        }
-        .error {
-            background: #fee;
-            color: #c0392b;
-            padding: 1rem;
-            border-radius: 5px;
-            margin: 1rem 0;
-        }
-        .hidden { display: none; }
-        @media (max-width: 768px) {
-            .container { padding: 0 1rem; }
-            .card { padding: 1.5rem; }
-            .manual-input { grid-template-columns: 1fr; }
-        }
-    </style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Presupuesto – FassaBortolo Caribe</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
+  <style>
+    body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;margin:0;background:#f8f9fa;color:#333}
+    .header{background:#2c3e50;color:#fff;padding:14px 24px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:10}
+    .header .logo{font-size:1.4rem;font-weight:800}
+    .header .logo span{color:#e74c3c}
+    .header .back{color:#fff;text-decoration:none;margin-left:auto}
+    .container{max-width:1100px;margin:24px auto;padding:0 24px}
+    .card{background:#fff;border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,.08);padding:24px;margin-bottom:24px}
+    .row{display:flex;gap:18px;flex-wrap:wrap;align-items:end}
+    label{display:flex;flex-direction:column;font-size:.9rem;gap:6px;flex:1 1 220px}
+    input,select{padding:10px 12px;font-size:14px;border:1px solid #ccc;border-radius:8px}
+    button{padding:10px 16px;border:0;border-radius:8px;background:#e74c3c;color:#fff;font-size:14px;font-weight:600;cursor:pointer;transition:.2s}
+    button:hover{background:#c0392b}
+    .meta{display:flex;gap:18px;flex-wrap:wrap;margin-top:12px}
+    .meta .item{background:#f8f9fa;border-radius:8px;padding:10px 14px;font-size:.85rem;color:#555}
+    table{width:100%;border-collapse:collapse;margin-top:18px;font-size:.9rem}
+    th,td{border-bottom:1px solid #eee;padding:10px 8px;text-align:left}
+    th{font-size:.75rem;text-transform:uppercase;letter-spacing:.05em;color:#666}
+    .num{font-variant-numeric:tabular-nums}
+    .totals{background:#2c3e50;color:#fff;border-radius:8px;padding:14px 18px;margin-top:18px;display:flex;gap:24px;flex-wrap:wrap}
+    .totals .lbl{font-size:.75rem;opacity:.9}
+    .totals .val{font-size:1.3rem;font-weight:700}
+    .actions{margin-top:18px;display:flex;gap:12px;flex-wrap:wrap}
+    #fileInput{display:none}
+    .muted{color:#7f8c8d;font-size:.8rem}
+    @media(max-width:600px){.row{flex-direction:column}}
+  </style>
 </head>
 <body>
-    <header class="header">
-        <div class="header-content">
-            <div class="logo">Fassa<span>Bortolo</span> Caribe</div>
-            <a href="index.html" class="btn-back">
-                <i class="fas fa-arrow-left"></i> Volver
-            </a>
-        </div>
-    </header>
+  <header class="header">
+    <i class="fas fa-calculator"></i>
+    <div class="logo">Fassa<span>Bortolo</span> Caribe</div>
+    <a class="back" href="index.html"><i class="fas fa-arrow-left"></i> Volver</a>
+  </header>
 
-    <div class="container">
-        <!-- Selección de Sistema -->
-        <div class="card">
-            <h2><i class="fas fa-cog"></i> Seleccionar Sistema</h2>
-            <div class="form-group">
-                <label for="sistema-select">Sistema Constructivo:</label>
-                <select id="sistema-select">
-                    <option value="">-- Seleccione un sistema --</option>
-                </select>
-            </div>
-            <div id="sistema-info" class="hidden"></div>
-        </div>
+  <div class="container">
+    <div class="card">
+      <div class="row">
+        <label>
+          Sistema
+          <select id="systemSelect"></select>
+        </label>
+        <label>
+          m² (superficie)
+          <input id="area" type="number" step="0.01" value="100" />
+        </label>
+        <label>
+          Desperdicio %
+          <input id="waste" type="number" step="0.1" value="5" />
+        </label>
+        <label>
+          Descuento %
+          <input id="discount" type="number" step="0.1" value="0" />
+        </label>
+        <button id="calcBtn">Calcular</button>
+      </div>
 
-        <!-- Entrada de Datos -->
-        <div class="card">
-            <h2><i class="fas fa-file-upload"></i> Entrada de Datos</h2>
-            
-            <div class="form-group">
-                <label>Opción 1: Subir Excel (tipo Larimar)</label>
-                <div class="file-upload-area" id="file-upload-area">
-                    <i class="fas fa-cloud-upload-alt" style="font-size: 3rem; color: #e74c3c; margin-bottom: 1rem;"></i>
-                    <p>Arrastra tu archivo Excel aquí o haz clic para seleccionar</p>
-                    <input type="file" id="excel-input" class="file-input" accept=".xlsx,.xls,.csv">
-                </div>
-            </div>
+      <div class="meta" id="metaBox"></div>
 
-            <div style="text-align: center; margin: 2rem 0; color: #7f8c8d;">
-                <strong>O</strong>
-            </div>
+      <table id="tbl">
+        <thead>
+          <tr>
+            <th>SKU</th><th>Concepto</th><th>Unidad</th><th>Precio</th><th>Coef</th><th>Cantidad</th><th>Importe</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
 
-            <div class="form-group">
-                <label>Opción 2: Ingreso Manual</label>
-                <div class="manual-input">
-                    <div>
-                        <label for="metros-cuadrados">Metros Cuadrados (m²):</label>
-                        <input type="number" id="metros-cuadrados" step="0.01" min="0" placeholder="0.00">
-                    </div>
-                </div>
-            </div>
-        </div>
+      <div class="totals">
+        <div><div class="lbl">Total materiales</div><div class="val" id="totalMat">—</div></div>
+        <div><div class="lbl">Descuento</div><div class="val" id="totalDisc">—</div></div>
+        <div><div class="lbl">TOTAL</div><div class="val" id="grandTotal">—</div></div>
+      </div>
 
-        <!-- Configuración de Cálculo -->
-        <div class="card">
-            <h2><i class="fas fa-sliders-h"></i> Configuración</h2>
-            <div class="manual-input">
-                <div class="form-group">
-                    <label for="desperdicio">Desperdicio (%):</label>
-                    <input type="number" id="desperdicio" value="10" step="0.1" min="0" max="100">
-                </div>
-                <div class="form-group">
-                    <label for="descuento">Descuento Global (%):</label>
-                    <input type="number" id="descuento" value="0" step="0.1" min="0" max="100">
-                </div>
-            </div>
-            <button class="btn" onclick="calcularPresupuesto()">
-                <i class="fas fa-calculator"></i> Calcular Presupuesto
-            </button>
-        </div>
-
-        <!-- Resultados -->
-        <div class="card hidden" id="resultados-card">
-            <h2><i class="fas fa-list-alt"></i> Presupuesto Calculado</h2>
-            <div id="resultados-container"></div>
-            <div style="margin-top: 2rem;">
-                <button class="btn" onclick="exportarPDF()">
-                    <i class="fas fa-file-pdf"></i> Exportar PDF
-                </button>
-                <button class="btn btn-secondary" onclick="limpiar()">
-                    <i class="fas fa-redo"></i> Nuevo Presupuesto
-                </button>
-            </div>
-        </div>
+      <div class="actions">
+        <button id="pdfBtn"><i class="fas fa-file-pdf"></i> Exportar PDF</button>
+        <label for="fileInput" class="button" style="cursor:pointer"><i class="fas fa-upload"></i> Cargar Excel</label>
+        <input id="fileInput" type="file" accept=".xlsx,.xls,.csv" />
+      </div>
+      <div class="muted">Formato Excel: columna "Area_m2" con las superficies por habitación.</div>
     </div>
+  </div>
 
-    <script>
-        // Variables globales
-        let sistemasData = [];
-        let sistemaSeleccionado = null;
-        let csvData = null;
-        let resultados = [];
+  <!-- Librerías desde CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 
-        // Cargar sistemas-index.json al iniciar
-        async function cargarSistemas() {
-            try {
-                const response = await fetch('sistemas-index.json');
-                if (!response.ok) throw new Error('No se pudo cargar sistemas-index.json');
-                const data = await response.json();
-                sistemasData = data.systems || []; // Leer el array systems del objeto
-                poblarSelect();
-            } catch (error) {
-                console.error('Error:', error);
-                document.getElementById('sistema-select').innerHTML = 
-                    '<option value="">Error: No se encontró sistemas-index.json</option>';
-            }
-        }
+  <script>
+    const EUR = n => new Intl.NumberFormat('es-ES',{style:'currency',currency:'EUR'}).format(n||0);
 
-        // Poblar el select con los sistemas
-        function poblarSelect() {
-            const select = document.getElementById('sistema-select');
-            select.innerHTML = '<option value="">-- Seleccione un sistema --</option>';
-            
-            sistemasData.forEach(sistema => {
-                const option = document.createElement('option');
-                option.value = sistema.id;
-                const nombreDisplay = `${sistema.tipo} - ${sistema.perfil} - ${sistema.placa} - ${sistema.capas} capa${sistema.capas > 1 ? 's' : ''}`;
-                option.textContent = `${nombreDisplay} (${sistema.id})`;
-                select.appendChild(option);
-            });
-        }
+    async function loadIndex(){
+      const res = await fetch('sistemas-index.json');
+      const idx = await res.json();
+      return idx.systems || [];
+    }
 
-        // Cargar CSV del sistema seleccionado
-        async function cargarCSV(sistemaId) {
-            const sistema = sistemasData.find(s => s.id === sistemaId);
-            if (!sistema) return;
+    function parseCSV(text){
+      const lines = text.trim().split(/\r?\n/);
+      const header = lines.shift().split(',');
+      return lines.map(l=>{
+        const cols = l.split(',');
+        const obj = {};
+        header.forEach((h,i)=> obj[h.trim()] = (cols[i]||'').trim());
+        return obj;
+      });
+    }
 
-            try {
-                const csvFileName = sistema.csv; // Usar el nombre del CSV del JSON
-                const response = await fetch(`Sistemas/${csvFileName}`);
-                if (!response.ok) throw new Error('No se pudo cargar el CSV');
-                
-                const text = await response.text();
-                Papa.parse(text, {
-                    header: true,
-                    skipEmptyLines: true,
-                    complete: function(results) {
-                        csvData = results.data;
-                        mostrarInfoSistema(sistema);
-                    },
-                    error: function(error) {
-                        console.error('Error parsing CSV:', error);
-                        alert('Error al procesar el CSV del sistema');
-                    }
-                });
-            } catch (error) {
-                console.error('Error:', error);
-                alert(`Error: No se encontró el archivo Sistemas/${sistema.csv}`);
-            }
-        }
+    async function loadCSV(filename){
+      const res = await fetch('Sistemas/'+filename);
+      if(!res.ok) throw new Error('No se pudo cargar '+filename);
+      return await res.text();
+    }
 
-        // Mostrar información del sistema
-        function mostrarInfoSistema(sistema) {
-            const infoDiv = document.getElementById('sistema-info');
-            infoDiv.classList.remove('hidden');
-            const nombreDisplay = `${sistema.tipo} - ${sistema.perfil} - ${sistema.placa} - ${sistema.capas} capa${sistema.capas > 1 ? 's' : ''}`;
-            infoDiv.innerHTML = `
-                <div style="background: #ecf0f1; padding: 1rem; border-radius: 5px; margin-top: 1rem;">
-                    <strong>${nombreDisplay}</strong><br>
-                    Perfil: ${sistema.perfil} | Placa: ${sistema.placa} | Altura máx: ${sistema.Hmax_m}m | Modulación: ${sistema.modulacion_mm}mm
-                </div>
-            `;
-            sistemaSeleccionado = sistema;
-        }
+    function toNum(x){ return Number(String(x).replace(',','.'))||0; }
 
-        // Event listeners
-        document.getElementById('sistema-select').addEventListener('change', function() {
-            if (this.value) {
-                cargarCSV(this.value);
-            } else {
-                document.getElementById('sistema-info').classList.add('hidden');
-                sistemaSeleccionado = null;
-                csvData = null;
-            }
-        });
+    async function calculate(){
+      const area = toNum(document.getElementById('area').value);
+      const waste = toNum(document.getElementById('waste').value);
+      const discount = toNum(document.getElementById('discount').value);
+      const opt = document.getElementById('systemSelect').selectedOptions[0];
+      if(!opt) return;
+      const meta = JSON.parse(opt.dataset.meta);
+      document.getElementById('metaBox').innerHTML = `
+        <div class="item"><strong>Sistema:</strong> ${meta.id}</div>
+        <div class="item"><strong>Perfil:</strong> ${meta.perfil}</div>
+        <div class="item"><strong>Placa:</strong> ${meta.placa}</div>
+        <div class="item"><strong>Capas:</strong> ${meta.capas}</div>
+        <div class="item"><strong>Hmax:</strong> ${meta.Hmax_m} m</div>
+      `;
 
-        // Upload de archivo Excel
-        const fileUploadArea = document.getElementById('file-upload-area');
-        const fileInput = document.getElementById('excel-input');
+      const csvText = await loadCSV(meta.csv);
+      const rows = parseCSV(csvText);
+      const tbody = document.querySelector('#tbl tbody');
+      tbody.innerHTML = '';
+      let totalMat = 0;
 
-        fileUploadArea.addEventListener('click', () => fileInput.click());
+      for(const r of rows){
+        const precio = toNum(r.precio);
+        const coef = toNum(r.coef);
+        const qty = area * coef * (1 + waste/100);
+        const imp = qty * precio;
+        totalMat += imp;
 
-        fileUploadArea.addEventListener('dragover', (e) => {
-            e.preventDefault();
-            fileUploadArea.classList.add('dragover');
-        });
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td class="num">${r.sku}</td>
+          <td>${r.concepto}</td>
+          <td class="num">${r.unidad}</td>
+          <td class="num">${EUR(precio)}</td>
+          <td class="num">${coef}</td>
+          <td class="num">${qty.toFixed(3)}</td>
+          <td class="num">${EUR(imp)}</td>
+        `;
+        tbody.appendChild(tr);
+      }
 
-        fileUploadArea.addEventListener('dragleave', () => {
-            fileUploadArea.classList.remove('dragover');
-        });
+      const disc = totalMat * (discount/100);
+      const grand = totalMat - disc;
 
-        fileUploadArea.addEventListener('drop', (e) => {
-            e.preventDefault();
-            fileUploadArea.classList.remove('dragover');
-            const files = e.dataTransfer.files;
-            if (files.length > 0) {
-                procesarArchivo(files[0]);
-            }
-        });
+      document.getElementById('totalMat').textContent = EUR(totalMat);
+      document.getElementById('totalDisc').textContent = '- ' + EUR(disc);
+      document.getElementById('grandTotal').textContent = EUR(grand);
+    }
 
-        fileInput.addEventListener('change', (e) => {
-            if (e.target.files.length > 0) {
-                procesarArchivo(e.target.files[0]);
-            }
-        });
+    async function exportPDF(){
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF({orientation:'p',unit:'mm',format:'a4'});
+      const logo = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg=='; // 1x1 px blanco → reemplaza por logo real base64
+      const total = document.getElementById('grandTotal').textContent;
+      const sys = document.getElementById('systemSelect').selectedOptions[0].text;
+      const area = document.getElementById('area').value;
+      const date = new Date().toLocaleDateString('es-ES');
 
-        // Procesar archivo Excel (por ahora solo CSV, Excel requiere más librerías)
-        function procesarArchivo(file) {
-            // Por ahora solo procesamos CSV
-            // Para Excel real, necesitarías SheetJS (xlsx)
-            if (file.name.endsWith('.csv')) {
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    Papa.parse(e.target.result, {
-                        header: true,
-                        skipEmptyLines: true,
-                        complete: function(results) {
-                            // Procesar datos del Excel tipo Larimar
-                            procesarDatosExcel(results.data);
-                        }
-                    });
-                };
-                reader.readAsText(file);
-            } else {
-                alert('Por favor, sube un archivo CSV. Soporte para Excel (.xlsx) próximamente.');
-            }
-        }
+      doc.setFontSize(18);
+      doc.setTextColor('#2c3e50');
+      doc.text('Presupuesto FassaBortolo Caribe',14,22);
+      doc.setFontSize(11);
+      doc.text(`Sistema: ${sys}`,14,32);
+      doc.text(`Superficie: ${area} m²`,14,38);
+      doc.text(`Fecha: ${date}`,14,44);
 
-        // Procesar datos del Excel (implementar según formato Larimar)
-        function procesarDatosExcel(data) {
-            // TODO: Implementar lógica específica del formato Larimar
-            console.log('Datos del Excel:', data);
-            // Por ahora, extraer m² del Excel y ponerlo en el input manual
-            // Esto dependerá del formato exacto del Excel Larimar
-        }
+      const body = Array.from(document.querySelectorAll('#tbl tbody tr')).map(tr=>{
+        const c = tr.children;
+        return [c[0].textContent,c[1].textContent,c[2].textContent,c[3].textContent,c[4].textContent,c[5].textContent,c[6].textContent];
+      });
 
-        // Calcular presupuesto
-        function calcularPresupuesto() {
-            if (!sistemaSeleccionado || !csvData) {
-                alert('Por favor, selecciona un sistema primero');
-                return;
-            }
+      doc.autoTable({
+        head:[['SKU','Concepto','Unidad','Precio','Coef','Cantidad','Importe']],
+        body:body,
+        startY:52,
+        styles:{fontSize:9},
+        headStyles:{fillColor:'#2c3e50',textColor:'#fff'},
+        alternateRowStyles:{fillColor:'#f8f9fa'}
+      });
 
-            const m2 = parseFloat(document.getElementById('metros-cuadrados').value);
-            if (!m2 || m2 <= 0) {
-                alert('Por favor, ingresa los metros cuadrados');
-                return;
-            }
+      const finalY = doc.lastAutoTable.finalY + 12;
+      doc.setFontSize(12);
+      doc.text(`TOTAL: ${total}`,14,finalY);
+      doc.save(`Presupuesto_Fassa_${date.replace(/\//g,'-')}.pdf`);
+    }
 
-            const desperdicio = parseFloat(document.getElementById('desperdicio').value) || 0;
-            const descuento = parseFloat(document.getElementById('descuento').value) || 0;
+    async function loadExcel(e){
+      const file = e.target.files[0];
+      if(!file) return;
+      const arrayBuffer = await file.arrayBuffer();
+      const wb = XLSX.read(arrayBuffer, {type: 'array'});
+      const ws = wb.Sheets[wb.SheetNames[0]];
+      const data = XLSX.utils.sheet_to_json(ws);
+      let total = 0;
+      data.forEach(r=> total += toNum(r.Area_m2)||0);
+      document.getElementById('area').value = total.toFixed(2);
+      await calculate();
+    }
 
-            resultados = [];
-
-            csvData.forEach(row => {
-                const material = row.concepto || row['concepto'] || '';
-                const coef = parseFloat(row.coef || row['coef'] || 0);
-                const precio = parseFloat(row.precio || row['precio'] || 0);
-                const unidad = row.unidad || row['unidad'] || '';
-
-                if (material && coef > 0) {
-                    const cantidad = coef * m2 * (1 + desperdicio / 100);
-                    const subtotal = cantidad * precio;
-                    const totalConDescuento = subtotal * (1 - descuento / 100);
-
-                    resultados.push({
-                        material,
-                        cantidad: cantidad.toFixed(2),
-                        unidad,
-                        precio: precio.toFixed(2),
-                        subtotal: subtotal.toFixed(2),
-                        total: totalConDescuento.toFixed(2)
-                    });
-                }
-            });
-
-            mostrarResultados();
-        }
-
-        // Mostrar resultados
-        function mostrarResultados() {
-            const container = document.getElementById('resultados-container');
-            const card = document.getElementById('resultados-card');
-            
-            let html = `
-                <div class="table-container">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Material</th>
-                                <th>Cantidad</th>
-                                <th>Unidad</th>
-                                <th>Precio Unit.</th>
-                                <th>Subtotal</th>
-                                <th>Total</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-            `;
-
-            let totalGeneral = 0;
-            resultados.forEach(item => {
-                html += `
-                    <tr>
-                        <td>${item.material}</td>
-                        <td>${item.cantidad}</td>
-                        <td>${item.unidad}</td>
-                        <td>$${item.precio}</td>
-                        <td>$${item.subtotal}</td>
-                        <td>$${item.total}</td>
-                    </tr>
-                `;
-                totalGeneral += parseFloat(item.total);
-            });
-
-            html += `
-                        </tbody>
-                        <tfoot>
-                            <tr class="total-row">
-                                <td colspan="5" style="text-align: right;"><strong>TOTAL:</strong></td>
-                                <td><strong>$${totalGeneral.toFixed(2)}</strong></td>
-                            </tr>
-                        </tfoot>
-                    </table>
-                </div>
-            `;
-
-            container.innerHTML = html;
-            card.classList.remove('hidden');
-        }
-
-        // Exportar PDF
-        function exportarPDF() {
-            const { jsPDF } = window.jspdf;
-            const doc = new jsPDF();
-
-            // Logo (placeholder - reemplazar con logo real en base64)
-            // doc.addImage(logoBase64, 'PNG', 10, 10, 50, 20);
-
-            // Título
-            doc.setFontSize(18);
-            doc.setTextColor(231, 76, 60); // #e74c3c
-            doc.text('FassaBortolo Caribe', 10, 30);
-            doc.setFontSize(14);
-            doc.setTextColor(44, 62, 80); // #2c3e50
-            doc.text('Presupuesto de Materiales', 10, 40);
-
-            // Información del sistema
-            if (sistemaSeleccionado) {
-                doc.setFontSize(12);
-                doc.text(`Sistema: ${sistemaSeleccionado.nombre}`, 10, 50);
-                doc.text(`Fecha: ${new Date().toLocaleDateString('es-ES')}`, 10, 56);
-            }
-
-            // Tabla de resultados
-            const tableData = resultados.map(item => [
-                item.material,
-                item.cantidad,
-                item.unidad,
-                `$${item.precio}`,
-                `$${item.subtotal}`,
-                `$${item.total}`
-            ]);
-
-            const totalGeneral = resultados.reduce((sum, item) => sum + parseFloat(item.total), 0);
-
-            doc.autoTable({
-                head: [['Material', 'Cantidad', 'Unidad', 'Precio Unit.', 'Subtotal', 'Total']],
-                body: tableData,
-                startY: 65,
-                styles: { 
-                    headStyles: { fillColor: [44, 62, 80] },
-                    alternateRowStyles: { fillColor: [245, 245, 245] }
-                },
-                foot: [['', '', '', '', 'TOTAL:', `$${totalGeneral.toFixed(2)}`]],
-                footStyles: { fontStyle: 'bold', fillColor: [236, 240, 241] }
-            });
-
-            // Descargar
-            doc.save(`presupuesto-${sistemaSeleccionado?.id || 'sistema'}-${Date.now()}.pdf`);
-        }
-
-        // Limpiar
-        function limpiar() {
-            document.getElementById('sistema-select').value = '';
-            document.getElementById('metros-cuadrados').value = '';
-            document.getElementById('desperdicio').value = '10';
-            document.getElementById('descuento').value = '0';
-            document.getElementById('sistema-info').classList.add('hidden');
-            document.getElementById('resultados-card').classList.add('hidden');
-            sistemaSeleccionado = null;
-            csvData = null;
-            resultados = [];
-        }
-
-        // Inicializar
-        cargarSistemas();
-    </script>
+    (async()=>{
+      const systems = await loadIndex();
+      const sel = document.getElementById('systemSelect');
+      systems.forEach(s=>{
+        const opt = document.createElement('option');
+        opt.value = s.csv;
+        opt.textContent = `${s.id} | ${s.tipo} | ${s.perfil} | ${s.placa} | ${s.capas} capa(s)`;
+        opt.dataset.meta = JSON.stringify(s);
+        sel.appendChild(opt);
+      });
+      document.getElementById('calcBtn').addEventListener('click', calculate);
+      document.getElementById('pdfBtn').addEventListener('click', exportPDF);
+      document.getElementById('fileInput').addEventListener('change', loadExcel);
+      await calculate();
+    })();
+  </script>
 </body>
 </html>
-
