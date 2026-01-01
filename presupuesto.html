@@ -3,28 +3,28 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Presupuesto – FassaBortolo Caribe</title>
+  <title>Presupuesto – AriasGroupCaribe SRL</title>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
   <style>
-    body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;margin:0;background:#f8f9fa;color:#333}
-    .header{background:#2c3e50;color:#fff;padding:14px 24px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:10}
-    .header .logo{font-size:1.4rem;font-weight:800}
-    .header .logo span{color:#e74c3c}
+    :root{--rojo:#e74c3c;--gris:#2c3e50;--light:#ecf0f1}
+    body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;margin:0;background:var(--light);color:#333}
+    .header{background:var(--gris);color:#fff;padding:14px 24px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:10}
+    .header .logo{font-size:1.4rem;font-weight:800;color:var(--rojo)}
     .header .back{color:#fff;text-decoration:none;margin-left:auto}
     .container{max-width:1100px;margin:24px auto;padding:0 24px}
     .card{background:#fff;border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,.08);padding:24px;margin-bottom:24px}
     .row{display:flex;gap:18px;flex-wrap:wrap;align-items:end}
     label{display:flex;flex-direction:column;font-size:.9rem;gap:6px;flex:1 1 220px}
     input,select{padding:10px 12px;font-size:14px;border:1px solid #ccc;border-radius:8px}
-    button{padding:10px 16px;border:0;border-radius:8px;background:#e74c3c;color:#fff;font-size:14px;font-weight:600;cursor:pointer;transition:.2s}
+    button{padding:10px 16px;border:0;border-radius:8px;background:var(--rojo);color:#fff;font-size:14px;font-weight:600;cursor:pointer;transition:.2s}
     button:hover{background:#c0392b}
     .meta{display:flex;gap:18px;flex-wrap:wrap;margin-top:12px}
-    .meta .item{background:#f8f9fa;border-radius:8px;padding:10px 14px;font-size:.85rem;color:#555}
+    .meta .item{background:var(--light);border-radius:8px;padding:10px 14px;font-size:.85rem;color:#555}
     table{width:100%;border-collapse:collapse;margin-top:18px;font-size:.9rem}
     th,td{border-bottom:1px solid #eee;padding:10px 8px;text-align:left}
     th{font-size:.75rem;text-transform:uppercase;letter-spacing:.05em;color:#666}
     .num{font-variant-numeric:tabular-nums}
-    .totals{background:#2c3e50;color:#fff;border-radius:8px;padding:14px 18px;margin-top:18px;display:flex;gap:24px;flex-wrap:wrap}
+    .totals{background:var(--gris);color:#fff;border-radius:8px;padding:14px 18px;margin-top:18px;display:flex;gap:24px;flex-wrap:wrap}
     .totals .lbl{font-size:.75rem;opacity:.9}
     .totals .val{font-size:1.3rem;font-weight:700}
     .actions{margin-top:18px;display:flex;gap:12px;flex-wrap:wrap}
@@ -36,7 +36,7 @@
 <body>
   <header class="header">
     <i class="fas fa-calculator"></i>
-    <div class="logo">Fassa<span>Bortolo</span> Caribe</div>
+    <div class="logo">AriasGroupCaribe SRL</div>
     <a class="back" href="index.html"><i class="fas fa-arrow-left"></i> Volver</a>
   </header>
 
@@ -44,7 +44,7 @@
     <div class="card">
       <div class="row">
         <label>
-          Sistema
+          Sistema FassaBortolo
           <select id="systemSelect"></select>
         </label>
         <label>
@@ -81,7 +81,7 @@
 
       <div class="actions">
         <button id="pdfBtn"><i class="fas fa-file-pdf"></i> Exportar PDF</button>
-        <label for="fileInput" class="button" style="cursor:pointer"><i class="fas fa-upload"></i> Cargar Excel</label>
+        <label for="fileInput" class="button" style="cursor:pointer;background:#555"><i class="fas fa-upload"></i> Cargar Excel</label>
         <input id="fileInput" type="file" accept=".xlsx,.xls,.csv" />
       </div>
       <div class="muted">Formato Excel: columna "Area_m2" con las superficies por habitación.</div>
@@ -133,7 +133,7 @@
         <div class="item"><strong>Sistema:</strong> ${meta.id}</div>
         <div class="item"><strong>Perfil:</strong> ${meta.perfil}</div>
         <div class="item"><strong>Placa:</strong> ${meta.placa}</div>
-        <div class="item"><strong>Capas:</strong> ${meta.capas}</div>
+        <div class="item"><strong>Capas:</strong> ${meta.capas} por cara</div>
         <div class="item"><strong>Hmax:</strong> ${meta.Hmax_m} m</div>
       `;
 
@@ -174,7 +174,6 @@
     async function exportPDF(){
       const { jsPDF } = window.jspdf;
       const doc = new jsPDF({orientation:'p',unit:'mm',format:'a4'});
-      const logo = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg=='; // 1x1 px blanco → reemplaza por logo real base64
       const total = document.getElementById('grandTotal').textContent;
       const sys = document.getElementById('systemSelect').selectedOptions[0].text;
       const area = document.getElementById('area').value;
@@ -182,7 +181,7 @@
 
       doc.setFontSize(18);
       doc.setTextColor('#2c3e50');
-      doc.text('Presupuesto FassaBortolo Caribe',14,22);
+      doc.text('Presupuesto AriasGroupCaribe SRL',14,22);
       doc.setFontSize(11);
       doc.text(`Sistema: ${sys}`,14,32);
       doc.text(`Superficie: ${area} m²`,14,38);
@@ -205,14 +204,13 @@
       const finalY = doc.lastAutoTable.finalY + 12;
       doc.setFontSize(12);
       doc.text(`TOTAL: ${total}`,14,finalY);
-      doc.save(`Presupuesto_Fassa_${date.replace(/\//g,'-')}.pdf`);
+      doc.save(`Presupuesto_AriasGroup_${date.replace(/\//g,'-')}.pdf`);
     }
 
     async function loadExcel(e){
       const file = e.target.files[0];
       if(!file) return;
-      const arrayBuffer = await file.arrayBuffer();
-      const wb = XLSX.read(arrayBuffer, {type: 'array'});
+      const wb = XLSX.read(await file.arrayBuffer(),{type:'array'});
       const ws = wb.Sheets[wb.SheetNames[0]];
       const data = XLSX.utils.sheet_to_json(ws);
       let total = 0;
@@ -227,7 +225,7 @@
       systems.forEach(s=>{
         const opt = document.createElement('option');
         opt.value = s.csv;
-        opt.textContent = `${s.id} | ${s.tipo} | ${s.perfil} | ${s.placa} | ${s.capas} capa(s)`;
+        opt.textContent = `${s.id} | ${s.tipo} | ${s.perfil} | ${s.placa} | ${s.capas} capa(s)/cara`;
         opt.dataset.meta = JSON.stringify(s);
         sel.appendChild(opt);
       });
