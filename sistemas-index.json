@@ -1,0 +1,32 @@
+{
+  "version": "Gypsotech V1 Caribe 2025",
+  "systems": [
+    {"id":"M-70-13-1","tipo":"MURO","perfil":"70 Z1","modulacion_mm":600,"placa":"STD-13","capas":1,"Hmax_m":3.0,"csv":"M-70-13-1.csv"},
+    {"id":"M-70-13-2","tipo":"MURO","perfil":"70 Z1","modulacion_mm":600,"placa":"STD-13","capas":2,"Hmax_m":3.0,"csv":"M-70-13-2.csv"},
+    {"id":"M-70-15-1","tipo":"MURO","perfil":"70 Z1","modulacion_mm":600,"placa":"STD-15","capas":1,"Hmax_m":3.2,"csv":"M-70-15-1.csv"},
+    {"id":"M-70-15-2","tipo":"MURO","perfil":"70 Z1","modulacion_mm":600,"placa":"STD-15","capas":2,"Hmax_m":3.2,"csv":"M-70-15-2.csv"},
+    {"id":"M-90-13-1","tipo":"MURO","perfil":"90 Z1","modulacion_mm":600,"placa":"STD-13","capas":1,"Hmax_m":3.5,"csv":"M-90-13-1.csv"},
+    {"id":"M-90-13-2","tipo":"MURO","perfil":"90 Z1","modulacion_mm":600,"placa":"STD-13","capas":2,"Hmax_m":3.5,"csv":"M-90-13-2.csv"},
+    {"id":"M-90-15-1","tipo":"MURO","perfil":"90 Z1","modulacion_mm":600,"placa":"STD-15","capas":1,"Hmax_m":3.8,"csv":"M-90-15-1.csv"},
+    {"id":"M-90-15-2","tipo":"MURO","perfil":"90 Z1","modulacion_mm":600,"placa":"STD-15","capas":2,"Hmax_m":3.8,"csv":"M-90-15-2.csv"},
+    {"id":"M-70-13-AQUA-2","tipo":"MURO","perfil":"70 Z1","modulacion_mm":600,"placa":"AQUA-13","capas":2,"Hmax_m":3.0,"csv":"M-70-13-AQUA-2.csv"},
+    {"id":"M-70-15-AQUA-2","tipo":"MURO","perfil":"70 Z1","modulacion_mm":600,"placa":"AQUA-15","capas":2,"Hmax_m":3.2,"csv":"M-70-15-AQUA-2.csv"},
+    {"id":"M-90-13-AQUA-2","tipo":"MURO","perfil":"90 Z1","modulacion_mm":600,"placa":"AQUA-13","capas":2,"Hmax_m":3.5,"csv":"M-90-13-AQUA-2.csv"},
+    {"id":"M-90-15-AQUA-2","tipo":"MURO","perfil":"90 Z1","modulacion_mm":600,"placa":"AQUA-15","capas":2,"Hmax_m":3.8,"csv":"M-90-15-AQUA-2.csv"},
+    {"id":"TA-70-13-1","tipo":"TRASDOSADO","perfil":"70 Z1","modulacion_mm":600,"placa":"STD-13","capas":1,"Hmax_m":3.0,"csv":"TA-70-13-1.csv"},
+    {"id":"TA-70-13-2","tipo":"TRASDOSADO","perfil":"70 Z1","modulacion_mm":600,"placa":"STD-13","capas":2,"Hmax_m":3.0,"csv":"TA-70-13-2.csv"},
+    {"id":"TA-70-15-1","tipo":"TRASDOSADO","perfil":"70 Z1","modulacion_mm":600,"placa":"STD-15","capas":1,"Hmax_m":3.2,"csv":"TA-70-15-1.csv"},
+    {"id":"TA-90-13-1","tipo":"TRASDOSADO","perfil":"90 Z1","modulacion_mm":600,"placa":"STD-13","capas":1,"Hmax_m":3.5,"csv":"TA-90-13-1.csv"},
+    {"id":"TA-90-13-2","tipo":"TRASDOSADO","perfil":"90 Z1","modulacion_mm":600,"placa":"STD-13","capas":2,"Hmax_m":3.5,"csv":"TA-90-13-2.csv"},
+    {"id":"TA-90-15-1","tipo":"TRASDOSADO","perfil":"90 Z1","modulacion_mm":600,"placa":"STD-15","capas":1,"Hmax_m":3.8,"csv":"TA-90-15-1.csv"},
+    {"id":"T-TC47-13-1","tipo":"TECHO","perfil":"TC47 Z1","modulacion_mm":600,"placa":"STD-13","capas":1,"Hmax_m":3.0,"csv":"T-TC47-13-1.csv"},
+    {"id":"T-TC47-13-2","tipo":"TECHO","perfil":"TC47 Z1","modulacion_mm":600,"placa":"STD-13","capas":2,"Hmax_m":3.0,"csv":"T-TC47-13-2.csv"},
+    {"id":"T-TC47-15-1","tipo":"TECHO","perfil":"TC47 Z1","modulacion_mm":600,"placa":"STD-15","capas":1,"Hmax_m":3.2,"csv":"T-TC47-15-1.csv"},
+    {"id":"T-TC60-13-1","tipo":"TECHO","perfil":"TC60 Z1","modulacion_mm":600,"placa":"STD-13","capas":1,"Hmax_m":3.5,"csv":"T-TC60-13-1.csv"},
+    {"id":"T-TC60-13-2","tipo":"TECHO","perfil":"TC60 Z1","modulacion_mm":600,"placa":"STD-13","capas":2,"Hmax_m":3.5,"csv":"T-TC60-13-2.csv"},
+    {"id":"EL-70-13-1","tipo":"EXTERIOR","perfil":"70 Z2","modulacion_mm":600,"placa":"EXT-13","capas":1,"Hmax_m":3.0,"csv":"EL-70-13-1.csv"},
+    {"id":"EL-70-13-2","tipo":"EXTERIOR","perfil":"70 Z2","modulacion_mm":600,"placa":"EXT-13","capas":2,"Hmax_m":3.0,"csv":"EL-70-13-2.csv"},
+    {"id":"EL-90-13-1","tipo":"EXTERIOR","perfil":"90 Z2","modulacion_mm":600,"placa":"EXT-13","capas":1,"Hmax_m":3.5,"csv":"EL-90-13-1.csv"},
+    {"id":"EL-90-13-2","tipo":"EXTERIOR","perfil":"90 Z2","modulacion_mm":600,"placa":"EXT-13","capas":2,"Hmax_m":3.5,"csv":"EL-90-13-2.csv"}
+  ]
+}

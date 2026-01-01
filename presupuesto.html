@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Presupuestos - FassaBortolo Caribe</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f5f5;
+            color: #2c3e50;
+            line-height: 1.6;
+        }
+        .header {
+            background: #2c3e50;
+            color: white;
+            padding: 1.5rem 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+        .logo span { color: #e74c3c; }
+        .btn-back {
+            background: #e74c3c;
+            color: white;
+            padding: 0.7rem 1.5rem;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background 0.3s;
+        }
+        .btn-back:hover { background: #c0392b; }
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+        .card {
+            background: white;
+            border-radius: 10px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .card h2 {
+            color: #2c3e50;
+            margin-bottom: 1.5rem;
+            border-bottom: 3px solid #e74c3c;
+            padding-bottom: 0.5rem;
+        }
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #e74c3c;
+        }
+        .btn {
+            background: #e74c3c;
+            color: white;
+            padding: 0.8rem 2rem;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+            margin-right: 1rem;
+        }
+        .btn:hover { background: #c0392b; }
+        .btn-secondary {
+            background: #7f8c8d;
+        }
+        .btn-secondary:hover { background: #5f6c6d; }
+        .file-upload-area {
+            border: 2px dashed #ddd;
+            border-radius: 10px;
+            padding: 3rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .file-upload-area:hover {
+            border-color: #e74c3c;
+            background: #fff5f5;
+        }
+        .file-upload-area.dragover {
+            border-color: #e74c3c;
+            background: #fff5f5;
+        }
+        .file-input { display: none; }
+        .manual-input {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+        .table-container {
+            overflow-x: auto;
+            margin-top: 2rem;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+        th, td {
+            padding: 0.8rem;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background: #2c3e50;
+            color: white;
+            font-weight: 600;
+        }
+        tr:hover { background: #f9f9f9; }
+        .total-row {
+            font-weight: bold;
+            background: #ecf0f1;
+            font-size: 1.1rem;
+        }
+        .total-row td { border-top: 3px solid #e74c3c; }
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            color: #7f8c8d;
+        }
+        .error {
+            background: #fee;
+            color: #c0392b;
+            padding: 1rem;
+            border-radius: 5px;
+            margin: 1rem 0;
+        }
+        .hidden { display: none; }
+        @media (max-width: 768px) {
+            .container { padding: 0 1rem; }
+            .card { padding: 1.5rem; }
+            .manual-input { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">Fassa<span>Bortolo</span> Caribe</div>
+            <a href="index.html" class="btn-back">
+                <i class="fas fa-arrow-left"></i> Volver
+            </a>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Selección de Sistema -->
+        <div class="card">
+            <h2><i class="fas fa-cog"></i> Seleccionar Sistema</h2>
+            <div class="form-group">
+                <label for="sistema-select">Sistema Constructivo:</label>
+                <select id="sistema-select">
+                    <option value="">-- Seleccione un sistema --</option>
+                </select>
+            </div>
+            <div id="sistema-info" class="hidden"></div>
+        </div>
+
+        <!-- Entrada de Datos -->
+        <div class="card">
+            <h2><i class="fas fa-file-upload"></i> Entrada de Datos</h2>
+            
+            <div class="form-group">
+                <label>Opción 1: Subir Excel (tipo Larimar)</label>
+                <div class="file-upload-area" id="file-upload-area">
+                    <i class="fas fa-cloud-upload-alt" style="font-size: 3rem; color: #e74c3c; margin-bottom: 1rem;"></i>
+                    <p>Arrastra tu archivo Excel aquí o haz clic para seleccionar</p>
+                    <input type="file" id="excel-input" class="file-input" accept=".xlsx,.xls,.csv">
+                </div>
+            </div>
+
+            <div style="text-align: center; margin: 2rem 0; color: #7f8c8d;">
+                <strong>O</strong>
+            </div>
+
+            <div class="form-group">
+                <label>Opción 2: Ingreso Manual</label>
+                <div class="manual-input">
+                    <div>
+                        <label for="metros-cuadrados">Metros Cuadrados (m²):</label>
+                        <input type="number" id="metros-cuadrados" step="0.01" min="0" placeholder="0.00">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Configuración de Cálculo -->
+        <div class="card">
+            <h2><i class="fas fa-sliders-h"></i> Configuración</h2>
+            <div class="manual-input">
+                <div class="form-group">
+                    <label for="desperdicio">Desperdicio (%):</label>
+                    <input type="number" id="desperdicio" value="10" step="0.1" min="0" max="100">
+                </div>
+                <div class="form-group">
+                    <label for="descuento">Descuento Global (%):</label>
+                    <input type="number" id="descuento" value="0" step="0.1" min="0" max="100">
+                </div>
+            </div>
+            <button class="btn" onclick="calcularPresupuesto()">
+                <i class="fas fa-calculator"></i> Calcular Presupuesto
+            </button>
+        </div>
+
+        <!-- Resultados -->
+        <div class="card hidden" id="resultados-card">
+            <h2><i class="fas fa-list-alt"></i> Presupuesto Calculado</h2>
+            <div id="resultados-container"></div>
+            <div style="margin-top: 2rem;">
+                <button class="btn" onclick="exportarPDF()">
+                    <i class="fas fa-file-pdf"></i> Exportar PDF
+                </button>
+                <button class="btn btn-secondary" onclick="limpiar()">
+                    <i class="fas fa-redo"></i> Nuevo Presupuesto
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Variables globales
+        let sistemasData = [];
+        let sistemaSeleccionado = null;
+        let csvData = null;
+        let resultados = [];
+
+        // Cargar sistemas-index.json al iniciar
+        async function cargarSistemas() {
+            try {
+                const response = await fetch('sistemas-index.json');
+                if (!response.ok) throw new Error('No se pudo cargar sistemas-index.json');
+                const data = await response.json();
+                sistemasData = data.systems || []; // Leer el array systems del objeto
+                poblarSelect();
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('sistema-select').innerHTML = 
+                    '<option value="">Error: No se encontró sistemas-index.json</option>';
+            }
+        }
+
+        // Poblar el select con los sistemas
+        function poblarSelect() {
+            const select = document.getElementById('sistema-select');
+            select.innerHTML = '<option value="">-- Seleccione un sistema --</option>';
+            
+            sistemasData.forEach(sistema => {
+                const option = document.createElement('option');
+                option.value = sistema.id;
+                const nombreDisplay = `${sistema.tipo} - ${sistema.perfil} - ${sistema.placa} - ${sistema.capas} capa${sistema.capas > 1 ? 's' : ''}`;
+                option.textContent = `${nombreDisplay} (${sistema.id})`;
+                select.appendChild(option);
+            });
+        }
+
+        // Cargar CSV del sistema seleccionado
+        async function cargarCSV(sistemaId) {
+            const sistema = sistemasData.find(s => s.id === sistemaId);
+            if (!sistema) return;
+
+            try {
+                const csvFileName = sistema.csv; // Usar el nombre del CSV del JSON
+                const response = await fetch(`Sistemas/${csvFileName}`);
+                if (!response.ok) throw new Error('No se pudo cargar el CSV');
+                
+                const text = await response.text();
+                Papa.parse(text, {
+                    header: true,
+                    skipEmptyLines: true,
+                    complete: function(results) {
+                        csvData = results.data;
+                        mostrarInfoSistema(sistema);
+                    },
+                    error: function(error) {
+                        console.error('Error parsing CSV:', error);
+                        alert('Error al procesar el CSV del sistema');
+                    }
+                });
+            } catch (error) {
+                console.error('Error:', error);
+                alert(`Error: No se encontró el archivo Sistemas/${sistema.csv}`);
+            }
+        }
+
+        // Mostrar información del sistema
+        function mostrarInfoSistema(sistema) {
+            const infoDiv = document.getElementById('sistema-info');
+            infoDiv.classList.remove('hidden');
+            const nombreDisplay = `${sistema.tipo} - ${sistema.perfil} - ${sistema.placa} - ${sistema.capas} capa${sistema.capas > 1 ? 's' : ''}`;
+            infoDiv.innerHTML = `
+                <div style="background: #ecf0f1; padding: 1rem; border-radius: 5px; margin-top: 1rem;">
+                    <strong>${nombreDisplay}</strong><br>
+                    Perfil: ${sistema.perfil} | Placa: ${sistema.placa} | Altura máx: ${sistema.Hmax_m}m | Modulación: ${sistema.modulacion_mm}mm
+                </div>
+            `;
+            sistemaSeleccionado = sistema;
+        }
+
+        // Event listeners
+        document.getElementById('sistema-select').addEventListener('change', function() {
+            if (this.value) {
+                cargarCSV(this.value);
+            } else {
+                document.getElementById('sistema-info').classList.add('hidden');
+                sistemaSeleccionado = null;
+                csvData = null;
+            }
+        });
+
+        // Upload de archivo Excel
+        const fileUploadArea = document.getElementById('file-upload-area');
+        const fileInput = document.getElementById('excel-input');
+
+        fileUploadArea.addEventListener('click', () => fileInput.click());
+
+        fileUploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            fileUploadArea.classList.add('dragover');
+        });
+
+        fileUploadArea.addEventListener('dragleave', () => {
+            fileUploadArea.classList.remove('dragover');
+        });
+
+        fileUploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            fileUploadArea.classList.remove('dragover');
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                procesarArchivo(files[0]);
+            }
+        });
+
+        fileInput.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                procesarArchivo(e.target.files[0]);
+            }
+        });
+
+        // Procesar archivo Excel (por ahora solo CSV, Excel requiere más librerías)
+        function procesarArchivo(file) {
+            // Por ahora solo procesamos CSV
+            // Para Excel real, necesitarías SheetJS (xlsx)
+            if (file.name.endsWith('.csv')) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    Papa.parse(e.target.result, {
+                        header: true,
+                        skipEmptyLines: true,
+                        complete: function(results) {
+                            // Procesar datos del Excel tipo Larimar
+                            procesarDatosExcel(results.data);
+                        }
+                    });
+                };
+                reader.readAsText(file);
+            } else {
+                alert('Por favor, sube un archivo CSV. Soporte para Excel (.xlsx) próximamente.');
+            }
+        }
+
+        // Procesar datos del Excel (implementar según formato Larimar)
+        function procesarDatosExcel(data) {
+            // TODO: Implementar lógica específica del formato Larimar
+            console.log('Datos del Excel:', data);
+            // Por ahora, extraer m² del Excel y ponerlo en el input manual
+            // Esto dependerá del formato exacto del Excel Larimar
+        }
+
+        // Calcular presupuesto
+        function calcularPresupuesto() {
+            if (!sistemaSeleccionado || !csvData) {
+                alert('Por favor, selecciona un sistema primero');
+                return;
+            }
+
+            const m2 = parseFloat(document.getElementById('metros-cuadrados').value);
+            if (!m2 || m2 <= 0) {
+                alert('Por favor, ingresa los metros cuadrados');
+                return;
+            }
+
+            const desperdicio = parseFloat(document.getElementById('desperdicio').value) || 0;
+            const descuento = parseFloat(document.getElementById('descuento').value) || 0;
+
+            resultados = [];
+
+            csvData.forEach(row => {
+                const material = row.concepto || row['concepto'] || '';
+                const coef = parseFloat(row.coef || row['coef'] || 0);
+                const precio = parseFloat(row.precio || row['precio'] || 0);
+                const unidad = row.unidad || row['unidad'] || '';
+
+                if (material && coef > 0) {
+                    const cantidad = coef * m2 * (1 + desperdicio / 100);
+                    const subtotal = cantidad * precio;
+                    const totalConDescuento = subtotal * (1 - descuento / 100);
+
+                    resultados.push({
+                        material,
+                        cantidad: cantidad.toFixed(2),
+                        unidad,
+                        precio: precio.toFixed(2),
+                        subtotal: subtotal.toFixed(2),
+                        total: totalConDescuento.toFixed(2)
+                    });
+                }
+            });
+
+            mostrarResultados();
+        }
+
+        // Mostrar resultados
+        function mostrarResultados() {
+            const container = document.getElementById('resultados-container');
+            const card = document.getElementById('resultados-card');
+            
+            let html = `
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Material</th>
+                                <th>Cantidad</th>
+                                <th>Unidad</th>
+                                <th>Precio Unit.</th>
+                                <th>Subtotal</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+            `;
+
+            let totalGeneral = 0;
+            resultados.forEach(item => {
+                html += `
+                    <tr>
+                        <td>${item.material}</td>
+                        <td>${item.cantidad}</td>
+                        <td>${item.unidad}</td>
+                        <td>$${item.precio}</td>
+                        <td>$${item.subtotal}</td>
+                        <td>$${item.total}</td>
+                    </tr>
+                `;
+                totalGeneral += parseFloat(item.total);
+            });
+
+            html += `
+                        </tbody>
+                        <tfoot>
+                            <tr class="total-row">
+                                <td colspan="5" style="text-align: right;"><strong>TOTAL:</strong></td>
+                                <td><strong>$${totalGeneral.toFixed(2)}</strong></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            `;
+
+            container.innerHTML = html;
+            card.classList.remove('hidden');
+        }
+
+        // Exportar PDF
+        function exportarPDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+
+            // Logo (placeholder - reemplazar con logo real en base64)
+            // doc.addImage(logoBase64, 'PNG', 10, 10, 50, 20);
+
+            // Título
+            doc.setFontSize(18);
+            doc.setTextColor(231, 76, 60); // #e74c3c
+            doc.text('FassaBortolo Caribe', 10, 30);
+            doc.setFontSize(14);
+            doc.setTextColor(44, 62, 80); // #2c3e50
+            doc.text('Presupuesto de Materiales', 10, 40);
+
+            // Información del sistema
+            if (sistemaSeleccionado) {
+                doc.setFontSize(12);
+                doc.text(`Sistema: ${sistemaSeleccionado.nombre}`, 10, 50);
+                doc.text(`Fecha: ${new Date().toLocaleDateString('es-ES')}`, 10, 56);
+            }
+
+            // Tabla de resultados
+            const tableData = resultados.map(item => [
+                item.material,
+                item.cantidad,
+                item.unidad,
+                `$${item.precio}`,
+                `$${item.subtotal}`,
+                `$${item.total}`
+            ]);
+
+            const totalGeneral = resultados.reduce((sum, item) => sum + parseFloat(item.total), 0);
+
+            doc.autoTable({
+                head: [['Material', 'Cantidad', 'Unidad', 'Precio Unit.', 'Subtotal', 'Total']],
+                body: tableData,
+                startY: 65,
+                styles: { 
+                    headStyles: { fillColor: [44, 62, 80] },
+                    alternateRowStyles: { fillColor: [245, 245, 245] }
+                },
+                foot: [['', '', '', '', 'TOTAL:', `$${totalGeneral.toFixed(2)}`]],
+                footStyles: { fontStyle: 'bold', fillColor: [236, 240, 241] }
+            });
+
+            // Descargar
+            doc.save(`presupuesto-${sistemaSeleccionado?.id || 'sistema'}-${Date.now()}.pdf`);
+        }
+
+        // Limpiar
+        function limpiar() {
+            document.getElementById('sistema-select').value = '';
+            document.getElementById('metros-cuadrados').value = '';
+            document.getElementById('desperdicio').value = '10';
+            document.getElementById('descuento').value = '0';
+            document.getElementById('sistema-info').classList.add('hidden');
+            document.getElementById('resultados-card').classList.add('hidden');
+            sistemaSeleccionado = null;
+            csvData = null;
+            resultados = [];
+        }
+
+        // Inicializar
+        cargarSistemas();
+    </script>
+</body>
+</html>
+

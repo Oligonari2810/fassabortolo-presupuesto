@@ -1,0 +1,10 @@
+sku,concepto,unidad,precio,coef,Hmax
+GYPSOTECH-STD-15,Placa STD BA 15,m2,7.96,1.025,3.2
+TC47-Z1,Perfil TC47 Z1,ml,1.13,1.67,3.2
+TORN-PM-25,Tornillo PM 3.5x25,ud,0.014,10,3.2
+TORN-PM-35,Tornillo PM 3.5x35,ud,0.017,15,3.2
+CINTA-J-150,Cinta juntas papel,ml,0.056,1.0,3.2
+MAS-JN,Pasta JN Secado Normal,kg,1.33,0.20,3.2
+SUSP-TC,Suspensión TC 180 mm,ud,0.207,1.0,3.2
+EMPALME-TC47,Pieza empalme TC47,ud,0.213,0.2,3.2
+
