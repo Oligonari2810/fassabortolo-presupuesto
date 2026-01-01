@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Proyecto – AriasGroupCaribe SRL</title>
+  <title>Presupuesto – AriasGroupCaribe SRL</title>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
   <style>
     :root{--rojo:#e74c3c;--gris:#2c3e50;--light:#ecf0f1}
@@ -11,9 +11,8 @@
     .header{background:var(--gris);color:#fff;padding:14px 24px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:10}
     .header .logo{font-size:1.4rem;font-weight:800;color:var(--rojo)}
     .header .back{color:#fff;text-decoration:none;margin-left:auto}
-    .container{max-width:1200px;margin:24px auto;padding:0 24px}
+    .container{max-width:1100px;margin:24px auto;padding:0 24px}
     .card{background:#fff;border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,.08);padding:24px;margin-bottom:24px}
-    h3{margin-top:0;color:var(--gris);border-bottom:2px solid var(--rojo);padding-bottom:8px}
     .row{display:flex;gap:18px;flex-wrap:wrap;align-items:end}
     label{display:flex;flex-direction:column;font-size:.9rem;gap:6px;flex:1 1 220px}
     input,select{padding:10px 12px;font-size:14px;border:1px solid #ccc;border-radius:8px}
@@ -28,31 +27,22 @@
     .totals{background:var(--gris);color:#fff;border-radius:8px;padding:14px 18px;margin-top:18px;display:flex;gap:24px;flex-wrap:wrap}
     .totals .lbl{font-size:.75rem;opacity:.9}
     .totals .val{font-size:1.3rem;font-weight:700}
-    .actions{margin-top:18px;display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+    .actions{margin-top:18px;display:flex;gap:12px;flex-wrap:wrap}
     #fileInput{display:none}
     .muted{color:#7f8c8d;font-size:.8rem}
-    /* TABLA ACUMULATIVA */
-    #acumTable{margin-top:32px}
-    #acumTable th{background:var(--rojo);color:#fff}
-    input[type="radio"]{margin-right:4px}
+    @media(max-width:600px){.row{flex-direction:column}}
   </style>
 </head>
 <body>
   <header class="header">
-    <i class="fas fa-project-diagram"></i>
+    <i class="fas fa-calculator"></i>
     <div class="logo">AriasGroupCaribe SRL</div>
     <a class="back" href="index.html"><i class="fas fa-arrow-left"></i> Volver</a>
   </header>
 
   <div class="container">
-    <!-- 1. Selector y cálculo individual -->
     <div class="card">
-      <h3>1. Medir estancia</h3>
       <div class="row">
-        <label>
-          Estancia (ej. "Dormitorio 1")
-          <input id="roomName" type="text" placeholder="Nombre" />
-        </label>
         <label>
           Sistema FassaBortolo
           <select id="systemSelect"></select>
@@ -65,9 +55,15 @@
           Desperdicio %
           <input id="waste" type="number" step="0.1" value="5" />
         </label>
-        <button id="addBtn"><i class="fas fa-plus"></i> Añadir al proyecto</button>
+        <label>
+          Descuento %
+          <input id="discount" type="number" step="0.1" value="0" />
+        </label>
+        <button id="calcBtn">Calcular</button>
       </div>
+
       <div class="meta" id="metaBox"></div>
+
       <table id="tbl">
         <thead>
           <tr>
@@ -76,49 +72,29 @@
         </thead>
         <tbody></tbody>
       </table>
-    </div>
 
-    <!-- 2. Acumulado por estancia -->
-    <div class="card">
-      <h3>2. Proyecto acumulado</h3>
-      <table id="acumTable">
-        <thead>
-          <tr>
-            <th>Estancia</th><th>Sistema</th><th>m²</th><th>Total €</th><th>Ver</th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
       <div class="totals">
-        <div><div class="lbl">Total proyecto</div><div class="val" id="projTotal">—</div></div>
+        <div><div class="lbl">Total materiales</div><div class="val" id="totalMat">—</div></div>
+        <div><div class="lbl">Descuento</div><div class="val" id="totalDisc">—</div></div>
+        <div><div class="lbl">TOTAL</div><div class="val" id="grandTotal">—</div></div>
       </div>
-    </div>
 
-    <!-- 3. Exportaciones -->
-    <div class="card">
-      <h3>3. Exportar</h3>
       <div class="actions">
-        <label>
-          <input type="radio" name="mode" value="full" checked> Con desglose
-        </label>
-        <label>
-          <input type="radio" name="mode" value="summary"> Solo precio por m²
-        </label>
-        <button id="pdfBtn"><i class="fas fa-file-pdf"></i> PDF</button>
-        <button id="excelBtn"><i class="fas fa-file-excel"></i> Excel</button>
+        <button id="pdfBtn"><i class="fas fa-file-pdf"></i> Exportar PDF</button>
+        <label for="fileInput" class="button" style="cursor:pointer;background:#555"><i class="fas fa-upload"></i> Cargar Excel</label>
+        <input id="fileInput" type="file" accept=".xlsx,.xls,.csv" />
       </div>
-      <div class="muted">PDF incluye logo y fecha.</div>
+      <div class="muted">Formato Excel: columna "Area_m2" con las superficies por habitación.</div>
     </div>
   </div>
 
-  <!-- Librerías CDN -->
+  <!-- Librerías desde CDN -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 
   <script>
-    /* ---------- UTILS ---------- */
     const EUR = n => new Intl.NumberFormat('es-ES',{style:'currency',currency:'EUR'}).format(n||0);
 
     async function loadIndex(){
@@ -146,20 +122,14 @@
 
     function toNum(x){ return Number(String(x).replace(',','.'))||0; }
 
-    /* ---------- MOTOR ---------- */
-    let proyecto = []; // [{room,system,area,total,rows,meta}, ...]
-
-    async function calcularIndividual(){
-      const room   = document.getElementById('roomName').value.trim() || 'Estancia';
-      const area   = toNum(document.getElementById('area').value);
-      const waste  = toNum(document.getElementById('waste').value);
-      const opt    = document.getElementById('systemSelect').selectedOptions[0];
+    async function calculate(){
+      const area = toNum(document.getElementById('area').value);
+      const waste = toNum(document.getElementById('waste').value);
+      const discount = toNum(document.getElementById('discount').value);
+      const opt = document.getElementById('systemSelect').selectedOptions[0];
       if(!opt) return;
-      const meta   = JSON.parse(opt.dataset.meta);
-
-      // Meta visual
+      const meta = JSON.parse(opt.dataset.meta);
       document.getElementById('metaBox').innerHTML = `
-        <div class="item"><strong>Estancia:</strong> ${room}</div>
         <div class="item"><strong>Sistema:</strong> ${meta.id}</div>
         <div class="item"><strong>Perfil:</strong> ${meta.perfil}</div>
         <div class="item"><strong>Placa:</strong> ${meta.placa}</div>
@@ -168,20 +138,17 @@
       `;
 
       const csvText = await loadCSV(meta.csv);
-      const rows    = parseCSV(csvText);
-      const tbody   = document.querySelector('#tbl tbody');
+      const rows = parseCSV(csvText);
+      const tbody = document.querySelector('#tbl tbody');
       tbody.innerHTML = '';
       let totalMat = 0;
-      const rowsData = [];
 
       for(const r of rows){
         const precio = toNum(r.precio);
-        const coef   = toNum(r.coef);
-        const qty    = area * coef * (1 + waste/100);
-        const imp    = qty * precio;
+        const coef = toNum(r.coef);
+        const qty = area * coef * (1 + waste/100);
+        const imp = qty * precio;
         totalMat += imp;
-
-        rowsData.push({...r, qty, imp, precio, coef});
 
         const tr = document.createElement('tr');
         tr.innerHTML = `
@@ -196,125 +163,63 @@
         tbody.appendChild(tr);
       }
 
-      return {room, system:meta.id, area, total:totalMat, rows:rowsData, meta, waste};
+      const disc = totalMat * (discount/100);
+      const grand = totalMat - disc;
+
+      document.getElementById('totalMat').textContent = EUR(totalMat);
+      document.getElementById('totalDisc').textContent = '- ' + EUR(disc);
+      document.getElementById('grandTotal').textContent = EUR(grand);
     }
 
-    function acumular(item){
-      proyecto.push(item);
-      renderAcumulado();
-    }
-
-    function renderAcumulado(){
-      const tbody = document.querySelector('#acumTable tbody');
-      tbody.innerHTML = '';
-      let projTotal = 0;
-      proyecto.forEach((p,i)=>{
-        projTotal += p.total;
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-          <td>${p.room}</td>
-          <td>${p.system}</td>
-          <td class="num">${p.area.toFixed(2)}</td>
-          <td class="num">${EUR(p.total)}</td>
-          <td><button onclick="verDetalle(${i})" style="padding:4px 8px;font-size:12px"><i class="fas fa-eye"></i></button></td>
-        `;
-        tbody.appendChild(tr);
-      });
-      document.getElementById('projTotal').textContent = EUR(projTotal);
-    }
-
-    window.verDetalle = function(idx){
-      const p = proyecto[idx];
-      let msg = `${p.room} - ${p.system} (${p.area.toFixed(2)} m²)\n\n`;
-      p.rows.forEach(r => {
-        msg += `${r.concepto} (${r.unidad}): ${r.qty.toFixed(3)} × ${EUR(r.precio)} = ${EUR(r.imp)}\n`;
-      });
-      msg += `\nTotal: ${EUR(p.total)}`;
-      alert(msg);
-    }
-
-    /* ---------- EXPORTACIONES ---------- */
     async function exportPDF(){
-      const mode = document.querySelector('input[name="mode"]:checked').value;
       const { jsPDF } = window.jspdf;
       const doc = new jsPDF({orientation:'p',unit:'mm',format:'a4'});
+      const total = document.getElementById('grandTotal').textContent;
+      const sys = document.getElementById('systemSelect').selectedOptions[0].text;
+      const area = document.getElementById('area').value;
       const date = new Date().toLocaleDateString('es-ES');
-      const total = proyecto.reduce((t,p)=>t+p.total,0);
 
-      // Encabezado
       doc.setFontSize(18);
-      doc.setTextColor('#e74c3c');
-      doc.text('Proyecto AriasGroupCaribe SRL',14,22);
+      doc.setTextColor('#2c3e50');
+      doc.text('Presupuesto AriasGroupCaribe SRL',14,22);
       doc.setFontSize(11);
-      doc.setTextColor('#333');
-      doc.text(`Fecha: ${date}`,14,32);
-      doc.text(`Total proyecto: ${EUR(total)}`,14,38);
+      doc.text(`Sistema: ${sys}`,14,32);
+      doc.text(`Superficie: ${area} m²`,14,38);
+      doc.text(`Fecha: ${date}`,14,44);
 
-      if(mode==='summary'){
-        // Solo tabla resumen
-        doc.autoTable({
-          head:[['Estancia','Sistema','m²','€/m²','Total']],
-          body: proyecto.map(p=>[p.room,p.system,p.area.toFixed(2),EUR(p.total/p.area),EUR(p.total)]),
-          startY:48,
-          styles:{fontSize:10},
-          headStyles:{fillColor:'#e74c3c',textColor:'#fff'},
-          alternateRowStyles:{fillColor:'#f8f9fa'}
-        });
-      }else{
-        // Desglose completo
-        let y = 48;
-        proyecto.forEach((p, idx)=>{
-          if(idx > 0 && y > 250) {
-            doc.addPage();
-            y = 20;
-          }
-          doc.setFontSize(12);
-          doc.text(`${p.room} – ${p.system} (${p.area.toFixed(2)} m²)`,14,y);
-          y+=8;
-          doc.autoTable({
-            head:[['Concepto','Unidad','Precio','Coef','Cantidad','Importe']],
-            body: p.rows.map(r=>[r.concepto,r.unidad,EUR(r.precio),r.coef,r.qty.toFixed(3),EUR(r.imp)]),
-            startY:y,
-            styles:{fontSize:9},
-            headStyles:{fillColor:'#2c3e50',textColor:'#fff'},
-            alternateRowStyles:{fillColor:'#f8f9fa'}
-          });
-          y = doc.lastAutoTable.finalY + 10;
-        });
-      }
+      const body = Array.from(document.querySelectorAll('#tbl tbody tr')).map(tr=>{
+        const c = tr.children;
+        return [c[0].textContent,c[1].textContent,c[2].textContent,c[3].textContent,c[4].textContent,c[5].textContent,c[6].textContent];
+      });
 
-      doc.save(`Proyecto_AriasGroup_${date.replace(/\//g,'-')}.pdf`);
+      doc.autoTable({
+        head:[['SKU','Concepto','Unidad','Precio','Coef','Cantidad','Importe']],
+        body:body,
+        startY:52,
+        styles:{fontSize:9},
+        headStyles:{fillColor:'#2c3e50',textColor:'#fff'},
+        alternateRowStyles:{fillColor:'#f8f9fa'}
+      });
+
+      const finalY = doc.lastAutoTable.finalY + 12;
+      doc.setFontSize(12);
+      doc.text(`TOTAL: ${total}`,14,finalY);
+      doc.save(`Presupuesto_AriasGroup_${date.replace(/\//g,'-')}.pdf`);
     }
 
-    function exportExcel(){
-      const mode = document.querySelector('input[name="mode"]:checked').value;
-      const wb = XLSX.utils.book_new();
-      const date = new Date().toLocaleDateString('es-ES');
-      const total = proyecto.reduce((t,p)=>t+p.total,0);
-
-      if(mode==='summary'){
-        const ws = XLSX.utils.aoa_to_sheet([
-          ['Estancia','Sistema','m²','€/m²','Total'],
-          ...proyecto.map(p=>[p.room,p.system,p.area.toFixed(2),p.total/p.area,p.total])
-        ]);
-        XLSX.utils.book_append_sheet(wb,ws,'Resumen');
-      }else{
-        proyecto.forEach(p=>{
-          const ws = XLSX.utils.aoa_to_sheet([
-            ['Estancia:',p.room,'','',''],
-            ['Sistema:',p.system,'','',''],
-            ['m²:',p.area,'','',''],
-            ['','','','',''],
-            ['Concepto','Unidad','Precio','Coef','Cantidad','Importe'],
-            ...p.rows.map(r=>[r.concepto,r.unidad,r.precio,r.coef,r.qty.toFixed(3),r.imp])
-          ]);
-          XLSX.utils.book_append_sheet(wb,ws,p.room.slice(0,31));
-        });
-      }
-      XLSX.writeFile(wb,`Proyecto_AriasGroup_${date.replace(/\//g,'-')}.xlsx`);
+    async function loadExcel(e){
+      const file = e.target.files[0];
+      if(!file) return;
+      const arrayBuffer = await file.arrayBuffer();
+      const wb = XLSX.read(arrayBuffer, {type: 'array'});
+      const ws = wb.Sheets[wb.SheetNames[0]];
+      const data = XLSX.utils.sheet_to_json(ws);
+      let total = 0;
+      data.forEach(r=> total += toNum(r.Area_m2)||0);
+      document.getElementById('area').value = total.toFixed(2);
+      await calculate();
     }
 
-    /* ---------- INICIALIZACIÓN ---------- */
     (async()=>{
       const systems = await loadIndex();
       const sel = document.getElementById('systemSelect');
@@ -325,13 +230,10 @@
         opt.dataset.meta = JSON.stringify(s);
         sel.appendChild(opt);
       });
-      document.getElementById('addBtn').addEventListener('click', async()=>{
-        const item = await calcularIndividual();
-        if(item) acumular(item);
-      });
+      document.getElementById('calcBtn').addEventListener('click', calculate);
       document.getElementById('pdfBtn').addEventListener('click', exportPDF);
-      document.getElementById('excelBtn').addEventListener('click', exportExcel);
-      renderAcumulado();
+      document.getElementById('fileInput').addEventListener('change', loadExcel);
+      await calculate();
     })();
   </script>
 </body>
