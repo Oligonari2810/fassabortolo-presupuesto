@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Techos - FassaBortolo Caribe</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f8f9fa; line-height: 1.6; }
+        .header { background: white; padding: 1rem 0; box-shadow: 0 2px 10px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 1000; }
+        .nav-container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 1.5rem; font-weight: bold; color: #2c3e50; }
+        .logo span { color: #e74c3c; }
+        .main-container { max-width: 1400px; margin: 0 auto; padding: 2rem; }
+        
+        .page-header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 2rem; border-radius: 15px; margin-bottom: 2rem; }
+        .page-header h1 { font-size: 2.2rem; margin-bottom: 1rem; }
+        
+        .systems-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 2rem; margin-top: 2rem; }
+        .system-card { background: white; border-radius: 15px; padding: 2rem; box-shadow: 0 5px 20px rgba(0,0,0,0.1); transition: all 0.3s; }
+        .system-card:hover { transform: translateY(-5px); }
+        .system-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem; }
+        .system-code { font-size: 1.2rem; font-weight: bold; color: #2c3e50; }
+        
+        .badge { padding: 0.3rem 0.8rem; border-radius: 20px; font-size: 0.8rem; font-weight: bold; text-transform: uppercase; }
+        .badge-core { background: #d4edda; color: #155724; } /* Verde - CORE */
+        .badge-condicionado { background: #fff3cd; color: #856404; } /* Amarillo - CONDICIONADO */
+        .badge-especial { background: #f8d7da; color: #721c24; } /* Rojo - ESPECIAL */
+        .badge-general { background: #d1ecf1; color: #0c5460; } /* Azul - USO GENERAL */
+        
+        .system-description { color: #6c757d; margin-bottom: 1rem; line-height: 1.6; }
+        .system-materials { background: #f8f9fa; padding: 1rem; border-radius: 8px; margin-bottom: 1rem; }
+        .system-materials h4 { color: #2c3e50; margin-bottom: 0.5rem; }
+        .material-list { font-size: 0.9rem; color: #6c757d; }
+        
+        .btn { padding: 0.8rem 1.5rem; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; transition: all 0.3s; }
+        .btn-primary { background: #e74c3c; color: white; }
+        .btn-primary:hover { background: #c0392b; }
+        
+        .disclaimer-section { background: rgba(231, 76, 60, 0.1); border-left: 4px solid #e74c3c; padding: 1.5rem; margin: 2rem 0; border-radius: 8px; color: #2c3e50; }
+        .disclaimer-section strong { color: #e74c3c; }
+        
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .main-container { padding: 1rem; }
+            .systems-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <nav class="nav-container">
+            <div class="logo">Fassa<span>Bortolo</span> Caribe</div>
+            <!-- MENÚ SIMPLIFICADO - Solo 3 ítems visibles -->
+            <ul class="nav-links">
+                <li><a href='/'>Inicio</a></li>
+                <!-- <li><a href='/tabiques'>Tabiques</a></li> -->
+                <!-- <li><a href='/trasdosados'>Trasdosados</a></li> -->
+                <!-- <li><a href='/techos'>Techos</a></li> -->
+                <!-- <li><a href='/semi-intemperie'>Semi-intemperie</a></li> -->
+                <li><a href='/presupuesto'>Presupuesto</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="main-container">
+        <div class="page-header">
+            <h1><i class="fas fa-home"></i> Cielos Falsos</h1>
+            <p>5 sistemas con diferentes alturas y prestaciones</p>
+        </div>
+
+        <div class="systems-grid">
+            <!-- Sistema 1 -->
+            <div class="system-card">
+                <div class="system-header">
+                    <div>
+                        <div class="system-code">C-TC47-13</div>
+                        <div style="font-size: 0.9rem; color: #6c757d; margin-top: 0.2rem;">Cielo Falso TC 47 + STD 13mm</div>
+                    </div>
+                    <span class="badge badge-general">USO GENERAL</span>
+                </div>
+                
+                <div class="system-description">
+                    Sistema de cielo falso con perfil TC 47 y placa estándar de 13mm. 
+                    Altura de instalación: 120-200mm desde estructura.
+                </div>
+                
+                <div class="system-materials">
+                    <h4>Materiales por m²:</h4>
+                    <div class="material-list">
+                        • Placa STD BA 13mm: 1.10 m²<br>
+                        • TC 47 Z1: 2.00 ml<br>
+                        • Omega 17 Z1: 0.50 ml<br>
+                        • Tornillo placa-metal 3.5×25: 16 ud<br>
+                        • Horquilla cuelgue TC 47: 2.5 ud
+                    </div>
+                </div>
+                
+                <button class="btn btn-primary" onclick="addToBudget('C-TC47-13', 'Cielo Falso TC 47 + STD 13mm')">
+                    <i class="fas fa-plus"></i> Añadir al Presupuesto
+                </button>
+            </div>
+
+            <!-- Sistema 2 -->
+            <div class="system-card">
+                <div class="system-header">
+                    <div>
+                        <div class="system-code">C-TC48-13</div>
+                        <div style="font-size: 0.9rem; color: #6c757d; margin-top: 0.2rem;">Cielo Falso TC 48 + STD 13mm</div>
+                    </div>
+                    <span class="badge badge-general">USO GENERAL</span>
+                </div>
+                
+                <div class="system-description">
+                    Sistema con perfil TC 48 de mayor capacidad de carga. 
+                    Ideal para instalaciones con equipos de aire acondicionado.
+                </div>
+                
+                <div class="system-materials">
+                    <h4>Materiales por m²:</h4>
+                    <div class="material-list">
+                        • Placa STD BA 13mm: 1.10 m²<br>
+                        • TC 48 Z1: 2.00 ml<br>
+                        • Omega 17 Z1: 0.50 ml<br>
+                        • Tornillo placa-metal 3.5×25: 16 ud<br>
+                        • Horquilla cuelgue TC 48: 2.5 ud
+                    </div>
+                </div>
+                
+                <button class="btn btn-primary" onclick="addToBudget('C-TC48-13', 'Cielo Falso TC 48 + STD 13mm')">
+                    <i class="fas fa-plus"></i> Añadir al Presupuesto
+                </button>
+            </div>
+
+            <!-- Sistema 3 -->
+            <div class="system-card">
+                <div class="system-header">
+                    <div>
+                        <div class="system-code">C-TC47-AQ</div>
+                        <div style="font-size: 0.9rem; color: #6c757d; margin-top: 0.2rem;">Cielo Falso TC 47 + AQUA 13mm</div>
+                    </div>
+                    <span class="badge badge-general">USO GENERAL</span>
+                </div>
+                
+                <div class="system-description">
+                    Sistema con placa AQUA para zonas con humedad ambiental. 
+                    Ideal para baños, cocinas y zonas húmedas.
+                </div>
+                
+                <div class="system-materials">
+                    <h4>Materiales por m²:</h4>
+                    <div class="material-list">
+                        • Placa AQUA 13mm: 1.10 m²<br>
+                        • TC 47 Z1: 2.00 ml<br>
+                        • Omega 17 Z1: 0.50 ml<br>
+                        • Tornillo Inox 3.5×25: 16 ud<br>
+                        • Horquilla cuelgue TC 47: 2.5 ud
+                    </div>
+                </div>
+                
+                <button class="btn btn-primary" onclick="addToBudget('C-TC47-AQ', 'Cielo Falso TC 47 + AQUA 13mm')">
+                    <i class="fas fa-plus"></i> Añadir al Presupuesto
+                </button>
+            </div>
+
+            <!-- Sistema 4 -->
+            <div class="system-card">
+                <div class="system-header">
+                    <div>
+                        <div class="system-code">C-O17-13</div>
+                        <div style="font-size: 0.9rem; color: #6c757d; margin-top: 0.2rem;">Cielo Bajo Omega 17 + STD 13mm</div>
+                    </div>
+                    <span class="badge badge-general">USO GENERAL</span>
+                </div>
+                
+                <div class="system-description">
+                    Sistema de cielo bajo con perfil Omega 17. 
+                    Altura mínima de instalación: 50mm.
+                </div>
+                
+                <div class="system-materials">
+                    <h4>Materiales por m²:</h4>
+                    <div class="material-list">
+                        • Placa STD BA 13mm: 1.10 m²<br>
+                        • Omega 17 Z1: 2.00 ml<br>
+                        • Tornillo placa-metal 3.5×25: 16 ud<br>
+                        • Anclaje directo (304029): 8 ud<br>
+                        • Clip Z1 U201928300A: 2.0 ud
+                    </div>
+                </div>
+                
+                <button class="btn btn-primary" onclick="addToBudget('C-O17-13', 'Cielo Bajo Omega 17 + STD 13mm')">
+                    <i class="fas fa-plus"></i> Añadir al Presupuesto
+                </button>
+            </div>
+
+            <!-- Sistema 5 -->
+            <div class="system-card">
+                <div class="system-header">
+                    <div>
+                        <div class="system-code">C-TC47-15</div>
+                        <div style="font-size: 0.9rem; color: #6c757d; margin-top: 0.2rem;">Cielo Falso TC 47 + STD 15mm</div>
+                    </div>
+                    <span class="badge badge-general">USO GENERAL</span>
+                </div>
+                
+                <div class="system-description">
+                    Sistema reforzado con placa de 15mm para mayor resistencia mecánica. 
+                    Mayor capacidad de carga y mejor comportamiento acústico.
+                </div>
+                
+                <div class="system-materials">
+                    <h4>Materiales por m²:</h4>
+                    <div class="material-list">
+                        • Placa STD BA 15mm: 1.10 m²<br>
+                        • TC 47 Z1: 2.00 ml<br>
+                        • Omega 17 Z1: 0.50 ml<br>
+                        • Tornillo placa-metal 3.5×35: 14 ud<br>
+                        • Horquilla cuelgue TC 47: 2.5 ud
+                    </div>
+                </div>
+                
+                <button class="btn btn-primary" onclick="addToBudget('C-TC47-15', 'Cielo Falso TC 47 + STD 15mm')">
+                    <i class="fas fa-plus"></i> Añadir al Presupuesto
+                </button>
+            </div>
+        </div>
+
+        <!-- DISCLAIMER LEGAL -->
+        <div class="disclaimer-section">
+            <strong>⚠️ IMPORTANTE:</strong> Esta herramienta es para uso interno de FassaBortolo Caribe. 
+            Los valores de resistencia al fuego (EI) son referenciales y deben ser validados 
+            técnicamente para cada proyecto según normativa local. 
+            Los presupuestos son estimaciones y no constituyen oferta comercial.
+        </div>
+    </main>
+
+    <script>
+        function addToBudget(id, nombre) {
+            let budget = JSON.parse(localStorage.getItem('fassa_budget') || '[]');
+            const existing = budget.find(item => item.id === id);
+            
+            if (existing) {
+                existing.quantity += 10;
+            } else {
+                budget.push({ id: id, name: nombre, quantity: 10 });
+            }
+            
+            localStorage.setItem('fassa_budget', JSON.stringify(budget));
+            alert(`✅ Sistema ${id} añadido al presupuesto`);
+        }
+    </script>
+</body>
+</html>

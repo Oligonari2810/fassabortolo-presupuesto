@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalle del Sistema - FassaBortolo Caribe</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f8f9fa; line-height: 1.6; }
+        .header { background: white; padding: 1rem 0; box-shadow: 0 2px 10px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 1000; }
+        .nav-container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 1.5rem; font-weight: bold; color: #2c3e50; text-decoration: none; }
+        .logo span { color: #e74c3c; }
+        .nav-links { display: flex; gap: 2rem; list-style: none; }
+        .nav-links a { text-decoration: none; color: #2c3e50; font-weight: 500; transition: color 0.3s; }
+        .nav-links a:hover { color: #e74c3c; }
+        .main-container { max-width: 1200px; margin: 0 auto; padding: 2rem; }
+        .breadcrumb { background: white; padding: 1rem 2rem; border-radius: 10px; margin-bottom: 2rem; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .breadcrumb a { color: #e74c3c; text-decoration: none; }
+        .system-detail { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 2rem; }
+        .system-info { background: white; padding: 2rem; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.1); }
+        .system-header { border-bottom: 3px solid #e74c3c; padding-bottom: 1rem; margin-bottom: 2rem; }
+        .system-header h1 { font-size: 2rem; color: #2c3e50; margin-bottom: 0.5rem; }
+        .system-code { font-size: 1.1rem; color: #e74c3c; font-weight: 600; }
+        .system-description { background: #f8f9fa; padding: 1.5rem; border-radius: 10px; margin-bottom: 2rem; border-left: 4px solid #e74c3c; }
+        .tech-specs { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-bottom: 2rem; }
+        .spec-card { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 1.5rem; border-radius: 10px; text-align: center; }
+        .spec-card .icon { font-size: 2rem; margin-bottom: 0.5rem; }
+        .spec-card .value { font-size: 1.5rem; font-weight: bold; margin-bottom: 0.25rem; }
+        .spec-card .label { font-size: 0.9rem; opacity: 0.9; }
+        .materials-section { background: white; padding: 2rem; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.1); margin-bottom: 2rem; }
+        .materials-section h2 { color: #2c3e50; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.5rem; }
+        .materials-table { width: 100%; border-collapse: collapse; }
+        .materials-table th, .materials-table td { padding: 1rem; text-align: left; border-bottom: 1px solid #dee2e6; }
+        .materials-table th { background: #f8f9fa; font-weight: 600; color: #2c3e50; }
+        .materials-table tr:hover { background: #f8f9fa; }
+        .actions-section { background: white; padding: 2rem; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.1); text-align: center; }
+        .btn { padding: 1rem 2rem; border: none; border-radius: 8px; font-size: 1.1rem; cursor: pointer; transition: all 0.3s; text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem; margin: 0.5rem; }
+        .btn-primary { background: #e74c3c; color: white; }
+        .btn-primary:hover { background: #c0392b; transform: translateY(-2px); }
+        .btn-success { background: #28a745; color: white; }
+        .btn-success:hover { background: #218838; }
+        .btn-info { background: #17a2b8; color: white; }
+        .btn-info:hover { background: #138496; }
+        .volume-alert { background: #e74c3c; color: white; padding: 1rem; border-radius: 8px; margin-bottom: 1rem; font-weight: bold; }
+        .certifications { background: #e8f5e8; padding: 1.5rem; border-radius: 10px; margin-top: 2rem; border: 1px solid #28a745; }
+        .certifications h3 { color: #155724; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem; }
+        .cert-list { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+        .cert-badge { background: #28a745; color: white; padding: 0.5rem 1rem; border-radius: 20px; font-size: 0.9rem; font-weight: 500; }
+        @media (max-width: 768px) { .system-detail { grid-template-columns: 1fr; } .tech-specs { grid-template-columns: repeat(2, 1fr); } }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <nav class="nav-container">
+            <a href="index.html" class="logo">
+                Fassa<span>Bortolo</span> Caribe
+            </a>
+            <ul class="nav-links">
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="tabiques.html">Tabiques</a></li>
+                <li><a href="trasdosados.html">Trasdosados</a></li>
+                <li><a href="techos.html">Techos</a></li>
+                <li><a href="semi-intemperie.html">Semi-intemperie</a></li>
+                <li><a href="presupuesto.html">Presupuesto</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="main-container">
+        <nav class="breadcrumb">
+            <a href="index.html"><i class="fas fa-home"></i> Inicio</a> / 
+            <a href="tabiques.html"><i class="fas fa-cogs"></i> Sistemas</a> / 
+            <span id="currentSystem">Detalle del Sistema</span>
+        </nav>
+
+        <div class="system-detail">
+            <div class="system-info">
+                <div class="system-header">
+                    <h1 id="systemName">Cargando sistema...</h1>
+                    <div class="system-code" id="systemCode">Código: --</div>
+                </div>
+
+                <div class="system-description">
+                    <h3><i class="fas fa-info-circle"></i> Definición</h3>
+                    <p id="systemDescription">Cargando descripción del sistema...</p>
+                </div>
+
+                <div class="tech-specs">
+                    <div class="spec-card">
+                        <div class="icon"><i class="fas fa-ruler-vertical"></i></div>
+                        <div class="value" id="specAltura">--</div>
+                        <div class="label">Altura Máxima (m)</div>
+                    </div>
+                    <div class="spec-card">
+                        <div class="icon"><i class="fas fa-volume-down"></i></div>
+                        <div class="value" id="specAcustico">--</div>
+                        <div class="label">Aislamiento R<sub>A</sub> (dBA)</div>
+                    </div>
+                    <div class="spec-card">
+                        <div class="icon"><i class="fas fa-fire"></i></div>
+                        <div class="value" id="specFuego">--</div>
+                        <div class="label">Resistencia al Fuego</div>
+                    </div>
+                    <div class="spec-card">
+                        <div class="icon"><i class="fas fa-expand-arrows-alt"></i></div>
+                        <div class="value" id="specEspesor">--</div>
+                        <div class="label">Espesor (mm)</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="system-info">
+                <h2><i class="fas fa-clipboard-list"></i> Receta por m²</h2>
+                <table class="materials-table">
+                    <thead>
+                        <tr>
+                            <th>Material</th>
+                            <th>Cantidad</th>
+                            <th>Unidad</th>
+                        </tr>
+                    </thead>
+                    <tbody id="materialsTableBody"></tbody>
+                </table>
+
+                <div class="certifications">
+                    <h3><i class="fas fa-certificate"></i> Certificaciones</h3>
+                    <div class="cert-list" id="certificationsList"></div>
+                </div>
+
+                <div id="volumeAlert" class="volume-alert" style="display:none;">
+                    <i class="fas fa-exclamation-triangle"></i> Volumen crítico detectado
+                </div>
+            </div>
+        </div>
+
+        <div class="actions-section">
+            <h2 style="margin-bottom: 1.5rem; color: #2c3e50;">
+                <i class="fas fa-download"></i> Descargas y Acciones
+            </h2>
+            <a href="#" class="btn btn-success" onclick="exportSpecPDF()">
+                <i class="fas fa-file-pdf"></i> Especificación PDF
+            </a>
+            <a href="tabiques.html" class="btn btn-primary">
+                <i class="fas fa-arrow-left"></i> Volver a Sistemas
+            </a>
+            <button class="btn btn-info" onclick="addToBudgetFromDetail()">
+                <i class="fas fa-plus-circle"></i> Añadir a Presupuesto
+            </button>
+        </div>
+    </main>
+
+    <footer style="background: #2c3e50; color: white; text-align: center; padding: 2rem; margin-top: 4rem;">
+        <p>&copy; 2025 FassaBortolo Caribe. Todos los derechos reservados.</p>
+    </footer>
+
+    <script>
+        // DATOS COMPLETOS DE TODOS LOS SISTEMAS - 21 TOTALES
+        const sistemasData = {
+            // =========================================
+            // TABIQUES (7 SISTEMAS)
+            // =========================================
+            'T-45-13': {
+                nombre: 'Tabique Ligero 91mm (STD 13mm + Z1 45mm)',
+                codigo: 'T-45-13',
+                categoria: 'tabiques',
+                alturaMaxima: '2.50',
+                espesor: '91',
+                aislamientoAcustico: '62.8',
+                resistenciaFuego: 'EI-60',
+                descripcion: 'Tabique ligero para alturas reducidas. No recomendado para hoteles. Uso en vivienda económica. Volumen bajo.',
+                materiales: [
+                    { material: 'Placa STD BA 13mm', cantidad: '2.00', unidad: 'm²' },
+                    { material: 'Montante Z1 45mm', cantidad: '2.50', unidad: 'ml' },
+                    { material: 'Canal Z1 45mm', cantidad: '0.70', unidad: 'ml' },
+                    { material: 'Tornillo placa-metal 3.5×25', cantidad: '24', unidad: 'ud' },
+                    { material: 'Tornillo metal-metal 3.5×9.5', cantidad: '30', unidad: 'ud' },
+                    { material: 'FASSAJOINT 1H', cantidad: '0.4', unidad: 'kg' },
+                    { material: 'Cinta papel', cantidad: '1.2', unidad: 'ml' }
+                ],
+                certificaciones: ['EN-520', 'A1'],
+                volumen: 'bajo'
+            },
+            'T-70-13': {
+                nombre: 'Tabique Estándar 116mm (STD 13mm + Z1 70mm)',
+                codigo: 'T-70-13',
+                categoria: 'tabiques',
+                alturaMaxima: '3.00',
+                espesor: '116',
+                aislamientoAcustico: '65.0',
+                resistenciaFuego: 'EI-60',
+                descripcion: '**SISTEMA ESTÁNDAR DE LA EMPRESA**. Tabique intermedio para altura máxima 3.00m. 70% del volumen de obra.',
+                materiales: [
+                    { material: 'Placa STD BA 13mm', cantidad: '2.00', unidad: 'm²' },
+                    { material: 'Montante Z1 70mm', cantidad: '2.50', unidad: 'ml' },
+                    { material: 'Canal Z1 70mm', cantidad: '0.70', unidad: 'ml' },
+                    { material: 'Tornillo placa-metal 3.5×25', cantidad: '24', unidad: 'ud' },
+                    { material: 'Tornillo metal-metal 3.5×9.5', cantidad: '30', unidad: 'ud' },
+                    { material: 'FASSAJOINT 1H', cantidad: '0.4', unidad: 'kg' },
+                    { material: 'Cinta papel', cantidad: '1.2', unidad: 'ml' }
+                ],
+                certificaciones: ['EN-520', 'A1', 'EMICODE EC1'],
+                volumen: 'muy alto'
+            },
+            'T-90-13': {
+                nombre: 'Tabique Alto 136mm (STD 13mm + Z1 90mm)',
+                codigo: 'T-90-13',
+                categoria: 'tabiques',
+                alturaMaxima: '3.35',
+                espesor: '136',
+                aislamientoAcustico: '67.0',
+                resistenciaFuego: 'EI-90',
+                descripcion: 'Tabique para alturas superiores. Mayor resistencia al fuego. Uso en lobbies y áreas comunes.',
+                materiales: [
+                    { material: 'Placa STD BA 13mm', cantidad: '2.00', unidad: 'm²' },
+                    { material: 'Montante Z1 90mm', cantidad: '2.50', unidad: 'ml' },
+                    { material: 'Canal Z1 90mm', cantidad: '0.70', unidad: 'ml' },
+                    { material: 'Tornillo placa-metal 3.5×25', cantidad: '24', unidad: 'ud' },
+                    { material: 'Tornillo metal-metal 3.5×9.5', cantidad: '30', unidad: 'ud' },
+                    { material: 'FASSAJOINT 1H', cantidad: '0.4', unidad: 'kg' },
+                    { material: 'Cinta papel', cantidad: '1.2', unidad: 'ml' }
+                ],
+                certificaciones: ['EN-520', 'A1', 'EI-90'],
+                volumen: 'medio'
+            },
+            'T-70-15': {
+                nombre: 'Tabique Robusto 120mm (STD 15mm + Z1 70mm)',
+                codigo: 'T-70-15',
+                categoria: 'tabiques',
+                alturaMaxima: '3.20',
+                espesor: '120',
+                aislamientoAcustico: '66.0',
+                resistenciaFuego: 'EI-90',
+                descripcion: 'Tabique con placa de mayor espesor. Mayor resistencia mecánica y al fuego. Suites ejecutivas.',
+                materiales: [
+                    { material: 'Placa STD BA 15mm', cantidad: '2.00', unidad: 'm²' },
+                    { material: 'Montante Z1 70mm', cantidad: '2.50', unidad: 'ml' },
+                    { material: 'Canal Z1 70mm', cantidad: '0.70', unidad: 'ml' },
+                    { material: 'Tornillo placa-metal 3.5×35', cantidad: '18', unidad: 'ud' },
+                    { material: 'Tornillo metal-metal 3.5×9.5', cantidad: '30', unidad: 'ud' },
+                    { material: 'FASSAJOINT 1H', cantidad: '0.5', unidad: 'kg' },
+                    { material: 'Cinta papel', cantidad: '1.2', unidad: 'ml' }
+                ],
+                certificaciones: ['EN-520', 'A1', 'EI-90'],
+                volumen: 'medio'
+            },
+            'T-AQ-70-13': {
+                nombre: 'Tabique Húmedo AQUA 116mm (AQUA 13mm + Z1 70mm)',
+                codigo: 'T-AQ-70-13',
+                categoria: 'tabiques',
+                alturaMaxima: '2.70',
+                espesor: '116',
+                aislamientoAcustico: '64.0',
+                resistenciaFuego: 'EI-60',
+                descripcion: '**SISTEMA HÚMEDO ESTÁNDAR**. Tabique AQUA para baños, cocinas, lavanderías. Resistencia a humedad ≤10%.',
+                materiales: [
+                    { material: 'Placa AQUA 13mm', cantidad: '2.00', unidad: 'm²' },
+                    { material: 'Montante Z1 70mm', cantidad: '2.50', unidad: 'ml' },
+                    { material: 'Canal Z1 70mm', cantidad: '0.70', unidad: 'ml' },
+                    { material: 'Tornillo Inox 3.5×25', cantidad: '24', unidad: 'ud' },
+                    { material: 'Tornillo Inox 3.5×9.5', cantidad: '30', unidad: 'ud' },
+                    { material: 'FASSAJOINT 1H', cantidad: '0.4', unidad: 'kg' },
+                    { material: 'Cinta papel', cantidad: '1.2', unidad: 'ml' },
+                    { material: 'Banda estanca 50mm', cantidad: '0.5', unidad: 'ml' }
+                ],
+                certificaciones: ['EN-520', 'AQUA ≤10%', 'A1', 'EMICODE EC1'],
+                volumen: 'alto'
+            },
+            'T-AQ-70-15': {
+                nombre: 'Tabique Húmedo Premium AQUA 120mm (AQUA 15mm + Z1 70mm)',
+                codigo: 'T-AQ-70-15',
+                categoria: 'tabiques',
+                alturaMaxima: '2.70',
+                espesor: '120',
+                aislamientoAcustico: '65.0',
+                resistenciaFuego: 'EI-60',
+                descripcion: 'Tabique AQUA con placa de mayor espesor. Mayor resistencia a impactos en zonas húmedas.',
+                materiales: [
+                    { material: 'Placa AQUA 15mm', cantidad: '2.00', unidad: 'm²' },
+                    { material: 'Montante Z1 70mm', cantidad: '2.50', unidad: 'ml' },
+                    { material: 'Canal Z1 70mm', cantidad: '0.70', unidad: 'ml' },
+                    { material: 'Tornillo Inox 3.5×35', cantidad: '18', unidad: 'ud' },
+                    { material: 'Tornillo Inox 3.5×9.5', cantidad: '30', unidad: 'ud' },
+                    { material: 'FASSAJOINT 1H', cantidad: '0.5', unidad: 'kg' },
+                    { material: 'Cinta papel', cantidad: '1.2', unidad: 'ml' },
+                    { material: 'Banda estanca 50mm', cantidad: '0.5', unidad: 'ml' }
+                ],
+                certificaciones: ['EN-520', 'AQUA ≤10%', 'A1'],
+                volumen: 'bajo'
+            },
+            'T-EX-70-13': {
+                nombre: 'Tabique Exterior Light 96mm (EXTERNA 13mm + Z1 70mm)',
+                codigo: 'T-EX-70-13',
+                categoria: 'tabiques',
+                alturaMaxima: '2.50',
+                espesor: '96',
+                aislamientoAcustico: '63.0',
+                resistenciaFuego: 'EI-60',
+                descripcion: '**SEMI-INTEMPERIE**. Tabique con Externa Light para fachadas protegidas. Requiere masilla FASSA A 64 y malla fibra.',
+                materiales: [
+                    { material: 'Placa EXTERNA Light 13mm', cantidad: '2.00', unidad: 'm²' },
+                    { material: 'Montante Z1 70mm', cantidad: '2.50', unidad: 'ml' },
+                    { material: 'Canal Z1 70mm', cantidad: '0.70', unidad: 'ml' },
+                    { material: 'Tornillo Inox 3.5×35', cantidad: '20', unidad: 'ud' },
+                    { material: 'Tornillo Inox 3.5×9.5', cantidad: '30', unidad: 'ud' },
+                    { material: 'FASSA A 64', cantidad: '0.45', unidad: 'kg' },
+                    { material: 'Malla fibra vidrio 100mm', cantidad: '1.0', unidad: 'ml' },
+                    { material: 'Banda estanca 70mm', cantidad: '0.6', unidad: 'ml' }
+                ],
+                certificaciones: ['EN-520', 'A1', 'Exterior Light', 'LEED'],
+                volumen: 'medio'
+            },
+            
+            // =========================================
+            // TRASDOSADOS (6 SISTEMAS)
+            // =========================================
+            'R-HA-13': {
+                nombre: 'Trasdosado HA STD 13mm (Omega 17)',
+                codigo: 'R-HA-13',
+                categoria: 'trasdosados',
+                alturaMaxima: '2.70',
+                espesor: '30',
+                aislamientoAcustico: '63.0',
+                resistenciaFuego: 'EI-60',
+                descripcion: 'Trasdosado sobre hormigón armado con omega 17. Placa Standard 13mm. Uso general en interiores.',
+                materiales: [
+                    { material: 'Placa STD BA 13mm', cantidad: '1.00', unidad: 'm²' },
+                    { material: 'Omega 17 Z1', cantidad: '0.50', unidad: 'ml' },
+                    { material: 'Anclaje universal Omega M6', cantidad: '10', unidad: 'ud' },
+                    { material: 'Tornillo 3.5×35', cantidad: '12', unidad: 'ud' },
+                    { material: 'FASSAJOINT 1H', cantidad: '0.30', unidad: 'kg' },
+                    { material: 'Cinta papel', cantidad: '0.8', unidad: 'ml' },
+                    { material: 'Primer de adherencia', cantidad: '0.15', unidad: 'L' }
+                ],
+                certificaciones: ['EN-520', 'A1', 'EMICODE EC1'],
+                volumen: 'muy alto'
+            },
+            'R-HA-15': {
+                nombre: 'Trasdosado HA STD 15mm (Omega 17)',
+                codigo: 'R-HA-15',
+                categoria: 'trasdosados',
+                alturaMaxima: '2.70',
+                espesor: '32',
+                aislamientoAcustico: '64.0',
+                resistenciaFuego: 'EI-60',
+                descripcion: 'Trasdosado sobre HA con placa de mayor espesor. Mayor resistencia mecánica.',
+                materiales: [
+                    { material: 'Placa STD BA 15mm', cantidad: '1.00', unidad: 'm²' },
+                    { material: 'Omega 17 Z1', cantidad: '0.50', unidad: 'ml' },
+                    { material: 'Anclaje universal Omega M6', cantidad: '10', unidad: 'ud' },
+                    { material: 'Tornillo 3.5×35', cantidad: '12', unidad: 'ud' },
+                    { material: 'FASSAJOINT 1H', cantidad: '0.35', unidad: 'kg' },
+                    { material: 'Cinta papel', cantidad: '0.8', unidad: 'ml' },
+                    { material: 'Primer de adherencia', cantidad: '0.15', unidad: 'L' }
+                ],
+                certificaciones: ['EN-520', 'A1'],
+                volumen: 'alto'
+            },
+            'R-HA-AQ-13': {
+                nombre: 'Trasdosado HA AQUA 13mm (Omega 17)',
+                codigo: 'R-HA-AQ-13',
+                categoria: 'trasdosados',
+                alturaMaxima: '2.70',
+                espesor: '30',
+                aislamientoAcustico: '62.0',
+                resistenciaFuego: 'EI-60',
+                descripcion: 'Trasdosado sobre HA con placa AQUA para áreas con humedad residual.',
+                materiales: [
+                    { material: 'Placa AQUA 13mm', cantidad: '1.00', unidad: 'm²' },
+                    { material: 'Omega 17 Z1', cantidad: '0.50', unidad: 'ml' },
+                    { material: 'Anclaje universal Omega M6', cantidad: '10', unidad: 'ud' },
+                    { material: 'Tornillo Inox 3.5×35', cantidad: '12', unidad: 'ud' },
+                    { material: 'FASSAJOINT 1H', cantidad: '0.30', unidad: 'kg' },
+                    { material: 'Cinta papel', cantidad: '0.8', unidad: 'ml' },
+                    { material: 'Banda estanca 50mm', cantidad: '0.4', unidad: 'ml' }
+                ],
+                certificaciones: ['EN-520', 'AQUA ≤10%', 'A1'],
+                volumen: 'medio'
+            },
+            'R-BL-13': {
+                nombre: 'Trasdosado Bloque STD 13mm (Omega 17)',
+                codigo: 'R-BL-13',
+                categoria: 'trasdosados',
+                alturaMaxima: '2.70',
+                espesor: '30',
+                aislamientoAcustico: '63.0',
+                resistenciaFuego: 'EI-60',
+                descripcion: 'Trasdosado sobre mampostería de bloque. Placa Standard 13mm.',
+                materiales: [
+                    { material: 'Placa STD BA 13mm', cantidad: '1.00', unidad: 'm²' },
+                    { material: 'Omega 17 Z1', cantidad: '0.50', unidad: 'ml' },
+                    { material: 'Anclaje directo (304029)', cantidad: '8', unidad: 'ud' },
+                    { material: 'Tornillo 3.5×35', cantidad: '12', unidad: 'ud' },
+                    { material: 'FASSAJOINT 1H', cantidad: '0.30', unidad: 'kg' },
+                    { material: 'Cinta papel', cantidad: '0.8', unidad: 'ml' },
+                    { material: 'Primer de adherencia', cantidad: '0.15', unidad: 'L' }
+                ],
+                certificaciones: ['EN-520', 'A1'],
+                volumen: 'alto'
+            },
+            'R-BL-AQ-13': {
+                nombre: 'Trasdosado Bloque AQUA 13mm (Omega 17)',
+                codigo: 'R-BL-AQ-13',
+                categoria: 'trasdosados',
+                alturaMaxima: '2.70',
+                espesor: '30',
+                aislamientoAcustico: '62.0',
+                resistenciaFuego: 'EI-60',
+                descripcion: 'Trasdosado sobre bloque con placa AQUA. Ideal para exteriores y áreas húmedas.',
+                materiales: [
+                    { material: 'Placa AQUA 13mm', cantidad: '1.00', unidad: 'm²' },
+                    { material: 'Omega 17 Z1', cantidad: '0.50', unidad: 'ml' },
+                    { material: 'Anclaje directo (304029)', cantidad: '8', unidad: 'ud' },
+                    { material: 'Tornillo Inox 3.5×35', cantidad: '12', unidad: 'ud' },
+                    { material: 'FASSAJOINT 1H', cantidad: '0.30', unidad: 'kg' },
+                    { material: 'Cinta papel', cantidad: '0.8', unidad: 'ml' },
+                    { material: 'Banda estanca 50mm', cantidad: '0.4', unidad: 'ml' }
+                ],
+                certificaciones: ['EN-520', 'AQUA ≤10%', 'A1'],
+                volumen: 'medio'
+            },
+            'R-BL-EX-13': {
+                nombre: 'Trasdosado Bloque EXTERNA 13mm (Omega 17)',
+                codigo: 'R-BL-EX-13',
+                categoria: 'trasdosados',
+                alturaMaxima: '2.70',
+                espesor: '30',
+                aislamientoAcustico: '61.0',
+                resistenciaFuego: 'EI-60',
+                descripcion: '**SEMI-INTEMPERIE**. Trasdosado exterior sobre bloque. Requiere tratamiento especial.',
+                materiales: [
+                    { material: 'Placa EXTERNA Light 13mm', cantidad: '1.00', unidad: 'm²' },
+                    { material: 'Omega 17 Z1', cantidad: '0.50', unidad: 'ml' },
+                    { material: 'Anclaje directo (304029)', cantidad: '8', unidad: 'ud' },
+                    { material: 'Tornillo Inox 3.5×35', cantidad: '12', unidad: 'ud' },
+                    { material: 'FASSA A 64', cantidad: '0.35', unidad: 'kg' },
+                    { material: 'Malla fibra vidrio 100mm', cantidad: '0.8', unidad: 'ml' },
+                    { material: 'Banda estanca 70mm', cantidad: '0.5', unidad: 'ml' }
+                ],
+                certificaciones: ['EN-520', 'A1', 'Exterior Light', 'LEED'],
+                volumen: 'bajo'
+            },
+            
+            // =========================================
+            // CIELOS FALSOS (5 SISTEMAS)
+            // =========================================
+            'C-TC47-13': {
+                nombre: 'Cielo Falso TC 47 + STD 13mm',
+                codigo: 'C-TC47-13',
+                categoria: 'techos',
+                alturaMaxima: 'N/A',
+                espesor: '47',
+                alturaUtil: '15-30 cm',
+                aislamientoAcustico: '65.0',
+                resistenciaFuego: 'EI-60',
+                descripcion: 'Cielo falso estándar con perfil TC 47. Altura útil 15-30cm. **SISTEMA MÁS USADO EN VIVIENDA**',
+                materiales: [
+                    { material: 'Placa STD BA 13mm', cantidad: '1.10', unidad: 'm²' },
+                    { material: 'TC 47 Z1', cantidad: '2.00', unidad: 'ml' },
+                    { material: 'Omega 17 Z1', cantidad: '0.50', unidad: 'ml' },
+                    { material: 'Tornillo placa-metal 3.5×25', cantidad: '16', unidad: 'ud' },
+                    { material: 'Horquilla cuelgue TC 47', cantidad: '2.5', unidad: 'ud' },
+                    { material: 'Suspensión TC 47 (180mm)', cantidad: '2.5', unidad: 'ud' },
+                    { material: 'Varilla roscada Ø6×1000', cantidad: '0.30', unidad: 'm' }
+                ],
+                certificaciones: ['EN-520', 'A1', 'EMICODE EC1'],
+                volumen: 'muy alto'
+            },
+            'C-TC48-13': {
+                nombre: 'Cielo Falso TC 48 + STD 13mm',
+                codigo: 'C-TC48-13',
+                categoria: 'techos',
+                alturaMaxima: 'N/A',
+                espesor: '48',
+                alturaUtil: '15-30 cm',
+                aislamientoAcustico: '65.0',
+                resistenciaFuego: 'EI-60',
+                descripcion: 'Cielo falso con perfil TC 48. Similar al TC47 pero con ligera variación en el perfil.',
+                materiales: [
+                    { material: 'Placa STD BA 13mm', cantidad: '1.10', unidad: 'm²' },
+                    { material: 'TC 48 Z1', cantidad: '2.00', unidad: 'ml' },
+                    { material: 'Omega 17 Z1', cantidad: '0.50', unidad: 'ml' },
+                    { material: 'Tornillo placa-metal 3.5×25', cantidad: '16', unidad: 'ud' },
+                    { material: 'Horquilla cuelgue TC 48', cantidad: '2.5', unidad: 'ud' },
+                    { material: 'Suspensión TC 48 (180mm)', cantidad: '2.5', unidad: 'ud' },
+                    { material: 'Varilla roscada Ø6×1000', cantidad: '0.30', unidad: 'm' }
+                ],
+                certificaciones: ['EN-520', 'A1'],
+                volumen: 'muy alto'
+            },
+            'C-TC47-AQ': {
+                nombre: 'Cielo Falso TC 47 + AQUA 13mm',
+                codigo: 'C-TC47-AQ',
+                categoria: 'techos',
+                alturaMaxima: 'N/A',
+                espesor: '47',
+                alturaUtil: '15-30 cm',
+                aislamientoAcustico: '64.0',
+                resistenciaFuego: 'EI-60',
+                descripcion: 'Cielo falso AQUA para baños, cocinas y áreas húmedas. Misma estructura que TC47-STD.',
+                materiales: [
+                    { material: 'Placa AQUA 13mm', cantidad: '1.10', unidad: 'm²' },
+                    { material: 'TC 47 Z1', cantidad: '2.00', unidad: 'ml' },
+                    { material: 'Omega 17 Z1', cantidad: '0.50', unidad: 'ml' },
+                    { material: 'Tornillo Inox 3.5×25', cantidad: '16', unidad: 'ud' },
+                    { material: 'Horquilla cuelgue TC 47', cantidad: '2.5', unidad: 'ud' },
+                    { material: 'Suspensión TC 47 (180mm)', cantidad: '2.5', unidad: 'ud' },
+                    { material: 'Varilla roscada Ø6×1000', cantidad: '0.30', unidad: 'm' }
+                ],
+                certificaciones: ['EN-520', 'AQUA ≤10%', 'A1'],
+                volumen: 'medio'
+            },
+            'C-O17-13': {
+                nombre: 'Cielo Bajo Omega 17 + STD 13mm',
+                codigo: 'C-O17-13',
+                categoria: 'techos',
+                alturaMaxima: 'N/A',
+                espesor: '30',
+                alturaUtil: '5-10 cm',
+                aislamientoAcustico: '62.0',
+                resistenciaFuego: 'EI-60',
+                descripcion: 'Cielo bajo con omega 17. Altura útil reducida (5-10cm). Para pasillos y zonas con poco espacio.',
+                materiales: [
+                    { material: 'Placa STD BA 13mm', cantidad: '1.10', unidad: 'm²' },
+                    { material: 'Omega 17 Z1', cantidad: '2.00', unidad: 'ml' },
+                    { material: 'Tornillo placa-metal 3.5×25', cantidad: '16', unidad: 'ud' },
+                    { material: 'Anclaje directo (304029)', cantidad: '8', unidad: 'ud' },
+                    { material: 'Clip Z1 U201928300A', cantidad: '2.0', unidad: 'ud' }
+                ],
+                certificaciones: ['EN-520', 'A1'],
+                volumen: 'bajo'
+            },
+            'C-TC47-15': {
+                nombre: 'Cielo Falso TC 47 + STD 15mm',
+                codigo: 'C-TC47-15',
+                categoria: 'techos',
+                alturaMaxima: 'N/A',
+                espesor: '47',
+                alturaUtil: '15-30 cm',
+                aislamientoAcustico: '66.0',
+                resistenciaFuego: 'EI-90',
+                descripcion: 'Cielo falso con placa de 15mm. Mayor resistencia al fuego y mejor acústica. Suites ejecutivas.',
+                materiales: [
+                    { material: 'Placa STD BA 15mm', cantidad: '1.10', unidad: 'm²' },
+                    { material: 'TC 47 Z1', cantidad: '2.00', unidad: 'ml' },
+                    { material: 'Omega 17 Z1', cantidad: '0.50', unidad: 'ml' },
+                    { material: 'Tornillo placa-metal 3.5×35', cantidad: '14', unidad: 'ud' },
+                    { material: 'Horquilla cuelgue TC 47', cantidad: '2.5', unidad: 'ud' },
+                    { material: 'Suspensión TC 47 (180mm)', cantidad: '2.5', unidad: 'ud' },
+                    { material: 'Varilla roscada Ø6×1000', cantidad: '0.30', unidad: 'm' }
+                ],
+                certificaciones: ['EN-520', 'A1', 'EI-90'],
+                volumen: 'bajo'
+            },
+            
+            // =========================================
+            // SEMI-INTEMPERIE (3 SISTEMAS)
+            // =========================================
+            'SI-EX-70-13': {
+                nombre: 'Semi-Intemperie EXTERNA 116mm (70mm)',
+                codigo: 'SI-EX-70-13',
+                categoria: 'semi-intemperie',
+                alturaMaxima: '2.50',
+                espesor: '116',
+                aislamientoAcustico: '63.0',
+                resistenciaFuego: 'EI-60',
+                descripcion: '**SEMI-INTEMPERIE ESTÁNDAR**. Tabique con Externa Light para fachadas protegidas. Requiere masilla FASSA A 64 y malla fibra.',
+                materiales: [
+                    { material: 'Placa EXTERNA Light 13mm', cantidad: '2.00', unidad: 'm²' },
+                    { material: 'Montante Z1 70mm', cantidad: '2.50', unidad: 'ml' },
+                    { material: 'Canal Z1 70mm', cantidad: '0.70', unidad: 'ml' },
+                    { material: 'Tornillo Inox 3.5×35', cantidad: '20', unidad: 'ud' },
+                    { material: 'Tornillo Inox 3.5×9.5', cantidad: '30', unidad: 'ud' },
+                    { material: 'FASSA A 64', cantidad: '0.45', unidad: 'kg' },
+                    { material: 'Malla fibra vidrio 100mm', cantidad: '1.0', unidad: 'ml' },
+                    { material: 'Banda estanca 70mm', cantidad: '0.6', unidad: 'ml' }
+                ],
+                certificaciones: ['EN-520', 'A1', 'Exterior Light', 'LEED'],
+                volumen: 'alto'
+            },
+            'SI-AQ-70-13': {
+                nombre: 'Semi-Intemperie AQUA 116mm (70mm)',
+                codigo: 'SI-AQ-70-13',
+                categoria: 'semi-intemperie',
+                alturaMaxima: '2.50',
+                espesor: '116',
+                aislamientoAcustico: '62.0',
+                resistenciaFuego: 'EI-60',
+                descripcion: 'Semi-intemperie con placa AQUA. Para zonas con alta humedad ambiental y salpicaduras ocasionales.',
+                materiales: [
+                    { material: 'Placa AQUA 13mm', cantidad: '2.00', unidad: 'm²' },
+                    { material: 'Montante Z1 70mm', cantidad: '2.50', unidad: 'ml' },
+                    { material: 'Canal Z1 70mm', cantidad: '0.70', unidad: 'ml' },
+                    { material: 'Tornillo Inox 3.5×35', cantidad: '20', unidad: 'ud' },
+                    { material: 'Tornillo Inox 3.5×9.5', cantidad: '30', unidad: 'ud' },
+                    { material: 'FASSAJOINT 1H', cantidad: '0.40', unidad: 'kg' },
+                    { material: 'Cinta papel', cantidad: '1.2', unidad: 'ml' },
+                    { material: 'Banda estanca 70mm', cantidad: '0.6', unidad: 'ml' }
+                ],
+                certificaciones: ['EN-520', 'AQUA ≤10%', 'A1'],
+                volumen: 'medio'
+            },
+            'SI-EX-90-13': {
+                nombre: 'Semi-Intemperie EXTERNA 136mm (90mm)',
+                codigo: 'SI-EX-90-13',
+                categoria: 'semi-intemperie',
+                alturaMaxima: '3.00',
+                espesor: '136',
+                aislamientoAcustico: '65.0',
+                resistenciaFuego: 'EI-90',
+                descripcion: 'Semi-intemperie para alturas superiores. Mayor resistencia estructural y al fuego.',
+                materiales: [
+                    { material: 'Placa EXTERNA Light 13mm', cantidad: '2.00', unidad: 'm²' },
+                    { material: 'Montante Z1 90mm', cantidad: '2.50', unidad: 'ml' },
+                    { material: 'Canal Z1 90mm', cantidad: '0.70', unidad: 'ml' },
+                    { material: 'Tornillo Inox 3.5×35', cantidad: '20', unidad: 'ud' },
+                    { material: 'Tornillo Inox 3.5×9.5', cantidad: '30', unidad: 'ud' },
+                    { material: 'FASSA A 64', cantidad: '0.50', unidad: 'kg' },
+                    { material: 'Malla fibra vidrio 100mm', cantidad: '1.0', unidad: 'ml' },
+                    { material: 'Banda estanca 70mm', cantidad: '0.6', unidad: 'ml' }
+                ],
+                certificaciones: ['EN-520', 'A1', 'Exterior Light', 'EI-90'],
+                volumen: 'bajo'
+            }
+        };
+
+        function loadSystemDetail() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const systemId = urlParams.get('id');
+            
+            if (!systemId || !sistemasData[systemId]) {
+                document.getElementById('systemName').textContent = 'Sistema no encontrado';
+                return;
+            }
+            
+            const sistema = sistemasData[systemId];
+            
+            // Actualizar información del sistema
+            document.getElementById('currentSystem').textContent = sistema.nombre;
+            document.getElementById('systemName').textContent = sistema.nombre;
+            document.getElementById('systemCode').textContent = `Código: ${sistema.codigo}`;
+            document.getElementById('systemDescription').textContent = sistema.descripcion;
+            
+            // Actualizar especificaciones técnicas
+            document.getElementById('specAltura').textContent = sistema.alturaMaxima;
+            document.getElementById('specAcustico').textContent = sistema.aislamientoAcustico;
+            document.getElementById('specFuego').textContent = sistema.resistenciaFuego;
+            document.getElementById('specEspesor').textContent = sistema.espesor;
+            
+            // Mostrar alerta de volumen si aplica
+            const volumeAlert = document.getElementById('volumeAlert');
+            if (sistema.volumen === 'muy alto' || sistema.volumen === 'alto') {
+                const volumenText = sistema.volumen === 'muy alto' ? 'Volumen MUY ALTO' : 'Volumen ALTO';
+                volumeAlert.innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${volumenText} - Considerar stock adicional`;
+                volumeAlert.style.display = 'block';
+            } else {
+                volumeAlert.style.display = 'none';
+            }
+            
+            // Renderizar tabla de materiales
+            const tbody = document.getElementById('materialsTableBody');
+            tbody.innerHTML = sistema.materiales.map(material => `
+                <tr>
+                    <td><strong>${material.material}</strong></td>
+                    <td>${material.cantidad}</td>
+                    <td>${material.unidad}</td>
+                </tr>
+            `).join('');
+            
+            // Renderizar certificaciones
+            const certList = document.getElementById('certificationsList');
+            certList.innerHTML = sistema.certificaciones.map(cert => `
+                <span class="cert-badge">${cert}</span>
+            `).join('');
+        }
+
+        function exportSpecPDF() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const systemId = urlParams.get('id');
+            alert(`Generando PDF técnico del sistema ${systemId}. En producción real, aquí se descargaría el PDF oficial de FassaBortolo.`);
+        }
+
+        function addToBudgetFromDetail() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const systemId = urlParams.get('id');
+            const sistema = sistemasData[systemId];
+            
+            let budget = JSON.parse(localStorage.getItem('fassa_budget') || '[]');
+            const existing = budget.find(i => i.id === systemId);
+            
+            if (existing) {
+                existing.quantity += 100;
+            } else {
+                budget.push({ id: sistema.codigo, name: sistema.nombre, quantity: 100 });
+            }
+            
+            localStorage.setItem('fassa_budget', JSON.stringify(budget));
+            alert(`✅ ${sistema.nombre} añadido al presupuesto (100m²)`);
+        }
+
+        document.addEventListener('DOMContentLoaded', loadSystemDetail);
+    </script>
+</body>
+</html>

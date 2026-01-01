@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Selector Inteligente - FassaBortolo Caribe</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f8f9fa; min-height: 100vh; }
+        .header { background: white; padding: 1rem 0; box-shadow: 0 2px 10px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 1000; }
+        .nav-container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 1.5rem; font-weight: bold; color: #2c3e50; text-decoration: none; }
+        .logo span { color: #e74c3c; }
+        .nav-links { display: flex; gap: 2rem; list-style: none; }
+        .nav-links a { text-decoration: none; color: #2c3e50; font-weight: 500; transition: color 0.3s; }
+        .nav-links a:hover, .nav-links a.active { color: #e74c3c; }
+        .main-container { max-width: 1200px; margin: 0 auto; padding: 2rem; }
+        .wizard-section { background: white; border-radius: 15px; padding: 2.5rem; box-shadow: 0 5px 20px rgba(0,0,0,0.1); margin-bottom: 2rem; }
+        .wizard-header { text-align: center; margin-bottom: 2.5rem; }
+        .wizard-header h1 { color: #2c3e50; font-size: 2rem; margin-bottom: 0.5rem; }
+        .wizard-header p { color: #7f8c8d; }
+        .wizard-step { display: none; }
+        .wizard-step.active { display: block; animation: fadeIn 0.3s ease; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .question-card { background: #f8f9fa; padding: 1.5rem; border-radius: 10px; border-left: 4px solid #e74c3c; margin-bottom: 1.5rem; }
+        .question-title { font-size: 1.1rem; font-weight: 600; color: #2c3e50; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem; }
+        .options-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; }
+        .option-btn { padding: 1rem; border: 2px solid #dee2e6; background: white; border-radius: 8px; cursor: pointer; transition: all 0.3s; text-align: center; font-weight: 500; }
+        .option-btn:hover { border-color: #e74c3c; transform: translateY(-2px); }
+        .option-btn.selected { border-color: #e74c3c; background: #e74c3c; color: white; }
+        .wizard-actions { display: flex; justify-content: space-between; margin-top: 2rem; }
+        .btn { padding: 0.75rem 1.5rem; border: none; border-radius: 8px; cursor: pointer; transition: all 0.3s; text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem; }
+        .btn-primary { background: #e74c3c; color: white; }
+        .btn-primary:disabled { background: #bdc3c7; cursor: not-allowed; }
+        .btn-secondary { background: #6c757d; color: white; }
+        .results-section { background: white; border-radius: 15px; padding: 2rem; box-shadow: 0 5px 20px rgba(0,0,0,0.1); }
+        .system-card { border: 2px solid #dee2e6; border-radius: 10px; padding: 1.5rem; margin-bottom: 1.5rem; transition: all 0.3s; }
+        .system-card:hover { border-color: #e74c3c; }
+        .system-header { display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem; }
+        .system-title { font-size: 1.2rem; font-weight: 600; color: #2c3e50; }
+        .badge { padding: 0.3rem 0.8rem; border-radius: 15px; font-size: 0.8rem; font-weight: bold; }
+        .badge-core { background: #28a745; color: white; }
+        .badge-cond { background: #ffc107; color: #2c3e50; }
+        .badge-special { background: #6c757d; color: white; }
+        .alert-box { background: #fff3cd; border-left: 4px solid #ffc107; padding: 1rem; margin: 1rem 0; border-radius: 4px; }
+        .alert-box.danger { background: #f8d7da; border-color: #dc3545; }
+        .specs-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 1rem; margin: 1rem 0; }
+        .spec-item { text-align: center; padding: 0.8rem; background: #f8f9fa; border-radius: 8px; }
+        .spec-value { font-size: 1.2rem; font-weight: bold; color: #e74c3c; }
+        .spec-label { font-size: 0.8rem; color: #7f8c8d; }
+        .price-box { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 1.5rem; border-radius: 10px; text-align: center; margin: 1rem 0; }
+        .price-main { font-size: 2rem; font-weight: bold; }
+        .price-unit { font-size: 0.9rem; opacity: 0.9; }
+        .disclaimer-box { background: #f8f9fa; border: 1px solid #dee2e6; padding: 1rem; border-radius: 8px; margin-top: 1.5rem; font-size: 0.85rem; color: #7f8c8d; }
+        @media (max-width: 768px) { .nav-links { display: none; } .wizard-actions { flex-direction: column; gap: 1rem; } }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <nav class="nav-container">
+            <a href="index.html" class="logo">Fassa<span>Bortolo</span> Caribe</a>
+            <ul class="nav-links">
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="selector.html" class="active">Selector</a></li>
+                <li><a href="presupuesto.html">Presupuesto</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="main-container">
+        <!-- WIZARD -->
+        <section class="wizard-section" id="wizardSection">
+            <div class="wizard-header">
+                <h1><i class="fas fa-magic"></i> Selector Inteligente de Sistemas</h1>
+                <p>Responde 4 preguntas y obtén la recomendación técnica y económica</p>
+            </div>
+
+            <!-- Paso 1: Altura -->
+            <div class="wizard-step active" id="step1">
+                <div class="question-card">
+                    <div class="question-title">
+                        <i class="fas fa-ruler-vertical"></i> 1. Altura máxima del tabique
+                    </div>
+                    <div class="options-grid">
+                        <button class="option-btn" data-value="2.5">2,5 m</button>
+                        <button class="option-btn" data-value="2.7">2,7 m</button>
+                        <button class="option-btn" data-value="3.0">3,0 m</button>
+                        <button class="option-btn" data-value="3.35">3,35 m</button>
+                    </div>
+                </div>
+                <div class="wizard-actions">
+                    <button class="btn btn-primary" onclick="nextStep()" disabled id="nextBtn1">Siguiente <i class="fas fa-arrow-right"></i></button>
+                </div>
+            </div>
+
+            <!-- Paso 2: Ambiente -->
+            <div class="wizard-step" id="step2">
+                <div class="question-card">
+                    <div class="question-title">
+                        <i class="fas fa-water"></i> 2. Ambiente de uso
+                    </div>
+                    <div class="options-grid">
+                        <button class="option-btn" data-value="seco">Seco interior</button>
+                        <button class="option-btn" data-value="humedo">Húmedo (baño, cocina)</button>
+                        <button class="option-btn" data-value="exterior">Exterior protegido</button>
+                    </div>
+                </div>
+                <div class="wizard-actions">
+                    <button class="btn btn-secondary" onclick="prevStep()"><i class="fas fa-arrow-left"></i> Anterior</button>
+                    <button class="btn btn-primary" onclick="nextStep()" disabled id="nextBtn2">Siguiente <i class="fas fa-arrow-right"></i></button>
+                </div>
+            </div>
+
+            <!-- Paso 3: Resistencia al fuego -->
+            <div class="wizard-step" id="step3">
+                <div class="question-card">
+                    <div class="question-title">
+                        <i class="fas fa-fire"></i> 3. Resistencia al fuego requerida
+                    </div>
+                    <div class="options-grid">
+                        <button class="option-btn" data-value="EI-60">EI-60 (estándar)</button>
+                        <button class="option-btn" data-value="EI-90">EI-90 (elevado)</button>
+                        <button class="option-btn" data-value="N/A">No aplica (cielo/trasdosado)</button>
+                    </div>
+                </div>
+                <div class="wizard-actions">
+                    <button class="btn btn-secondary" onclick="prevStep()"><i class="fas fa-arrow-left"></i> Anterior</button>
+                    <button class="btn btn-primary" onclick="nextStep()" disabled id="nextBtn3">Siguiente <i class="fas fa-arrow-right"></i></button>
+                </div>
+            </div>
+
+            <!-- Paso 4: Confirmación -->
+            <div class="wizard-step" id="step4">
+                <div class="question-card">
+                    <div class="question-title">
+                        <i class="fas fa-check-circle"></i> 4. Revisión de requisitos
+                    </div>
+                    <div id="summaryBox" style="background: #f8f9fa; padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
+                        <!-- Resumen dinámico -->
+                    </div>
+                </div>
+                <div class="wizard-actions">
+                    <button class="btn btn-secondary" onclick="prevStep()"><i class="fas fa-arrow-left"></i> Anterior</button>
+                    <button class="btn btn-primary" onclick="generateRecommendation()"><i class="fas fa-cogs"></i> Generar Recomendación</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- RESULTADOS -->
+        <section class="results-section" id="resultsSection" style="display: none;">
+            <h2><i class="fas fa-star"></i> Sistemas Recomendados</h2>
+            <div id="resultsContainer"></div>
+            <div class="disclaimer-box">
+                <i class="fas fa-exclamation-triangle"></i> <strong>IMPORTANTE:</strong> Este presupuesto es interno de materiales. Las prestaciones técnicas (EI, RA) son orientativas y requieren validación técnica según condiciones de obra, estructura y normativa local. NO es documento contractual ni técnico vinculante.
+            </div>
+        </section>
+    </main>
+
+    <footer style="background: #2c3e50; color: white; text-align: center; padding: 2rem; margin-top: 4rem;">
+        <p>&copy; 2025 FassaBortolo Caribe. Herramienta interna de presupuesto de sistemas.</p>
+    </footer>
+
+    <script>
+        // DATOS DE SISTEMAS CON VALIDACIÓN
+        const sistemasDB = {
+            'T-70-13': {
+                nombre: 'Tabique Estándar 116mm (STD 13mm + Z1 70mm)',
+                altura: 3.0, ambiente: ['seco'], fuego: ['EI-60'],
+                badge: 'badge-core', badgeText: 'CORE - ESTÁNDAR EMPRESA',
+                alert: null,
+                precio: 12.50
+            },
+            'T-AQ-70-13': {
+                nombre: 'Tabique Húmedo AQUA 116mm (AQUA 13mm + Z1 70mm)',
+                altura: 2.7, ambiente: ['humedo'], fuego: ['EI-60'],
+                badge: 'badge-core', badgeText: 'HÚMEDO ESTÁNDAR',
+                alert: null,
+                precio: 14.20
+            },
+            'T-AQ-70-15': {
+                nombre: 'Tabique Húmedo Premium AQUA 120mm (AQUA 15mm + Z1 70mm)',
+                altura: 2.7, ambiente: ['humedo'], fuego: ['EI-60'],
+                badge: 'badge-cond', badgeText: 'HÚMEDO PREMIUM',
+                alert: null,
+                precio: 16.80
+            },
+            'T-EX-70-13': {
+                nombre: 'Tabique Exterior Light 96mm (EXTERNA 13mm + Z1 70mm)',
+                altura: 2.5, ambiente: ['exterior'], fuego: ['EI-60'],
+                badge: 'badge-cond', badgeText: 'EXTERIOR PROTEGIDO',
+                alert: null,
+                precio: 18.50
+            },
+            'T-45-13': {
+                nombre: 'Tabique Ligero 91mm (STD 13mm + Z1 45mm)',
+                altura: 2.5, ambiente: ['seco'], fuego: ['EI-60'],
+                badge: 'badge-cond', badgeText: 'VOLUMEN BAJO - LIMITADO',
+                alert: '⚠️ Altura máx. 2,5m. No recomendado para hoteles. Uso vivienda económica.',
+                precio: 10.00
+            },
+            'T-90-13': {
+                nombre: 'Tabique Alto 136mm (STD 13mm + Z1 90mm)',
+                altura: 3.35, ambiente: ['seco'], fuego: ['EI-60', 'EI-90'],
+                badge: 'badge-cond', badgeText: 'ALTURA EXTREMA',
+                alert: '⚠️ Altura >3,2m requiere validación de rigidez/refuerzo según proyecto.',
+                precio: 17.00
+            },
+            'T-70-15': {
+                nombre: 'Tabique Robusto 120mm (STD 15mm + Z1 70mm)',
+                altura: 3.2, ambiente: ['seco'], fuego: ['EI-90'],
+                badge: 'badge-cond', badgeText: 'RESISTENCIA ELEVADA',
+                alert: '⚠️ EI-90 sujeto a configuración ensayada. Revisar con técnico Fassa.',
+                precio: 15.30
+            },
+            // Cielos
+            'C-TC47-13': {
+                nombre: 'Cielo Falso TC 47 + STD 13mm',
+                altura: 99, ambiente: ['seco', 'humedo', 'exterior'], fuego: ['EI-60'],
+                badge: 'badge-core', badgeText: 'CIELO MÁS USADO',
+                alert: '⚠️ EI solo con validación (depende forjado/estructura).',
+                precio: 11.00
+            },
+            'C-TC47-15': {
+                nombre: 'Cielo Falso TC 47 + STD 15mm',
+                altura: 99, ambiente: ['seco'], fuego: ['EI-90'],
+                badge: 'badge-cond', badgeText: 'FUEGO ELEVADO',
+                alert: '⚠️ EI-90 en cielo: validación técnica obligatoria.',
+                precio: 13.50
+            },
+            'C-O17-13': {
+                nombre: 'Cielo Bajo Omega 17 + STD 13mm',
+                altura: 99, ambiente: ['seco'], fuego: ['EI-60'],
+                badge: 'badge-special', badgeText: 'ESPECIAL - USO LIMITADO',
+                alert: '⚠️ Altura útil reducida. Usar solo donde no cabe TC.',
+                precio: 9.50
+            }
+        };
+
+        let currentStep = 1;
+        let answers = {};
+
+        // EVENTOS DE SELECCIÓN
+        document.querySelectorAll('.option-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const step = this.closest('.wizard-step');
+                const stepId = step.id;
+                
+                // Deseleccionar otros
+                step.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
+                this.classList.add('selected');
+                
+                // Guardar respuesta
+                answers[stepId] = this.dataset.value;
+                
+                // Habilitar siguiente
+                const nextBtn = document.getElementById(`nextBtn${currentStep}`);
+                if (nextBtn) nextBtn.disabled = false;
+            });
+        });
+
+        function nextStep() {
+            document.getElementById(`step${currentStep}`).classList.remove('active');
+            currentStep++;
+            document.getElementById(`step${currentStep}`).classList.add('active');
+            
+            if (currentStep === 4) updateSummary();
+        }
+
+        function prevStep() {
+            document.getElementById(`step${currentStep}`).classList.remove('active');
+            currentStep--;
+            document.getElementById(`step${currentStep}`).classList.add('active');
+        }
+
+        function updateSummary() {
+            const summaryBox = document.getElementById('summaryBox');
+            summaryBox.innerHTML = `
+                <strong>Altura:</strong> ${answers.step1} m<br>
+                <strong>Ambiente:</strong> ${answers.step2}<br>
+                <strong>Fuego:</strong> ${answers.step3}
+            `;
+        }
+
+        function generateRecommendation() {
+            // Filtrar sistemas
+            const filtered = Object.entries(sistemasDB).filter(([id, sys]) => {
+                if (answers.step1 && parseFloat(answers.step1) > sys.altura) return false;
+                if (answers.step2 && !sys.ambiente.includes(answers.step2)) return false;
+                if (answers.step3 && answers.step3 !== 'N/A' && !sys.fuego.includes(answers.step3)) return false;
+                return true;
+            });
+
+            // Mostrar resultados
+            document.getElementById('wizardSection').style.display = 'none';
+            document.getElementById('resultsSection').style.display = 'block';
+            
+            const container = document.getElementById('resultsContainer');
+            container.innerHTML = filtered.map(([id, sys]) => `
+                <div class="system-card">
+                    <div class="system-header">
+                        <div class="system-title">${sys.nombre}</div>
+                        <div>
+                            <span class="badge ${sys.badge}">${sys.badgeText}</span>
+                            <span class="badge badge-cond" style="margin-left: 0.5rem;">Código: ${id}</span>
+                        </div>
+                    </div>
+                    ${sys.alert ? `<div class="alert-box danger">${sys.alert}</div>` : ''}
+                    <div class="specs-grid">
+                        <div class="spec-item">
+                            <div class="spec-value">${sys.altura === 99 ? 'N/A' : sys.altura + 'm'}</div>
+                            <div class="spec-label">Altura máx.</div>
+                        </div>
+                        <div class="spec-item">
+                            <div class="spec-value">${answers.step3}</div>
+                            <div class="spec-label">Fuego</div>
+                        </div>
+                        <div class="spec-item">
+                            <div class="spec-value">€${sys.precio.toFixed(2)}</div>
+                            <div class="spec-label">€/m²</div>
+                        </div>
+                    </div>
+                    <div class="price-box">
+                        <div class="price-main">€${(sys.precio * 100).toFixed(0)}</div>
+                        <div class="price-unit">Total estimado 100m²</div>
+                    </div>
+                    <button class="btn btn-primary" style="width: 100%;" onclick="addToBudget('${id}', '${sys.nombre}')">
+                        <i class="fas fa-plus-circle"></i> Añadir 100m² al presupuesto
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        function addToBudget(id, nombre) {
+            let budget = JSON.parse(localStorage.getItem('fassa_budget') || '[]');
+            const existing = budget.find(i => i.id === id);
+            
+            if (existing) {
+                existing.quantity += 100;
+            } else {
+                budget.push({ id, name: nombre, quantity: 100 });
+            }
+            
+            localStorage.setItem('fassa_budget', JSON.stringify(budget));
+            alert(`✅ ${nombre} añadido al presupuesto (100m²)`);
+        }
+    </script>
+</body>
+</html>
