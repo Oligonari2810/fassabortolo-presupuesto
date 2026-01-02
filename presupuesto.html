@@ -687,8 +687,14 @@
 
     (async()=>{
       const systems = await loadIndex();
+      const tipoOrder = {'MURO':1,'TRASDOSADO':2,'TECHO':3,'EXTERIOR':4};
+      const sorted = systems.sort((a,b)=>{
+        const orderA = tipoOrder[a.tipo] || 99;
+        const orderB = tipoOrder[b.tipo] || 99;
+        return orderA - orderB;
+      });
       const sel = document.getElementById('systemSelect');
-      systems.forEach(s=>{
+      sorted.forEach(s=>{
         const opt = document.createElement('option');
         opt.value = s.csv;
         opt.textContent = s.name || `${s.id} | ${s.tipo} | ${s.perfil} | ${s.placa} | ${s.capas} capa(s)/cara`;
