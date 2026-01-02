@@ -668,6 +668,7 @@
       document.getElementById('resumenLogistica').textContent = `${incoterm} ${fmtNumber(logisticaPct, 1)}% (${fmtEUR(costeTotalSistema - costeNetoSistema)})`;
       document.getElementById('resumenCosteTotal').textContent = fmtEUR(costeTotalSistema);
       document.getElementById('resumenMargen').textContent = `${fmtNumber(margenPct, 1)}%`;
+      document.getElementById('resumenIncotermLabel').textContent = incoterm;
       document.getElementById('resumenVentaM2').textContent = fmtEUR(ventaM2);
       document.getElementById('resumenTotal').textContent = fmtEUR(precioVentaSistema);
       document.getElementById('resumenSistema').style.display = 'block';
