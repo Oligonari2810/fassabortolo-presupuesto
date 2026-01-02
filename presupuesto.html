@@ -921,28 +921,25 @@
         sel.appendChild(opt);
       });
 
-      sel.addEventListener('change', async()=>{
-        await calcularYMostrar(false);
-      });
-
       document.getElementById('addBtn').addEventListener('click', async()=>{
         await calcularYMostrar(true);
       });
 
       document.getElementById('pdfBtn').addEventListener('click', exportPDF);
       document.getElementById('excelBtn').addEventListener('click', exportExcel);
-      document.getElementById('addBtn').addEventListener('click', () => calcularYMostrar(true));
       
       // Recálculo automático en tiempo real
       const inputsReactivos = ['area', 'waste', 'logisticaPct', 'margenPct', 'incoterm'];
       inputsReactivos.forEach(id => {
         const el = document.getElementById(id);
         if (el) {
-          el.addEventListener('input', () => calcularYMostrar(false));
-          el.addEventListener('change', () => calcularYMostrar(false));
+          el.addEventListener('input', async() => await calcularYMostrar(false));
+          el.addEventListener('change', async() => await calcularYMostrar(false));
         }
       });
-      document.getElementById('systemSelect').addEventListener('change', () => calcularYMostrar(false));
+      sel.addEventListener('change', async()=>{
+        await calcularYMostrar(false);
+      });
       
       renderProyecto();
     })();
