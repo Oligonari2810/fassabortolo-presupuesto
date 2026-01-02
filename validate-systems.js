@@ -58,8 +58,10 @@ json.systems.forEach(sys => {
     });
   }
   
-  // capas_por_cara debe ser 1 o 2
-  if (sys.capas_por_cara !== 1 && sys.capas_por_cara !== 2) {
+  // capas_por_cara debe ser 1 o 2 (OBLIGATORIO)
+  if (sys.capas_por_cara === undefined) {
+    errors.push(`❌ ${sysId}: capas_por_cara es obligatorio`);
+  } else if (sys.capas_por_cara !== 1 && sys.capas_por_cara !== 2) {
     errors.push(`❌ ${sysId}: capas_por_cara=${sys.capas_por_cara} (debe ser 1 o 2)`);
   }
   
