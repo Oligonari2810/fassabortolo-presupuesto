@@ -340,56 +340,56 @@
 
           let y = logoData ? 52 : 48;
 
-      // Resumen por sistema
-      proyecto.forEach((p, idx) => {
-        if(y > 250) {
-          doc.addPage();
-          y = 20;
-        }
+          // Resumen por sistema
+          proyecto.forEach((p, idx) => {
+            if(y > 250) {
+              doc.addPage();
+              y = 20;
+            }
 
-        const precioPorM2 = p.total / p.area;
-        
-        doc.setFontSize(12);
-        doc.setTextColor('#2c3e50');
-        doc.text(`${p.system} (${p.area.toFixed(2)} m²)`,14,y);
-        y += 8;
+            const precioPorM2 = p.total / p.area;
+            
+            doc.setFontSize(12);
+            doc.setTextColor('#2c3e50');
+            doc.text(`${p.system} (${p.area.toFixed(2)} m²)`,14,y);
+            y += 8;
 
-        // Tabla de materiales del sistema
-        const body = p.rows.map(r => [
-          r.concepto,
-          r.unidad,
-          r.coef,
-          EUR(r.precio)
-        ]);
+            // Tabla de materiales del sistema
+            const body = p.rows.map(r => [
+              r.concepto,
+              r.unidad,
+              r.coef,
+              EUR(r.precio)
+            ]);
 
-        doc.autoTable({
-          head:[['Material','Unidad','Rendimiento','Precio Unit.']],
-          body:body,
-          startY:y,
-          styles:{fontSize:9},
-          headStyles:{fillColor:'#2c3e50',textColor:'#fff'},
-          alternateRowStyles:{fillColor:'#f8f9fa'},
-          columnStyles: {
-            2: {halign: 'right'},
-            3: {halign: 'right'}
-          }
-        });
+            doc.autoTable({
+              head:[['Material','Unidad','Rendimiento','Precio Unit.']],
+              body:body,
+              startY:y,
+              styles:{fontSize:9},
+              headStyles:{fillColor:'#2c3e50',textColor:'#fff'},
+              alternateRowStyles:{fillColor:'#f8f9fa'},
+              columnStyles: {
+                2: {halign: 'right'},
+                3: {halign: 'right'}
+              }
+            });
 
-        y = doc.lastAutoTable.finalY + 10;
-        
-        // Total del sistema
-        doc.setFontSize(10);
-        doc.text(`Total ${p.system}: ${EUR(p.total)} (${EUR(precioPorM2)}/m²)`,14,y);
-        y += 12;
-      });
+            y = doc.lastAutoTable.finalY + 10;
+            
+            // Total del sistema
+            doc.setFontSize(10);
+            doc.text(`Total ${p.system}: ${EUR(p.total)} (${EUR(precioPorM2)}/m²)`,14,y);
+            y += 12;
+          });
 
-      // Total proyecto
-      y += 5;
-      doc.setFontSize(14);
-      doc.setTextColor('#e74c3c');
-      doc.text(`TOTAL PROYECTO: ${EUR(total)}`,14,y);
+          // Total proyecto
+          y += 5;
+          doc.setFontSize(14);
+          doc.setTextColor('#e74c3c');
+          doc.text(`TOTAL PROYECTO: ${EUR(total)}`,14,y);
 
-      doc.save(`Presupuesto_${projectName.replace(/\s+/g,'_')}_${date.replace(/\//g,'-')}.pdf`);
+          doc.save(`Presupuesto_${projectName.replace(/\s+/g,'_')}_${date.replace(/\//g,'-')}.pdf`);
           resolve();
         });
       });
