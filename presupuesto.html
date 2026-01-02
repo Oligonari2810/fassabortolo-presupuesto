@@ -380,7 +380,7 @@
         <table id="tbl">
           <thead>
             <tr>
-              <th>SKU</th><th>Concepto</th><th>Unidad</th><th>Precio</th><th>Coef</th><th>Cantidad</th><th>Importe</th>
+              <th>SKU</th><th>Concepto</th><th>Unidad</th><th>Precio Cat.</th><th>Dto %</th><th>Precio Neto</th><th>Coef</th><th>Cantidad</th><th>Importe Neto</th>
             </tr>
           </thead>
           <tbody></tbody>
@@ -516,52 +516,20 @@
 
     function toNum(x){ return Number(String(x).replace(',','.'))||0; }
 
-    // Función de cálculo de costes (nuevo modelo)
-    function calcularCostes(row, costeLogisticoPct, margenPct) {
-      const precioCatalogo = toNum(row.precio_catalogo_almeria);
-      const familia = (row.familia_precio || '').trim().toUpperCase();
-      
-      // Validar campos requeridos
-      if (!precioCatalogo) {
-        throw new Error(`Falta precio_catalogo_almeria para ${row.codigo || row.concepto}`);
-      }
-      if (!familia || (familia !== 'PLACA' && familia !== 'RESTO')) {
-        throw new Error(`Falta o inválida familia_precio para ${row.codigo || row.concepto}`);
-      }
-      
-      // 1. Descuento según familia
-      const descuentoPct = familia === 'PLACA' ? 60 : 55;
-      
-      // 2. Precio neto
-      const precioNeto = precioCatalogo * (1 - descuentoPct / 100);
-      
-      // 3. Precio coste (con logística)
-      const precioCoste = precioNeto * (1 + costeLogisticoPct / 100);
-      
-      // 4. Precio venta (con margen)
-      const precioVenta = precioCoste / (1 - margenPct / 100);
-      
-      return {
-        precioCatalogo,
-        familia,
-        descuentoPct,
-        precioNeto,
-        precioCoste,
-        precioVenta,
-        costeLogisticoPct,
-        margenPct
-      };
-    }
 
     let proyecto = [];
 
     async function calcularYMostrar(addToProject = false){
       const area = toNum(document.getElementById('area').value);
       const waste = toNum(document.getElementById('waste').value);
-      const costeLogisticoPct = toNum(document.getElementById('costeLogisticoPct').value);
+      const logisticaPct = toNum(document.getElementById('logisticaPct').value);
       const margenPct = toNum(document.getElementById('margenPct').value);
+      const incoterm = document.getElementById('incoterm').value;
       const opt = document.getElementById('systemSelect').selectedOptions[0];
-      if(!opt) return null;
+      if(!opt || area <= 0) {
+        document.getElementById('resumenSistema').style.display = 'none';
+        return null;
+      }
       const meta = JSON.parse(opt.dataset.meta);
 
       document.getElementById('metaBox').innerHTML = `
@@ -576,27 +544,43 @@
       const rows = parseCSV(csvText);
       const tbody = document.querySelector('#tbl tbody');
       tbody.innerHTML = '';
-      let totalCoste = 0;
-      let totalVenta = 0;
+      let costeNetoSistema = 0;
       const rowsData = [];
 
       for(const r of rows){
         try {
-          const costes = calcularCostes(r, costeLogisticoPct, margenPct);
+          const precioCatalogo = toNum(r.precio_catalogo_almeria);
+          const familia = (r.familia_precio || detectarFamilia(r.concepto, r.codigo || r.sku)).trim().toUpperCase();
+          
+          if (!precioCatalogo) {
+            throw new Error(`Falta precio_catalogo_almeria para ${r.codigo || r.concepto}`);
+          }
+          if (!familia || (familia !== 'PLACA' && familia !== 'RESTO')) {
+            throw new Error(`Falta o inválida familia_precio para ${r.codigo || r.concepto}`);
+          }
+          
+          // Descuento según familia
+          const dtoDistribuidorPct = familia === 'PLACA' ? 60 : 55;
+          const precioNeto = precioCatalogo * (1 - dtoDistribuidorPct / 100);
+          
+          // Rendimiento y cantidad (desperdicio solo a PLACAS y PERFILERÍA)
           const rendimiento = toNum(r.rendimiento_m2);
-          const qty = area * rendimiento * (1 + waste/100);
-          const costeTotal = qty * costes.precioCoste;
-          const ventaTotal = qty * costes.precioVenta;
-          totalCoste += costeTotal;
-          totalVenta += ventaTotal;
+          const aplicarDesperdicio = familia === 'PLACA' || esPerfileria(r.codigo || r.sku, r.concepto);
+          const factorDesperdicio = aplicarDesperdicio ? (1 + waste/100) : 1;
+          const qty = area * rendimiento * factorDesperdicio;
+          const importeNeto = qty * precioNeto;
+          costeNetoSistema += importeNeto;
 
           rowsData.push({
             ...r,
-            ...costes,
+            precioCatalogo,
+            familia,
+            dtoDistribuidorPct,
+            precioNeto,
             rendimiento,
             qty,
-            costeTotal,
-            ventaTotal
+            importeNeto,
+            aplicarDesperdicio
           });
 
           const tr = document.createElement('tr');
@@ -604,10 +588,12 @@
             <td class="num">${r.codigo || r.sku}</td>
             <td>${r.concepto}</td>
             <td class="num">${r.unidad}</td>
-            <td class="num">${EUR(costes.precioVenta)}</td>
+            <td class="num">${EUR(precioCatalogo)}</td>
+            <td class="num">${dtoDistribuidorPct}%</td>
+            <td class="num">${EUR(precioNeto)}</td>
             <td class="num">${rendimiento}</td>
             <td class="num">${qty.toFixed(3)}</td>
-            <td class="num">${EUR(ventaTotal)}</td>
+            <td class="num">${EUR(importeNeto)}</td>
           `;
           tbody.appendChild(tr);
         } catch(err) {
@@ -616,20 +602,34 @@
         }
       }
 
-      const costePorM2 = totalCoste / area;
-      const ventaPorM2 = totalVenta / area;
+      // Cálculos a nivel sistema
+      const costeTotalSistema = costeNetoSistema * (1 + logisticaPct / 100);
+      const precioVentaSistema = costeTotalSistema / (1 - margenPct / 100);
+      const costeTotalM2 = costeTotalSistema / area;
+      const ventaM2 = precioVentaSistema / area;
+
+      // Mostrar resumen
+      document.getElementById('resumenCosteNeto').textContent = EUR(costeNetoSistema);
+      document.getElementById('resumenLogistica').textContent = `${incoterm} ${logisticaPct}% (${EUR(costeTotalSistema - costeNetoSistema)})`;
+      document.getElementById('resumenCosteTotal').textContent = EUR(costeTotalSistema);
+      document.getElementById('resumenMargen').textContent = `${margenPct}%`;
+      document.getElementById('resumenVentaM2').textContent = EUR(ventaM2);
+      document.getElementById('resumenTotal').textContent = EUR(precioVentaSistema);
+      document.getElementById('resumenSistema').style.display = 'block';
 
       const result = {
         system: meta.id,
         systemName: opt.textContent,
         area,
         waste,
-        costeLogisticoPct,
+        incoterm,
+        logisticaPct,
         margenPct,
-        totalCoste,
-        totalVenta,
-        costePorM2,
-        ventaPorM2,
+        costeNetoSistema,
+        costeTotalSistema,
+        precioVentaSistema,
+        costeTotalM2,
+        ventaM2,
         rows: rowsData,
         meta
       };
@@ -743,7 +743,7 @@
       const doc = new jsPDF({orientation:'p',unit:'mm',format:'a4'});
       const date = new Date().toLocaleDateString('es-ES');
       const projectName = document.getElementById('projectName').value || 'Proyecto';
-      const total = proyecto.reduce((t,p)=>t+(p.totalVenta || p.total || 0),0);
+      const total = proyecto.reduce((t,p)=>t+(p.precioVentaSistema || p.totalVenta || p.total || 0),0);
 
       return new Promise((resolve) => {
         svgToImageData(LOGO_SVG, (logoData) => {
@@ -767,8 +767,8 @@
               y = 20;
             }
 
-            const precioPorM2 = (p.ventaPorM2 || (p.totalVenta || p.total) / p.area);
-            const totalSistema = (p.totalVenta || p.total || 0);
+            const precioPorM2 = p.ventaM2 || p.ventaPorM2 || (p.precioVentaSistema || p.totalVenta || p.total || 0) / p.area;
+            const totalSistema = p.precioVentaSistema || p.totalVenta || p.total || 0;
             const systemName = p.meta?.name || p.system;
             const descripcion = getDescripcionComercial(p.meta || {});
             
@@ -912,6 +912,19 @@
 
       document.getElementById('pdfBtn').addEventListener('click', exportPDF);
       document.getElementById('excelBtn').addEventListener('click', exportExcel);
+      document.getElementById('addBtn').addEventListener('click', () => calcularYMostrar(true));
+      
+      // Recálculo automático en tiempo real
+      const inputsReactivos = ['area', 'waste', 'logisticaPct', 'margenPct', 'incoterm'];
+      inputsReactivos.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+          el.addEventListener('input', () => calcularYMostrar(false));
+          el.addEventListener('change', () => calcularYMostrar(false));
+        }
+      });
+      document.getElementById('systemSelect').addEventListener('change', () => calcularYMostrar(false));
+      
       renderProyecto();
     })();
   </script>
