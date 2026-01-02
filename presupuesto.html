@@ -584,7 +584,8 @@
           
           // Rendimiento y cantidad (desperdicio solo a PLACAS y PERFILERÍA)
           const rendimiento = toNum(r.rendimiento_m2);
-          const aplicarDesperdicio = familia === 'PLACA' || esPerfileria(r.codigo || r.sku, r.concepto);
+          const sku = (r.codigo || r.sku || '').toString();
+          const aplicarDesperdicio = esPlaca(sku) || esPerfileria(sku);
           const factorDesperdicio = aplicarDesperdicio ? (1 + waste/100) : 1;
           const qty = area * rendimiento * factorDesperdicio;
           const importeNeto = qty * precioNeto;
