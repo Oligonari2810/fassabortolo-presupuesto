@@ -921,45 +921,98 @@
         return;
       }
 
+      // Validar que todos los sistemas tienen los campos requeridos
+      for (const p of proyecto) {
+        if (!p.rows || p.rows.length === 0) {
+          alert(`Error: El sistema ${p.system} no tiene datos de materiales.`);
+          return;
+        }
+        for (const r of p.rows) {
+          if (r.precioCatalogo === undefined || r.dtoDistribuidorPct === undefined || 
+              r.precioNeto === undefined || r.importeNeto === undefined) {
+            alert(`Error: El sistema ${p.system} tiene datos incompletos. No se puede exportar.`);
+            return;
+          }
+        }
+        if (p.costeNetoSistema === undefined || p.costeTotalSistema === undefined || 
+            p.precioVentaSistema === undefined) {
+          alert(`Error: El sistema ${p.system} no tiene cálculos completos. No se puede exportar.`);
+          return;
+        }
+      }
+
       const wb = XLSX.utils.book_new();
       const date = new Date().toLocaleDateString('es-ES');
       const projectName = document.getElementById('projectName').value || 'Proyecto';
 
+      // Resumen del proyecto
       const wsResumen = XLSX.utils.aoa_to_sheet([
         ['PROYECTO:', projectName],
         ['FECHA:', date],
         [''],
-        ['Sistema','m²','Precio/m²','Total €'],
-        ...proyecto.map(p => [
-          p.system,
-          p.area.toFixed(2),
-          (p.total / p.area).toFixed(2),
-          p.total
-        ]),
+        ['Sistema','m²','Precio venta/m²','Total €'],
+        ...proyecto.map(p => {
+          const precioM2 = p.ventaM2 || (p.precioVentaSistema / p.area);
+          return [
+            p.system,
+            p.area,
+            precioM2,
+            p.precioVentaSistema
+          ];
+        }),
         [''],
-        ['TOTAL PROYECTO', '', '', proyecto.reduce((t,p)=>t+p.total,0)]
+        ['TOTAL PROYECTO', '', '', proyecto.reduce((t,p)=>t+(p.precioVentaSistema || 0),0)]
       ]);
       XLSX.utils.book_append_sheet(wb, wsResumen, 'Resumen');
 
+      // Detalle por sistema
       proyecto.forEach(p => {
+        const incoterm = p.incoterm || 'CIF';
+        const logisticaPct = p.logisticaPct || 0;
+        const margenPct = p.margenPct || 0;
+        const costeNeto = p.costeNetoSistema || 0;
+        const costeTotal = p.costeTotalSistema || 0;
+        const precioVenta = p.precioVentaSistema || 0;
+        const precioM2 = p.ventaM2 || (precioVenta / p.area);
+
         const ws = XLSX.utils.aoa_to_sheet([
           ['SISTEMA:', p.system],
           ['m²:', p.area],
-          ['Desperdicio:', p.waste + '%'],
-          ['Descuento:', p.discount + '%'],
+          ['Desperdicio %:', p.waste || 0],
+          ['Descuento placas:', '60%'],
+          ['Descuento resto:', '55%'],
+          ['Incoterm:', incoterm],
+          ['Logística %:', logisticaPct],
+          ['Margen %:', margenPct],
+          ['Coste neto sistema €:', costeNeto],
+          ['Coste total sistema €:', costeTotal],
+          ['Precio venta €/m²:', precioM2],
+          ['Total sistema €:', precioVenta],
           [''],
-          ['SKU','Concepto','Unidad','Precio','Coef','Cantidad','Importe'],
-          ...p.rows.map(r => [
-            r.sku,
-            r.concepto,
-            r.unidad,
-            r.precio,
-            r.coef,
-            r.qty.toFixed(3),
-            r.imp
-          ]),
+          ['Código','Concepto','Unidad','Coef','Cantidad','Precio Cat.','Dto %','Precio Neto','Importe Neto'],
+          ...p.rows.map(r => {
+            const precioCatalogo = r.precioCatalogo || 0;
+            const dtoPct = r.dtoDistribuidorPct || 0;
+            const precioNeto = r.precioNeto || 0;
+            const rendimiento = r.rendimiento || r.rendimiento_m2 || 0;
+            const qty = r.qty || 0;
+            const importeNeto = r.importeNeto || 0;
+            return [
+              r.codigo || r.sku || '',
+              r.concepto || '',
+              r.unidad || '',
+              rendimiento,
+              qty,
+              precioCatalogo,
+              dtoPct,
+              precioNeto,
+              importeNeto
+            ];
+          }),
           [''],
-          ['TOTAL SISTEMA', '', '', '', '', '', p.total]
+          ['COSTE NETO SISTEMA', '', '', '', '', '', '', '', costeNeto],
+          ['COSTE TOTAL SISTEMA', '', '', '', '', '', '', '', costeTotal],
+          ['PRECIO VENTA SISTEMA', '', '', '', '', '', '', '', precioVenta]
         ]);
         XLSX.utils.book_append_sheet(wb, ws, p.system.slice(0,31));
       });
