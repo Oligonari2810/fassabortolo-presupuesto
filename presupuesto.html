@@ -443,7 +443,27 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 
   <script>
-    const EUR = n => new Intl.NumberFormat('es-ES',{style:'currency',currency:'EUR'}).format(n||0);
+    // Helpers de formato numérico ES-ES
+    function fmtNumber(value, decimals = 2) {
+      const n = Number(value);
+      if (!Number.isFinite(n)) return "-";
+      return n.toLocaleString("es-ES", {
+        minimumFractionDigits: decimals,
+        maximumFractionDigits: decimals
+      });
+    }
+    
+    function fmtEUR(value) {
+      const n = Number(value);
+      if (!Number.isFinite(n)) return "- €";
+      return n.toLocaleString("es-ES", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      }) + " €";
+    }
+    
+    // Mantener EUR para compatibilidad temporal (deprecated)
+    const EUR = n => fmtEUR(n);
     const LOGO_SVG = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA4MDAgMjAwIiB3aWR0aD0iODAwIiBoZWlnaHQ9IjIwMCI+PHRleHQgeD0iMjAiIHk9IjExMCIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjkwIiBmb250LXdlaWdodD0iOTAwIiBmaWxsPSIjZTc0YzNjIj5BUklBUzwvdGV4dD48dGV4dCB4PSIyMCIgeT0iMTYwIiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMzgiIGZvbnQtd2VpZ2h0PSIzMDAiIGZpbGw9IiMyYzNlNTAiPkdST1VQIENhcmliZSBTUkw8L3RleHQ+PC9zdmc+';
 
     // Schema adapter: compatibilidad v1/v2
@@ -617,16 +637,18 @@
           });
 
           const tr = document.createElement('tr');
+          // Determinar decimales según unidad
+          const decimalsQty = r.unidad === 'ud' ? 0 : 3;
           tr.innerHTML = `
             <td class="num">${r.codigo || r.sku}</td>
             <td>${r.concepto}</td>
             <td class="num">${r.unidad}</td>
-            <td class="num">${EUR(precioCatalogo)}</td>
+            <td class="num">${fmtEUR(precioCatalogo)}</td>
             <td class="num">${dtoDistribuidorPct}%</td>
-            <td class="num">${EUR(precioNeto)}</td>
-            <td class="num">${rendimiento}</td>
-            <td class="num">${qty.toFixed(3)}</td>
-            <td class="num">${EUR(importeNeto)}</td>
+            <td class="num">${fmtEUR(precioNeto)}</td>
+            <td class="num">${fmtNumber(rendimiento, 2)}</td>
+            <td class="num">${fmtNumber(qty, decimalsQty)}</td>
+            <td class="num">${fmtEUR(importeNeto)}</td>
           `;
           tbody.appendChild(tr);
         } catch(err) {
@@ -642,12 +664,12 @@
       const ventaM2 = precioVentaSistema / area;
 
       // Mostrar resumen
-      document.getElementById('resumenCosteNeto').textContent = EUR(costeNetoSistema);
-      document.getElementById('resumenLogistica').textContent = `${incoterm} ${logisticaPct}% (${EUR(costeTotalSistema - costeNetoSistema)})`;
-      document.getElementById('resumenCosteTotal').textContent = EUR(costeTotalSistema);
-      document.getElementById('resumenMargen').textContent = `${margenPct}%`;
-      document.getElementById('resumenVentaM2').textContent = EUR(ventaM2);
-      document.getElementById('resumenTotal').textContent = EUR(precioVentaSistema);
+      document.getElementById('resumenCosteNeto').textContent = fmtEUR(costeNetoSistema);
+      document.getElementById('resumenLogistica').textContent = `${incoterm} ${fmtNumber(logisticaPct, 1)}% (${fmtEUR(costeTotalSistema - costeNetoSistema)})`;
+      document.getElementById('resumenCosteTotal').textContent = fmtEUR(costeTotalSistema);
+      document.getElementById('resumenMargen').textContent = `${fmtNumber(margenPct, 1)}%`;
+      document.getElementById('resumenVentaM2').textContent = fmtEUR(ventaM2);
+      document.getElementById('resumenTotal').textContent = fmtEUR(precioVentaSistema);
       document.getElementById('resumenSistema').style.display = 'block';
 
       const result = {
@@ -829,15 +851,15 @@
             // Información del sistema (solo precio venta para cliente)
             doc.setFontSize(10);
             doc.setTextColor('#666');
-            doc.text(`Superficie: ${p.area.toFixed(2)} m²`, 14, y);
-            doc.text(`Precio unitario: ${EUR(precioPorM2)}/m²`, 110, y);
+            doc.text(`Superficie: ${fmtNumber(p.area, 2)} m²`, 14, y);
+            doc.text(`Precio unitario: ${fmtEUR(precioPorM2)}/m²`, 110, y);
             y += 8;
             
             // Total del sistema (destacado)
             doc.setFontSize(12);
             doc.setFont(undefined, 'bold');
             doc.setTextColor('#2c3e50');
-            doc.text(`IMPORTE TOTAL SISTEMA: ${EUR(totalSistema)}`, 14, y);
+            doc.text(`IMPORTE TOTAL SISTEMA: ${fmtEUR(totalSistema)}`, 14, y);
             y += 15;
           });
 
