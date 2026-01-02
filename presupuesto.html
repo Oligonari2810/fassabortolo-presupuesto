@@ -691,7 +691,7 @@
       systems.forEach(s=>{
         const opt = document.createElement('option');
         opt.value = s.csv;
-        opt.textContent = `${s.id} | ${s.tipo} | ${s.perfil} | ${s.placa} | ${s.capas} capa(s)/cara`;
+        opt.textContent = s.name || `${s.id} | ${s.tipo} | ${s.perfil} | ${s.placa} | ${s.capas} capa(s)/cara`;
         opt.dataset.meta = JSON.stringify(s);
         sel.appendChild(opt);
       });
