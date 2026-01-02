@@ -73,6 +73,60 @@ json.systems.forEach(sys => {
       }
     });
   }
+  
+  // Validar CSV tiene formato nuevo (NO legacy)
+  const csvPath = path.join(__dirname, 'sistemas', sys.csv);
+  if (fs.existsSync(csvPath)) {
+    const csvContent = fs.readFileSync(csvPath, 'utf8');
+    const lines = csvContent.trim().split(/\r?\n/);
+    if (lines.length > 1) {
+      const header = lines[0].toLowerCase();
+      const headerCols = lines[0].split(',');
+      const idxFamilia = headerCols.findIndex(h => h.trim().toLowerCase() === 'familia_precio');
+      const idxPrecio = headerCols.findIndex(h => h.trim().toLowerCase() === 'precio_catalogo_almeria');
+      const idxCodigo = headerCols.findIndex(h => h.trim().toLowerCase() === 'codigo' || h.trim().toLowerCase() === 'sku');
+      const idxConcepto = headerCols.findIndex(h => h.trim().toLowerCase() === 'concepto');
+      
+      // Validar header tiene campos requeridos (formato nuevo)
+      if (!header.includes('precio_catalogo_almeria')) {
+        errors.push(`❌ ${sysId}: CSV ${sys.csv} falta precio_catalogo_almeria en header`);
+      }
+      if (!header.includes('familia_precio')) {
+        errors.push(`❌ ${sysId}: CSV ${sys.csv} falta familia_precio en header (formato legacy no permitido)`);
+      }
+      
+      // Validar líneas
+      if (idxFamilia >= 0) {
+        for (let i = 1; i < lines.length; i++) {
+          if (!lines[i].trim()) continue;
+          const cols = lines[i].split(',');
+          
+          // Validar familia_precio presente y válida
+          const familia = cols[idxFamilia] ? cols[idxFamilia].trim().toUpperCase() : '';
+          if (!familia) {
+            const codigo = idxCodigo >= 0 && cols[idxCodigo] ? cols[idxCodigo].trim() : '';
+            const concepto = idxConcepto >= 0 && cols[idxConcepto] ? cols[idxConcepto].trim() : '';
+            errors.push(`❌ ${sysId}: CSV ${sys.csv} línea ${i + 1} (${codigo || concepto || 'sin código'}) falta familia_precio`);
+          } else if (familia !== 'PLACA' && familia !== 'RESTO') {
+            errors.push(`❌ ${sysId}: CSV ${sys.csv} línea ${i + 1} tiene familia_precio inválida: ${familia} (debe ser PLACA o RESTO)`);
+          }
+          
+          // Validar precio_catalogo_almeria existe y es numérico
+          if (idxPrecio >= 0) {
+            const precioStr = cols[idxPrecio] ? cols[idxPrecio].trim() : '';
+            if (!precioStr) {
+              errors.push(`❌ ${sysId}: CSV ${sys.csv} línea ${i + 1} falta precio_catalogo_almeria`);
+            } else {
+              const precio = parseFloat(precioStr.replace(',', '.'));
+              if (isNaN(precio) || precio <= 0) {
+                errors.push(`❌ ${sysId}: CSV ${sys.csv} línea ${i + 1} tiene precio_catalogo_almeria inválido: ${precioStr}`);
+              }
+            }
+          }
+        }
+      }
+    }
+  }
 });
 
 // Reporte
