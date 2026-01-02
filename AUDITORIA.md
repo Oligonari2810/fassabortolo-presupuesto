@@ -1,6 +1,20 @@
 # AUDITORÍA TÉCNICA DEL PROYECTO
-**Fecha:** 2025-01-02
+**Fecha:** 2025-01-02 (actualizado)
 **Objetivo:** Verificar consistencia técnica JSON↔CSV↔reglas antes de modo guiado
+
+---
+
+## LISTADO DE VERIFICACIONES ESTRICTAS
+
+### Sistemas con capas_por_cara NOT IN {1,2}
+**Resultado:** Ninguno encontrado (todos los sistemas tienen capas_por_cara ∈ {1,2})
+
+### Sistemas con modulacion_mm == 400
+**Resultado:** Ninguno encontrado (todos los sistemas tienen modulacion_mm == 600)
+
+### Valores Reales Encontrados
+- **capas_por_cara:** {1, 2} (35 sistemas verificados)
+- **modulacion_mm:** {600} (35 sistemas verificados)
 
 ---
 
@@ -11,8 +25,8 @@
 - ✅ CSVs únicos y existentes: Todos los CSVs existen y son únicos
 - ✅ Tipo coherente con prefijo: Todos los tipos coinciden con prefijos (M=>MURO, TA/TS=>TRASDOSADO, T=>TECHO, EL=>EXTERIOR)
 - ✅ EXTERIOR => zincado Z2: Sistemas EXTERIOR tienen zincado Z2
-- ✅ capas_por_cara ∈ {1,2,4}: Todos válidos
-- ✅ modulacion_mm: Presente en todos (400/600)
+- ✅ capas_por_cara ∈ {1,2}: Todos válidos (OBLIGATORIO: solo 1 o 2)
+- ✅ modulacion_mm: Presente en todos (valor real: 600)
 - ✅ placas[]: Todos tienen placas[] válido
 - ✅ TECHO: Estructura/perfil coherente (TC47/TC60)
 - ✅ TS: Omega 35 coherente

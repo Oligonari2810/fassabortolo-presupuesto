@@ -58,13 +58,11 @@ systems.forEach((sys, idx) => {
     errors.push({ tipo: 'ERROR', sistema: sysId, mensaje: `EXTERIOR requiere zincado Z2, tiene ${sys.zincado || 'faltante'}` });
   }
   
-  // 5. capas_por_cara ∈ {1,2,4}
-  if (sys.capas_por_cara !== 1 && sys.capas_por_cara !== 2 && sys.capas_por_cara !== 4) {
-    if (sys.capas_por_cara === undefined) {
-      warnings.push({ tipo: 'WARNING', sistema: sysId, mensaje: 'capas_por_cara faltante' });
-    } else {
-      errors.push({ tipo: 'ERROR', sistema: sysId, mensaje: `capas_por_cara inválido: ${sys.capas_por_cara} (debe ser 1, 2 o 4)` });
-    }
+  // 5. capas_por_cara ∈ {1,2} (OBLIGATORIO)
+  if (sys.capas_por_cara === undefined) {
+    errors.push({ tipo: 'ERROR', sistema: sysId, mensaje: 'capas_por_cara faltante (obligatorio)' });
+  } else if (sys.capas_por_cara !== 1 && sys.capas_por_cara !== 2) {
+    errors.push({ tipo: 'ERROR', sistema: sysId, mensaje: `capas_por_cara inválido: ${sys.capas_por_cara} (debe ser 1 o 2)` });
   }
   
   // 6. modulacion_mm presente (400/600)
