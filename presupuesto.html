@@ -960,9 +960,13 @@
             doc.text(`Sistema: ${sistemaId} — ${tituloPdf}`, 14, y);
             y += 8;
             
-            // Bloque "Descripción del sistema" (solo si existe, desde metadata fresca)
-            const descripcionSistema = metaFresh.descripcion_sistema || metaFresh.descripcion_tecnica_pdf || '';
-            if (descripcionSistema && descripcionSistema.trim()) {
+            // Bloque "Descripción del sistema" (desde metadata fresca)
+            // Prioridad: descripcion_tecnica_corta primero, luego descripcion_sistema como fallback
+            const descripcionCorta = metaFresh.descripcion_tecnica_corta || '';
+            const descripcionLarga = metaFresh.descripcion_sistema || metaFresh.descripcion_tecnica_pdf || '';
+            const descripcionMostrar = descripcionCorta || descripcionLarga;
+            
+            if (descripcionMostrar && descripcionMostrar.trim()) {
               doc.setFontSize(9);
               doc.setFont(undefined, 'bold');
               doc.setTextColor('#555');
@@ -970,7 +974,7 @@
               y += 5;
               
               doc.setFont(undefined, 'normal');
-              const descLines = doc.splitTextToSize(descripcionSistema, 180);
+              const descLines = doc.splitTextToSize(descripcionMostrar, 180);
               doc.text(descLines, 14, y);
               y += descLines.length * 4 + 4;
             }
