@@ -28,10 +28,34 @@ if (duplicateCsvs.length > 0) {
 json.systems.forEach(sys => {
   const sysId = sys.id;
   
-  // Prohibir MIX
-  const mixCheck = JSON.stringify(sys).toUpperCase().includes('MIX');
+  // Prohibir MIX solo en campos estructurales (NO en texto libre)
+  // Campos de texto libre que pueden contener "mixto": titulo_pdf, descripcion_sistema, uso_recomendado, nombre_comercial, descripcion_tecnica_pdf
+  const camposEstructurales = {
+    id: sys.id,
+    csv: sys.csv,
+    nombre_comercial: sys.nombre_comercial,
+    tipo: sys.tipo,
+    estructura: sys.estructura,
+    perfil_mm: sys.perfil_mm,
+    zincado: sys.zincado
+  };
+  
+  // Verificar MIX solo en campos estructurales
+  const mixCheck = Object.values(camposEstructurales)
+    .filter(v => v !== null && v !== undefined)
+    .some(v => String(v).toUpperCase().includes('MIX'));
+  
   if (mixCheck) {
-    errors.push(`❌ ${sysId}: Contiene "MIX" en algún campo`);
+    errors.push(`❌ ${sysId}: Contiene "MIX" en campo estructural (prohibido)`);
+  }
+  
+  // Verificar placas[] individualmente
+  if (Array.isArray(sys.placas)) {
+    sys.placas.forEach((placa, idx) => {
+      if (placa.tipo && String(placa.tipo).toUpperCase().includes('MIX')) {
+        errors.push(`❌ ${sysId}: placas[${idx}].tipo contiene "MIX" (prohibido)`);
+      }
+    });
   }
   
   // capas_por_cara debe ser 1 o 2
