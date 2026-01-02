@@ -703,15 +703,15 @@
       let projTotalVenta = 0;
       
       proyecto.forEach((p, idx)=>{
-        const precioVenta = p.ventaPorM2 || (p.totalVenta / p.area);
-        const totalVenta = p.totalVenta || p.total || 0;
+        const precioVenta = p.ventaM2 || p.ventaPorM2 || (p.precioVentaSistema / p.area) || (p.totalVenta / p.area);
+        const totalVenta = p.precioVentaSistema || p.totalVenta || p.total || 0;
         projTotalVenta += totalVenta;
         const tr = document.createElement('tr');
         tr.innerHTML = `
           <td>${p.system}</td>
-          <td class="num">${p.area.toFixed(2)}</td>
-          <td class="num">${EUR(precioVenta)}</td>
-          <td class="num">${EUR(totalVenta)}</td>
+          <td class="num">${fmtNumber(p.area, 2)}</td>
+          <td class="num">${fmtEUR(precioVenta)}</td>
+          <td class="num">${fmtEUR(totalVenta)}</td>
           <td>
             <button onclick="eliminarSistema(${idx})" class="btn-small" style="background:#e74c3c" aria-label="Eliminar sistema"><i class="fas fa-trash" aria-hidden="true"></i></button>
           </td>
@@ -719,7 +719,7 @@
         tbody.appendChild(tr);
       });
       
-      document.getElementById('projTotal').textContent = EUR(projTotalVenta);
+      document.getElementById('projTotal').textContent = fmtEUR(projTotalVenta);
     }
 
     window.eliminarSistema = function(idx){
