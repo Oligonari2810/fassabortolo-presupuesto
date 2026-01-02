@@ -516,6 +516,13 @@
       // Normalizar todos los sistemas al formato v1 para compatibilidad
       return systems.map(normalizeSystemToV1);
     }
+    
+    // Función auxiliar para obtener metadata completa (sin normalizar campos nuevos)
+    async function loadIndexRaw(){
+      const res = await fetch('sistemas/sistemas-index.json');
+      const idx = await res.json();
+      return idx.systems || []; // Devolver raw, sin normalizar
+    }
 
     // Detectar formato CSV (legacy vs nuevo)
     function detectarFormatoCSV(header) {
