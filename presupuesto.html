@@ -349,11 +349,86 @@
 
     <div class="card">
       <h3>Añadir Sistema al Proyecto</h3>
-      <div class="row">
-        <label>
-          Sistema FassaBortolo
-          <select id="systemSelect"></select>
+      
+      <!-- Toggle Modo Guiado/Experto -->
+      <div style="margin-bottom: 1rem; padding: 0.75rem; background: #f8f9fa; border-radius: 4px; display: flex; align-items: center; gap: 1rem;">
+        <label style="flex: 0 0 auto; margin: 0; font-weight: 600;">
+          <input type="radio" name="modeToggle" value="guided" id="modeGuided" checked />
+          Modo Guiado
         </label>
+        <label style="flex: 0 0 auto; margin: 0; font-weight: 600;">
+          <input type="radio" name="modeToggle" value="expert" id="modeExpert" />
+          Modo Experto
+        </label>
+      </div>
+      
+      <!-- Modo Guiado -->
+      <div id="guidedMode" style="margin-bottom: 1rem;">
+        <div class="row">
+          <label>
+            Ambiente
+            <select id="guidedAmbiente">
+              <option value="SECO">SECO</option>
+              <option value="HUMEDO">HUMEDO</option>
+              <option value="EXTERIOR">EXTERIOR</option>
+            </select>
+          </label>
+          <label>
+            Tipo de sistema
+            <select id="guidedTipo">
+              <option value="MURO">MURO</option>
+              <option value="TRASDOSADO">TRASDOSADO</option>
+              <option value="TECHO">TECHO</option>
+              <option value="EXTERIOR" style="display:none;">EXTERIOR</option>
+            </select>
+          </label>
+          <label>
+            Estructura/Perfilería
+            <select id="guidedEstructura">
+              <option value="">Seleccionar...</option>
+            </select>
+          </label>
+          <label>
+            Separación (mm)
+            <select id="guidedSeparacion">
+              <option value="600">600</option>
+            </select>
+          </label>
+          <label>
+            Placa
+            <select id="guidedPlaca">
+              <option value="">Seleccionar...</option>
+            </select>
+          </label>
+          <label>
+            Espesor (mm)
+            <select id="guidedEspesor">
+              <option value="">Seleccionar...</option>
+            </select>
+          </label>
+          <label>
+            Capas por cara
+            <select id="guidedCapas">
+              <option value="">Seleccionar...</option>
+            </select>
+          </label>
+        </div>
+        <div id="guidedMessage" style="margin-top: 0.5rem; padding: 0.75rem; border-radius: 4px; display: none;"></div>
+        <div id="guidedMultipleMatches" style="margin-top: 0.5rem; display: none;">
+          <label>
+            Sistemas equivalentes
+            <select id="guidedMultipleSelect"></select>
+          </label>
+        </div>
+      </div>
+      
+      <!-- Modo Experto (oculto por defecto) -->
+      <div id="expertMode" style="display: none;">
+        <div class="row">
+          <label>
+            Sistema FassaBortolo
+            <select id="systemSelect"></select>
+          </label>
         <label>
           m² (superficie)
           <input id="area" type="number" step="0.01" value="100" />
@@ -555,6 +630,259 @@
       // Nota: TC es etiqueta en JSON, no prefijo de SKU (los TC empiezan por C)
       return skuUpper.startsWith("C") || skuUpper.startsWith("U") || skuUpper.startsWith("E");
     }
+    
+    // ========== MODO GUIADO ==========
+    let systemsIndexRaw = [];
+    
+    // Función para buscar sistema que coincida con los filtros
+    function findSystemMatch(filters, systemsIndex) {
+      const { ambiente, tipo, estructura, separacion, placa, espesor, capas } = filters;
+      
+      return systemsIndex.filter(sys => {
+        if (sys.tipo !== tipo) return false;
+        
+        // Estructura/Perfilería
+        if (estructura) {
+          if (tipo === 'TECHO') {
+            if (estructura === 'TC47' && sys.perfil_mm !== 47) return false;
+            if (estructura === 'TC60' && sys.perfil_mm !== 60) return false;
+          } else if (tipo === 'TRASDOSADO' && estructura === 'Ω35') {
+            if (sys.perfil_mm !== 35 || sys.estructura !== 'omega') return false;
+          } else {
+            const perfilNum = parseInt(estructura);
+            if (sys.perfil_mm !== perfilNum) return false;
+          }
+        }
+        
+        // Separación (modulación)
+        if (separacion && sys.modulacion_mm !== parseInt(separacion)) return false;
+        
+        // Placa
+        if (placa) {
+          const tienePlaca = sys.placas && sys.placas.some(p => {
+            if (placa === 'STD' && p.tipo === 'STD') return true;
+            if (placa === 'AQUA' && p.tipo === 'AQUA') return true;
+            if (placa === 'EXT' && (p.tipo === 'EXTERNA' || p.tipo === 'EXTERNA_LIGHT')) return true;
+            return false;
+          });
+          if (!tienePlaca) return false;
+        }
+        
+        // Espesor
+        if (espesor && sys.placas) {
+          const tieneEspesor = sys.placas.some(p => p.espesor_mm === parseInt(espesor));
+          if (!tieneEspesor) return false;
+        }
+        
+        // Capas por cara
+        if (capas && sys.capas_por_cara !== parseInt(capas)) return false;
+        
+        // Zincado
+        if (tipo === 'EXTERIOR' && sys.zincado !== 'Z2') return false;
+        if (tipo !== 'EXTERIOR' && ambiente !== 'EXTERIOR' && sys.zincado !== 'Z1') return false;
+        
+        return true;
+      });
+    }
+    
+    // Actualizar opciones de estructura según tipo
+    function updateEstructuraOptions(tipo, systemsIndex) {
+      const select = document.getElementById('guidedEstructura');
+      if (!select) return;
+      select.innerHTML = '<option value="">Seleccionar...</option>';
+      if (!tipo) return;
+      
+      const sistemasTipo = systemsIndex.filter(s => s.tipo === tipo);
+      const estructuras = new Set();
+      
+      sistemasTipo.forEach(sys => {
+        if (tipo === 'TECHO') {
+          if (sys.perfil_mm === 47) estructuras.add('TC47');
+          if (sys.perfil_mm === 60) estructuras.add('TC60');
+        } else if (tipo === 'TRASDOSADO') {
+          if (sys.estructura === 'omega' && sys.perfil_mm === 35) {
+            estructuras.add('Ω35');
+          } else if (sys.perfil_mm) {
+            estructuras.add(sys.perfil_mm.toString());
+          }
+        } else if (sys.perfil_mm) {
+          estructuras.add(sys.perfil_mm.toString());
+        }
+      });
+      
+      Array.from(estructuras).sort().forEach(est => {
+        const opt = document.createElement('option');
+        opt.value = est;
+        opt.textContent = est + (tipo === 'TECHO' ? '' : ' mm');
+        select.appendChild(opt);
+      });
+    }
+    
+    // Actualizar opciones de placa según ambiente
+    function updatePlacaOptions(ambiente) {
+      const select = document.getElementById('guidedPlaca');
+      if (!select) return;
+      select.innerHTML = '<option value="">Seleccionar...</option>';
+      if (ambiente === 'SECO') {
+        select.innerHTML += '<option value="STD">STD</option>';
+      } else if (ambiente === 'HUMEDO') {
+        select.innerHTML += '<option value="AQUA">AQUA</option>';
+      } else if (ambiente === 'EXTERIOR') {
+        select.innerHTML += '<option value="EXT">EXT (Externa Light)</option>';
+      }
+    }
+    
+    // Actualizar opciones de espesor y capas
+    function updateEspesorCapasOptions(filters, systemsIndex) {
+      const { tipo, estructura, separacion, placa } = filters;
+      const espesorSelect = document.getElementById('guidedEspesor');
+      const capasSelect = document.getElementById('guidedCapas');
+      if (!espesorSelect || !capasSelect) return;
+      
+      espesorSelect.innerHTML = '<option value="">Seleccionar...</option>';
+      capasSelect.innerHTML = '<option value="">Seleccionar...</option>';
+      if (!tipo || !estructura || !placa) return;
+      
+      const candidatos = systemsIndex.filter(sys => {
+        if (sys.tipo !== tipo) return false;
+        
+        if (tipo === 'TECHO') {
+          if (estructura === 'TC47' && sys.perfil_mm !== 47) return false;
+          if (estructura === 'TC60' && sys.perfil_mm !== 60) return false;
+        } else if (tipo === 'TRASDOSADO' && estructura === 'Ω35') {
+          if (sys.perfil_mm !== 35 || sys.estructura !== 'omega') return false;
+        } else {
+          const perfilNum = parseInt(estructura);
+          if (sys.perfil_mm !== perfilNum) return false;
+        }
+        
+        const tienePlaca = sys.placas && sys.placas.some(p => {
+          if (placa === 'STD' && p.tipo === 'STD') return true;
+          if (placa === 'AQUA' && p.tipo === 'AQUA') return true;
+          if (placa === 'EXT' && (p.tipo === 'EXTERNA' || p.tipo === 'EXTERNA_LIGHT')) return true;
+          return false;
+        });
+        if (!tienePlaca) return false;
+        
+        if (separacion && sys.modulacion_mm !== parseInt(separacion)) return false;
+        return true;
+      });
+      
+      const espesores = new Set();
+      const capas = new Set();
+      candidatos.forEach(sys => {
+        if (sys.placas) {
+          sys.placas.forEach(p => {
+            if ((placa === 'STD' && p.tipo === 'STD') || (placa === 'AQUA' && p.tipo === 'AQUA') || (placa === 'EXT' && (p.tipo === 'EXTERNA' || p.tipo === 'EXTERNA_LIGHT'))) {
+              espesores.add(p.espesor_mm);
+            }
+          });
+        }
+        if (sys.capas_por_cara) capas.add(sys.capas_por_cara);
+      });
+      
+      Array.from(espesores).sort((a, b) => a - b).forEach(esp => {
+        const opt = document.createElement('option');
+        opt.value = esp;
+        opt.textContent = esp + ' mm';
+        espesorSelect.appendChild(opt);
+      });
+      Array.from(capas).sort((a, b) => a - b).forEach(cap => {
+        const opt = document.createElement('option');
+        opt.value = cap;
+        opt.textContent = cap;
+        capasSelect.appendChild(opt);
+      });
+    }
+    
+    // Función principal cuando cambian los filtros del modo guiado
+    async function onGuidedFiltersChange() {
+      const ambiente = document.getElementById('guidedAmbiente').value;
+      const tipo = document.getElementById('guidedTipo').value;
+      const estructura = document.getElementById('guidedEstructura').value;
+      const separacion = document.getElementById('guidedSeparacion').value;
+      const placa = document.getElementById('guidedPlaca').value;
+      const espesor = document.getElementById('guidedEspesor').value;
+      const capas = document.getElementById('guidedCapas').value;
+      
+      const messageDiv = document.getElementById('guidedMessage');
+      const multipleDiv = document.getElementById('guidedMultipleMatches');
+      const addBtn = document.getElementById('addBtn');
+      
+      if (!messageDiv || !multipleDiv || !addBtn) return;
+      
+      messageDiv.style.display = 'none';
+      multipleDiv.style.display = 'none';
+      
+      if (ambiente === 'EXTERIOR') {
+        document.getElementById('guidedTipo').value = 'EXTERIOR';
+        document.getElementById('guidedTipo').options[3].style.display = 'block';
+      } else {
+        document.getElementById('guidedTipo').options[3].style.display = 'none';
+      }
+      
+      if (systemsIndexRaw.length === 0) {
+        systemsIndexRaw = await loadIndexRaw();
+      }
+      
+      if (tipo) updateEstructuraOptions(tipo, systemsIndexRaw);
+      if (ambiente) updatePlacaOptions(ambiente);
+      if (estructura && placa) updateEspesorCapasOptions({ tipo, estructura, separacion, placa }, systemsIndexRaw);
+      
+      if (ambiente && tipo && estructura && separacion && placa && espesor && capas) {
+        const matches = findSystemMatch({ ambiente, tipo, estructura, separacion, placa, espesor, capas }, systemsIndexRaw);
+        
+        if (matches.length === 0) {
+          messageDiv.style.display = 'block';
+          messageDiv.style.background = '#fee';
+          messageDiv.style.color = '#c33';
+          messageDiv.textContent = 'No existe sistema definido para esta combinación';
+          addBtn.disabled = true;
+        } else if (matches.length === 1) {
+          const systemSelect = document.getElementById('systemSelect');
+          const match = matches[0];
+          for (let i = 0; i < systemSelect.options.length; i++) {
+            const opt = systemSelect.options[i];
+            if (opt.value === match.csv) {
+              systemSelect.value = match.csv;
+              systemSelect.dispatchEvent(new Event('change'));
+              break;
+            }
+          }
+          messageDiv.style.display = 'none';
+          addBtn.disabled = false;
+        } else {
+          multipleDiv.style.display = 'block';
+          const multipleSelect = document.getElementById('guidedMultipleSelect');
+          multipleSelect.innerHTML = '';
+          matches.forEach(match => {
+            const opt = document.createElement('option');
+            opt.value = match.id;
+            opt.textContent = `${match.id} - ${match.nombre_comercial || match.id}`;
+            opt.dataset.csv = match.csv;
+            multipleSelect.appendChild(opt);
+          });
+          multipleSelect.onchange = () => {
+            const selected = matches.find(m => m.id === multipleSelect.value);
+            if (selected) {
+              const systemSelect = document.getElementById('systemSelect');
+              for (let i = 0; i < systemSelect.options.length; i++) {
+                const opt = systemSelect.options[i];
+                if (opt.value === selected.csv) {
+                  systemSelect.value = selected.csv;
+                  systemSelect.dispatchEvent(new Event('change'));
+                  break;
+                }
+              }
+            }
+          };
+          addBtn.disabled = false;
+        }
+      } else {
+        addBtn.disabled = true;
+      }
+    }
+    // ========== FIN MODO GUIADO ==========
 
     function parseCSV(text){
       const lines = text.trim().split(/\r?\n/);
