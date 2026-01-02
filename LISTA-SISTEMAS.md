@@ -1,10 +1,10 @@
 # LISTA COMPLETA DE SISTEMAS - FassaBortolo Caribe
 
-**Total: 37 sistemas**
+**Total: 39 sistemas**
 
 ---
 
-## 📋 MUROS (21 sistemas)
+## 📋 MUROS (22 sistemas)
 
 ### STD - 1 capa
 - **M-70-13-1** | Perfil: 70 Z1 | Placa: STD-13 | 1 capa | Hmax: 3.0m | CSV: M-70-13-1.csv
@@ -35,13 +35,14 @@
 
 ### MIX (Mixtos AQUA+STD)
 - **M-70-13-MIX-2** | Perfil: 70 Z1 | Placa: MIX-13 | 2 capas | Hmax: 3.0m | CSV: M-70-13-MIX-2.csv
+- **M-70-13-AQ-ST-2** | Perfil: 70 Z1 | Placa: AQUA-STD-13 | 2 capas (2+2) | Hmax: 3.0m | CSV: M-70-13-AQ-ST-2.csv
 - **M-70-15-MIX-4** | Perfil: 70 Z1 | Placa: MIX-15 | 4 capas | Hmax: 3.2m | CSV: M-70-15-MIX-4.csv
 - **M-90-13-MIX-2** | Perfil: 90 Z1 | Placa: MIX-13 | 2 capas | Hmax: 3.5m | CSV: M-90-13-MIX-2.csv
 - **M-90-15-MIX-4** | Perfil: 90 Z1 | Placa: MIX-15 | 4 capas | Hmax: 3.8m | CSV: M-90-15-MIX-4.csv
 
 ---
 
-## 📋 TRASDOSADOS (10 sistemas)
+## 📋 TRASDOSADOS (11 sistemas)
 
 ### STD - 1 capa
 - **TA-70-13-1** | Perfil: 70 Z1 | Placa: STD-13 | 1 capa | Hmax: 3.0m | CSV: TA-70-13-1.csv
@@ -57,6 +58,7 @@
 - **TA-90-13-AQUA-1** | Perfil: 90 Z1 | Placa: AQUA-13 | 1 capa | Hmax: 3.5m | CSV: TA-90-13-AQUA-1.csv
 
 ### AQUA - 2 capas
+- **TA-70-13-AQUA-2** | Perfil: 70 Z1 | Placa: AQUA-13 | 2 capas | Hmax: 3.0m | CSV: TA-70-13-AQUA-2.csv
 - **TA-90-13-AQUA-2** | Perfil: 90 Z1 | Placa: AQUA-13 | 2 capas | Hmax: 3.5m | CSV: TA-90-13-AQUA-2.csv
 
 ### Semidirectos (Ω35)
@@ -86,11 +88,11 @@
 
 ## 📊 RESUMEN POR TIPO
 
-- **MUROS**: 21 sistemas (8 STD, 8 AQUA, 1 AQUA-4, 4 MIX)
-- **TRASDOSADOS**: 10 sistemas (6 STD, 2 AQUA, 2 Semidirectos Ω35)
+- **MUROS**: 22 sistemas (8 STD, 8 AQUA, 1 AQUA-4, 5 MIX)
+- **TRASDOSADOS**: 11 sistemas (6 STD, 3 AQUA, 2 Semidirectos Ω35)
 - **TECHOS**: 4 sistemas (2 TC47, 2 TC60)
 - **EXTERIOR**: 2 sistemas
-- **TOTAL**: 37 sistemas
+- **TOTAL**: 39 sistemas
 
 ---
 
