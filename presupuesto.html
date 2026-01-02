@@ -382,7 +382,19 @@
           <input id="margenPct" type="number" step="0.1" value="30" />
         </label>
       </div>
-      <div class="meta" id="metaBox"></div>
+      
+      <!-- Ficha técnica del sistema (read-only) -->
+      <div id="fichaTecnica" style="margin-top: 1.5rem; padding: 1rem; background: #f8f9fa; border: 1px solid #dee2e6; border-radius: 4px; display: none;">
+        <h4 style="margin-top: 0; margin-bottom: 0.75rem; color: #2c3e50; font-size: 1rem;">Ficha técnica del sistema</h4>
+        <div id="fichaTecnicaContent" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0.5rem; font-size: 0.875rem; color: #495057;"></div>
+      </div>
+      
+      <!-- Descripción técnica del sistema -->
+      <div id="descripcionTecnica" style="margin-top: 1rem; padding: 1rem; background: #fff; border-left: 3px solid #3498db; display: none;">
+        <h4 style="margin-top: 0; margin-bottom: 0.5rem; color: #2c3e50; font-size: 0.95rem;">Descripción del sistema</h4>
+        <div id="descripcionTecnicaContent" style="font-size: 0.875rem; color: #495057; line-height: 1.6;"></div>
+      </div>
+      
       <div id="resumenSistema" style="margin-top: 1rem; padding: 1rem; background: #e8f4f8; border-radius: 4px; display: none;">
         <h4 style="margin-top: 0;">Resumen del Sistema</h4>
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0.5rem;">
@@ -568,6 +580,80 @@
 
     function toNum(x){ return Number(String(x).replace(',','.'))||0; }
 
+    // Renderizar ficha técnica del sistema (read-only)
+    function renderFichaTecnica(meta) {
+      const container = document.getElementById('fichaTecnica');
+      const content = document.getElementById('fichaTecnicaContent');
+      
+      if (!meta || !meta.id) {
+        container.style.display = 'none';
+        return;
+      }
+      
+      const items = [];
+      
+      // Tipo de sistema
+      if (meta.tipo_sistema || meta.tipo) {
+        items.push(`<div><strong>Tipo de sistema:</strong> ${meta.tipo_sistema || meta.tipo}</div>`);
+      }
+      
+      // Configuración: capas por cara
+      if (meta.capas_por_cara !== undefined && meta.capas_por_cara !== null) {
+        items.push(`<div><strong>Configuración:</strong> ${meta.capas_por_cara} placas por cara</div>`);
+      }
+      
+      // Tipo de placa
+      if (meta.placa_tipo) {
+        items.push(`<div><strong>Tipo de placa:</strong> ${meta.placa_tipo}</div>`);
+      } else if (meta.placas && meta.placas.length > 0) {
+        const tiposPlaca = [...new Set(meta.placas.map(p => p.tipo))].join('/');
+        if (tiposPlaca) {
+          items.push(`<div><strong>Tipo de placa:</strong> ${tiposPlaca}</div>`);
+        }
+      }
+      
+      // Perfilería: perfil_mm + zincado
+      if (meta.perfil_mm !== undefined && meta.perfil_mm !== null) {
+        let perfilText = `${meta.perfil_mm} mm`;
+        if (meta.zincado) {
+          perfilText += ` (${meta.zincado})`;
+        }
+        items.push(`<div><strong>Perfilería:</strong> ${perfilText}</div>`);
+      }
+      
+      // Altura máxima
+      if (meta.hmax_m !== undefined && meta.hmax_m !== null) {
+        items.push(`<div><strong>Altura máxima del sistema:</strong> ${meta.hmax_m} m</div>`);
+      } else if (meta.Hmax_m !== undefined && meta.Hmax_m !== null) {
+        items.push(`<div><strong>Altura máxima del sistema:</strong> ${meta.Hmax_m} m</div>`);
+      }
+      
+      // Uso recomendado
+      if (meta.uso_recomendado) {
+        items.push(`<div><strong>Uso recomendado:</strong> ${meta.uso_recomendado}</div>`);
+      }
+      
+      if (items.length > 0) {
+        content.innerHTML = items.join('');
+        container.style.display = 'block';
+      } else {
+        container.style.display = 'none';
+      }
+    }
+    
+    // Renderizar descripción técnica del sistema
+    function renderDescripcionTecnica(meta) {
+      const container = document.getElementById('descripcionTecnica');
+      const content = document.getElementById('descripcionTecnicaContent');
+      
+      if (!meta || !meta.descripcion_tecnica_pdf) {
+        container.style.display = 'none';
+        return;
+      }
+      
+      content.textContent = meta.descripcion_tecnica_pdf;
+      container.style.display = 'block';
+    }
 
     let proyecto = [];
 
@@ -580,17 +666,17 @@
       const opt = document.getElementById('systemSelect').selectedOptions[0];
       if(!opt || area <= 0) {
         document.getElementById('resumenSistema').style.display = 'none';
+        document.getElementById('fichaTecnica').style.display = 'none';
+        document.getElementById('descripcionTecnica').style.display = 'none';
         return null;
       }
       const meta = JSON.parse(opt.dataset.meta);
 
-      document.getElementById('metaBox').innerHTML = `
-        <div class="item"><strong>Sistema:</strong> ${meta.id}</div>
-        <div class="item"><strong>Perfil:</strong> ${meta.perfil}</div>
-        <div class="item"><strong>Placa:</strong> ${meta.placa}</div>
-        <div class="item"><strong>Capas:</strong> ${meta.capas} por cara</div>
-        <div class="item"><strong>Hmax:</strong> ${meta.Hmax_m} m</div>
-      `;
+      // Renderizar ficha técnica (read-only)
+      renderFichaTecnica(meta);
+      
+      // Renderizar descripción técnica si existe
+      renderDescripcionTecnica(meta);
 
       const csvText = await loadCSV(meta.csv);
       const rows = parseCSV(csvText);
@@ -1155,6 +1241,24 @@
           el.addEventListener('change', async() => await calcularYMostrar(false));
         }
       });
+      
+      // Actualizar ficha técnica al cambiar sistema
+      document.getElementById('systemSelect').addEventListener('change', async() => {
+        const opt = document.getElementById('systemSelect').selectedOptions[0];
+        if (opt) {
+          const meta = JSON.parse(opt.dataset.meta);
+          renderFichaTecnica(meta);
+          renderDescripcionTecnica(meta);
+        }
+        await calcularYMostrar(false);
+      });
+      
+      // Inicializar ficha técnica con el sistema por defecto
+      if (sel.options.length > 0) {
+        const meta = JSON.parse(sel.options[0].dataset.meta);
+        renderFichaTecnica(meta);
+        renderDescripcionTecnica(meta);
+      }
       sel.addEventListener('change', async()=>{
         await calcularYMostrar(false);
       });
