@@ -1,11 +1,11 @@
-sku,concepto,unidad,precio,coef,Hmax
-GYPSOTECH-AQUA-13,Gypsotech AQUA H2 BA 13,m2,9.83,2.05,3.5
-MONTANTE-90-40-Z1,Montante 90/40 Z1,ml,0.743,2.8,3.5
-RAIL-90-30-Z1,Rail 90 Z1,ml,0.583,0.7,3.5
-TORN-PM-25,Tornillo PM 3.5x25,ud,0.014,18,3.5
-TORN-PM-35,Tornillo PM 3.5x35,ud,0.017,22,3.5
-TORN-MM-95,Tornillo MM 3.5x9.5,ud,0.014,3,3.5
-CINTA-J-150,Cinta juntas papel,ml,0.056,1.0,3.5
-CINTA-GV-30,Cinta guardavivos,ml,0.579,0.3,3.5
-BANDA-E-90,Banda estanca 90 mm,ml,0.753,0.6,3.5
-MAS-FJ2H,FASSAJOINT 2H,kg,1.327,0.30,3.5
+﻿sku,concepto,unidad,precio,coef,Hmax
+L00H003200A0,Gypsotech AQUA H2 BA 13,m2,9.83,2.05,3.5
+C399041299A,Montante 90/40 Z1,ml,0.743,2.8,3.5
+U309030300A,Rail 90 Z1,ml,0.583,0.7,3.5
+304101,Tornillo PM 3.5x25,ud,0.014,18,3.5
+304104,Tornillo PM 3.5x35,ud,0.017,22,3.5
+304134,Tornillo MM 3.5x9.5,ud,0.014,3,3.5
+304058,Cinta juntas papel,ml,0.056,1.0,3.5
+304065,Cinta guardavivos,ml,0.579,0.3,3.5
+304077,Banda estanca 90 mm,ml,0.753,0.6,3.5
+353E1,FASSAJOINT 2H,kg,1.327,0.30,3.5
