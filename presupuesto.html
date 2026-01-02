@@ -946,8 +946,8 @@
             y += 8;
             
             // Bloque "Descripción del sistema" (solo si existe)
-            const descripcionTecnica = meta.descripcion_tecnica_pdf;
-            if (descripcionTecnica) {
+            const descripcionSistema = meta.descripcion_sistema || meta.descripcion_tecnica_pdf;
+            if (descripcionSistema) {
               doc.setFontSize(9);
               doc.setFont(undefined, 'bold');
               doc.setTextColor('#555');
@@ -955,7 +955,7 @@
               y += 5;
               
               doc.setFont(undefined, 'normal');
-              const descLines = doc.splitTextToSize(descripcionTecnica, 180);
+              const descLines = doc.splitTextToSize(descripcionSistema, 180);
               doc.text(descLines, 14, y);
               y += descLines.length * 4 + 4;
             }
