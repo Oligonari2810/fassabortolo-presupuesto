@@ -920,11 +920,13 @@
             const precioPorM2 = p.ventaM2 || (p.precioVentaSistema || 0) / p.area;
             const totalSistema = p.precioVentaSistema || 0;
             const incotermSistema = p.incoterm || 'CIF';
-            const meta = p.meta || {};
+            const sistemaId = p.system || p.meta?.id;
             
-            // Obtener título PDF (fallback a nombre_comercial o name)
-            const tituloPdf = meta.titulo_pdf || meta.nombre_comercial || meta.name || p.system;
-            const sistemaId = meta.id || p.system;
+            // Rehidratar metadata desde el índice actualizado (no usar meta guardado)
+            const metaFresh = systemsIndex.find(s => s.id === sistemaId) || p.meta || {};
+            
+            // Obtener título PDF desde metadata fresca (fallback a nombre_comercial o name)
+            const tituloPdf = metaFresh.titulo_pdf || metaFresh.nombre_comercial || metaFresh.name || sistemaId;
             
             // Guardar para tabla resumen
             resumenData.push({
