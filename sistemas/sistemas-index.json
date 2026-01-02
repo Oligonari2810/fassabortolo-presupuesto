@@ -19,9 +19,11 @@
       "Hmax_m": 3,
       "csv": "M-70-13-1.csv",
       "nombre_comercial": "Muro 70 Z1 STD-13 (1+1)",
-      "titulo_pdf": "Muro interior simple placa",
+      "titulo_pdf": "Tabique interior estándar 70 mm (1 placa por cara)",
       "descripcion_tecnica_pdf": "Sistema de tabique interior con montante y rail de 70 mm, zincado Z1. Una placa de yeso laminado estándar de 13 mm por cada cara. Altura máxima 3 m.",
-      "_perfil_deprecated": "70 Z1"
+      "_perfil_deprecated": "70 Z1",
+      "descripcion_sistema": "Sistema de tabique interior autoportante con estructura metálica galvanizada de 70 mm y una placa de yeso laminado Gypsotech STD BA de 13 mm atornillada por ambas caras. Solución versátil para divisiones interiores en zonas secas.",
+      "uso_recomendado": "Divisiones interiores en zonas secas (vivienda, oficinas)."
     },
     {
       "id": "M-70-13-2",
@@ -40,9 +42,11 @@
       "Hmax_m": 3,
       "csv": "M-70-13-2.csv",
       "nombre_comercial": "Muro 70 Z1 STD-13 (2+2)",
-      "titulo_pdf": "Muro interior doble placa",
+      "titulo_pdf": "Tabique interior reforzado 70 mm (doble placa por cara)",
       "descripcion_tecnica_pdf": "Sistema de tabique interior con montante y rail de 70 mm, zincado Z1. Dos placas de yeso laminado estándar de 13 mm por cada cara para mayor resistencia acústica. Altura máxima 3 m.",
-      "_perfil_deprecated": "70 Z1"
+      "_perfil_deprecated": "70 Z1",
+      "descripcion_sistema": "Sistema de tabique interior autoportante con estructura metálica galvanizada de 70 mm y doble placa de yeso laminado Gypsotech STD BA de 13 mm por ambas caras. Aporta mayor rigidez y robustez para uso intensivo en interiores secos.",
+      "uso_recomendado": "Interiores secos con mayor exigencia de resistencia a impactos y robustez."
     },
     {
       "id": "M-70-15-1",
@@ -61,7 +65,10 @@
       "Hmax_m": 3.2,
       "csv": "M-70-15-1.csv",
       "nombre_comercial": "Muro 70 Z1 STD-15 (1+1)",
-      "_perfil_deprecated": "70 Z1"
+      "_perfil_deprecated": "70 Z1",
+      "titulo_pdf": "Tabique interior estándar 70 mm (placa 15 mm)",
+      "descripcion_sistema": "Sistema de tabique interior autoportante con estructura metálica galvanizada de 70 mm y una placa Gypsotech STD BA de 15 mm por ambas caras. Mejora la solidez del tabique manteniendo una ejecución rápida en interiores secos.",
+      "uso_recomendado": "Divisiones interiores en zonas secas con necesidad de mayor solidez."
     },
     {
       "id": "M-70-15-2",
@@ -80,7 +87,10 @@
       "Hmax_m": 3.2,
       "csv": "M-70-15-2.csv",
       "nombre_comercial": "Muro 70 Z1 STD-15 (2+2)",
-      "_perfil_deprecated": "70 Z1"
+      "_perfil_deprecated": "70 Z1",
+      "titulo_pdf": "Tabique interior robusto 70 mm (doble placa 15 mm)",
+      "descripcion_sistema": "Sistema de tabique interior autoportante con estructura metálica galvanizada de 70 mm y doble placa Gypsotech STD BA de 15 mm por ambas caras. Solución de altas prestaciones de robustez para interiores secos.",
+      "uso_recomendado": "Interiores secos de alto tránsito o zonas con exigencia de mayor resistencia."
     },
     {
       "id": "M-90-13-1",
@@ -99,7 +109,10 @@
       "Hmax_m": 3.5,
       "csv": "M-90-13-1.csv",
       "nombre_comercial": "Muro 90 Z1 STD-13 (1+1)",
-      "_perfil_deprecated": "90 Z1"
+      "_perfil_deprecated": "90 Z1",
+      "titulo_pdf": "Tabique interior 90 mm (1 placa 13 mm por cara)",
+      "descripcion_sistema": "Sistema de tabique interior autoportante con estructura metálica galvanizada de 90 mm y una placa Gypsotech STD BA de 13 mm por ambas caras. Mayor profundidad de perfilería para soluciones de división interior en seco.",
+      "uso_recomendado": "Divisiones interiores en zonas secas cuando se requiere mayor espesor de estructura."
     },
     {
       "id": "M-90-13-2",
@@ -118,7 +131,10 @@
       "Hmax_m": 3.5,
       "csv": "M-90-13-2.csv",
       "nombre_comercial": "Muro 90 Z1 STD-13 (2+2)",
-      "_perfil_deprecated": "90 Z1"
+      "_perfil_deprecated": "90 Z1",
+      "titulo_pdf": "Tabique interior 90 mm reforzado (doble placa 13 mm)",
+      "descripcion_sistema": "Sistema de tabique interior autoportante con estructura metálica galvanizada de 90 mm y doble placa Gypsotech STD BA de 13 mm por ambas caras. Aporta mayor rigidez y estabilidad para interiores secos.",
+      "uso_recomendado": "Interiores secos con mayor exigencia de robustez y estabilidad."
     },
     {
       "id": "M-90-15-1",
@@ -137,7 +153,10 @@
       "Hmax_m": 3.8,
       "csv": "M-90-15-1.csv",
       "nombre_comercial": "Muro 90 Z1 STD-15 (1+1)",
-      "_perfil_deprecated": "90 Z1"
+      "_perfil_deprecated": "90 Z1",
+      "titulo_pdf": "Tabique interior 90 mm (placa 15 mm)",
+      "descripcion_sistema": "Sistema de tabique interior autoportante con estructura metálica galvanizada de 90 mm y una placa Gypsotech STD BA de 15 mm por ambas caras. Solución sólida para divisiones interiores en zonas secas.",
+      "uso_recomendado": "Divisiones interiores secas con mayor demanda de solidez."
     },
     {
       "id": "M-90-15-2",
@@ -156,7 +175,10 @@
       "Hmax_m": 3.8,
       "csv": "M-90-15-2.csv",
       "nombre_comercial": "Muro 90 Z1 STD-15 (2+2)",
-      "_perfil_deprecated": "90 Z1"
+      "_perfil_deprecated": "90 Z1",
+      "titulo_pdf": "Tabique interior 90 mm robusto (doble placa 15 mm)",
+      "descripcion_sistema": "Sistema de tabique interior autoportante con estructura metálica galvanizada de 90 mm y doble placa Gypsotech STD BA de 15 mm por ambas caras. Solución de alta robustez para interiores secos.",
+      "uso_recomendado": "Interiores secos con alto tránsito o mayor resistencia requerida."
     },
     {
       "id": "M-70-13-AQUA-1",
@@ -175,7 +197,10 @@
       "Hmax_m": 3,
       "csv": "M-70-13-AQUA-1.csv",
       "nombre_comercial": "Muro 70 Z1 AQUA-13 (1+1)",
-      "_perfil_deprecated": "70 Z1"
+      "_perfil_deprecated": "70 Z1",
+      "titulo_pdf": "Tabique zonas húmedas 70 mm (AQUA 13 mm, 1 placa por cara)",
+      "descripcion_sistema": "Sistema de tabique interior autoportante con estructura metálica galvanizada de 70 mm y una placa hidrófuga Gypsotech AQUA H2 BA de 13 mm por ambas caras. Recomendado para estancias con humedad frecuente.",
+      "uso_recomendado": "Baños, cocinas y zonas húmedas interiores."
     },
     {
       "id": "M-70-13-AQUA-2",
@@ -194,7 +219,10 @@
       "Hmax_m": 3,
       "csv": "M-70-13-AQUA-2.csv",
       "nombre_comercial": "Muro 70 Z1 AQUA-13 (2+2)",
-      "_perfil_deprecated": "70 Z1"
+      "_perfil_deprecated": "70 Z1",
+      "titulo_pdf": "Tabique zonas húmedas 70 mm (AQUA 13 mm, doble placa)",
+      "descripcion_sistema": "Sistema de tabique interior autoportante con estructura metálica galvanizada de 70 mm y doble placa hidrófuga Gypsotech AQUA H2 BA de 13 mm por ambas caras. Mayor rigidez y durabilidad en entornos húmedos.",
+      "uso_recomendado": "Baños, cocinas y zonas húmedas con mayor exigencia de robustez."
     },
     {
       "id": "M-70-15-AQUA-1",
@@ -213,7 +241,10 @@
       "Hmax_m": 3.2,
       "csv": "M-70-15-AQUA-1.csv",
       "nombre_comercial": "Muro 70 Z1 AQUA-15 (1+1)",
-      "_perfil_deprecated": "70 Z1"
+      "_perfil_deprecated": "70 Z1",
+      "titulo_pdf": "Tabique zonas húmedas 70 mm (AQUA 15 mm)",
+      "descripcion_sistema": "Sistema de tabique interior autoportante con estructura metálica galvanizada de 70 mm y una placa hidrófuga Gypsotech AQUA H2 BA de 15 mm por ambas caras. Solución sólida para ambientes húmedos.",
+      "uso_recomendado": "Zonas húmedas interiores cuando se requiere mayor solidez."
     },
     {
       "id": "M-70-15-AQUA-2",
@@ -232,7 +263,10 @@
       "Hmax_m": 3.2,
       "csv": "M-70-15-AQUA-2.csv",
       "nombre_comercial": "Muro 70 Z1 AQUA-15 (2+2)",
-      "_perfil_deprecated": "70 Z1"
+      "_perfil_deprecated": "70 Z1",
+      "titulo_pdf": "Tabique zonas húmedas 70 mm (AQUA 15 mm, doble placa)",
+      "descripcion_sistema": "Sistema de tabique interior autoportante con estructura metálica galvanizada de 70 mm y doble placa hidrófuga Gypsotech AQUA H2 BA de 15 mm por ambas caras. Solución de máxima robustez en ambientes húmedos.",
+      "uso_recomendado": "Zonas húmedas de alto uso con mayor resistencia requerida."
     },
     {
       "id": "M-90-13-AQUA-1",
@@ -251,7 +285,10 @@
       "Hmax_m": 3.5,
       "csv": "M-90-13-AQUA-1.csv",
       "nombre_comercial": "Muro 90 Z1 AQUA-13 (1+1)",
-      "_perfil_deprecated": "90 Z1"
+      "_perfil_deprecated": "90 Z1",
+      "titulo_pdf": "Tabique zonas húmedas 90 mm (AQUA 13 mm)",
+      "descripcion_sistema": "Sistema de tabique interior autoportante con estructura metálica galvanizada de 90 mm y una placa hidrófuga Gypsotech AQUA H2 BA de 13 mm por ambas caras. Adecuado para ambientes húmedos con mayor espesor de estructura.",
+      "uso_recomendado": "Baños/cocinas y zonas húmedas cuando se requiere mayor espesor de perfilería."
     },
     {
       "id": "M-90-13-AQUA-2",
@@ -270,7 +307,10 @@
       "Hmax_m": 3.5,
       "csv": "M-90-13-AQUA-2.csv",
       "nombre_comercial": "Muro 90 Z1 AQUA-13 (2+2)",
-      "_perfil_deprecated": "90 Z1"
+      "_perfil_deprecated": "90 Z1",
+      "titulo_pdf": "Tabique zonas húmedas 90 mm (AQUA 13 mm, doble placa)",
+      "descripcion_sistema": "Sistema de tabique interior autoportante con estructura metálica galvanizada de 90 mm y doble placa hidrófuga Gypsotech AQUA H2 BA de 13 mm por ambas caras. Mayor rigidez para ambientes húmedos.",
+      "uso_recomendado": "Zonas húmedas con mayor exigencia de robustez y estabilidad."
     },
     {
       "id": "M-90-15-AQUA-1",
@@ -289,7 +329,10 @@
       "Hmax_m": 3.8,
       "csv": "M-90-15-AQUA-1.csv",
       "nombre_comercial": "Muro 90 Z1 AQUA-15 (1+1)",
-      "_perfil_deprecated": "90 Z1"
+      "_perfil_deprecated": "90 Z1",
+      "titulo_pdf": "Tabique zonas húmedas 90 mm (AQUA 15 mm)",
+      "descripcion_sistema": "Sistema de tabique interior autoportante con estructura metálica galvanizada de 90 mm y una placa hidrófuga Gypsotech AQUA H2 BA de 15 mm por ambas caras. Solución sólida para ambientes húmedos.",
+      "uso_recomendado": "Zonas húmedas interiores con necesidad de mayor solidez."
     },
     {
       "id": "M-90-15-AQUA-2",
@@ -308,7 +351,10 @@
       "Hmax_m": 3.8,
       "csv": "M-90-15-AQUA-2.csv",
       "nombre_comercial": "Muro 90 Z1 AQUA-15 (2+2)",
-      "_perfil_deprecated": "90 Z1"
+      "_perfil_deprecated": "90 Z1",
+      "titulo_pdf": "Tabique zonas húmedas 90 mm (AQUA 15 mm, doble placa)",
+      "descripcion_sistema": "Sistema de tabique interior autoportante con estructura metálica galvanizada de 90 mm y doble placa hidrófuga Gypsotech AQUA H2 BA de 15 mm por ambas caras. Solución de alta robustez para ambientes húmedos.",
+      "uso_recomendado": "Zonas húmedas de alto uso con mayor resistencia requerida."
     },
     {
       "id": "M-70-13-AQSTD-2",
@@ -332,7 +378,10 @@
       "csv": "M-70-13-AQSTD-2.csv",
       "nombre_comercial": "Muro 70 Z1 AQUA-STD 13 (2+2)",
       "_alias": "M-70-13-AQ-ST-2",
-      "_perfil_deprecated": "70 Z1"
+      "_perfil_deprecated": "70 Z1",
+      "titulo_pdf": "Tabique mixto 70 mm (STD + AQUA 13 mm, doble placa)",
+      "descripcion_sistema": "Sistema de tabique interior autoportante con estructura metálica galvanizada de 70 mm y combinación de placas Gypsotech STD BA y Gypsotech AQUA H2 BA de 13 mm por ambas caras, para ajustar prestaciones según la estancia. Ideal cuando se alternan zonas secas y húmedas en el mismo proyecto.",
+      "uso_recomendado": "Proyectos mixtos con estancias secas y húmedas (baños/cocinas) con criterio de placa por zona."
     },
     {
       "id": "M-70-15-AQUA-4",
@@ -351,7 +400,10 @@
       "Hmax_m": 3.2,
       "csv": "M-70-15-AQUA-4.csv",
       "nombre_comercial": "Muro 70 Z1 AQUA-15 (2+2)",
-      "_perfil_deprecated": "70 Z1"
+      "_perfil_deprecated": "70 Z1",
+      "titulo_pdf": "Tabique zonas húmedas 70 mm (AQUA 15 mm, 2+2)",
+      "descripcion_sistema": "Sistema de tabique interior autoportante con estructura metálica galvanizada de 70 mm y doble placa Gypsotech AQUA H2 BA de 15 mm por ambas caras (2+2). Solución de máxima robustez para ambientes húmedos.",
+      "uso_recomendado": "Zonas húmedas con alta exigencia de robustez."
     },
     {
       "id": "TA-70-13-1",
@@ -370,7 +422,10 @@
       "Hmax_m": 3,
       "csv": "TA-70-13-1.csv",
       "nombre_comercial": "Trasdosado 70 Z1 STD-13 1 capa",
-      "_perfil_deprecated": "70 Z1"
+      "_perfil_deprecated": "70 Z1",
+      "titulo_pdf": "Trasdosado autoportante 70 mm (STD 13 mm, 1 placa)",
+      "descripcion_sistema": "Sistema de trasdosado interior autoportante con estructura metálica galvanizada de 70 mm y una placa Gypsotech STD BA de 13 mm. Solución para regularizar paramentos interiores en seco y mejorar planeidad.",
+      "uso_recomendado": "Revestimiento interior en zonas secas para regularización de muros."
     },
     {
       "id": "TA-70-13-2",
@@ -389,7 +444,10 @@
       "Hmax_m": 3,
       "csv": "TA-70-13-2.csv",
       "nombre_comercial": "Trasdosado 70 Z1 STD-13 2 capas",
-      "_perfil_deprecated": "70 Z1"
+      "_perfil_deprecated": "70 Z1",
+      "titulo_pdf": "Trasdosado autoportante 70 mm (STD 13 mm, doble placa)",
+      "descripcion_sistema": "Sistema de trasdosado interior autoportante con estructura metálica galvanizada de 70 mm y doble placa Gypsotech STD BA de 13 mm. Aporta mayor rigidez para revestimientos interiores en seco.",
+      "uso_recomendado": "Revestimientos interiores en seco con mayor robustez."
     },
     {
       "id": "TA-70-13-AQUA-2",
@@ -408,7 +466,10 @@
       "Hmax_m": 3,
       "csv": "TA-70-13-AQUA-2.csv",
       "nombre_comercial": "Trasdosado 70 Z1 AQUA-13 2 capas",
-      "_perfil_deprecated": "70 Z1"
+      "_perfil_deprecated": "70 Z1",
+      "titulo_pdf": "Trasdosado autoportante 70 mm (AQUA 13 mm, doble placa)",
+      "descripcion_sistema": "Sistema de trasdosado interior autoportante con estructura metálica galvanizada de 70 mm y doble placa hidrófuga Gypsotech AQUA H2 BA de 13 mm. Recomendado para regularización de muros en zonas húmedas.",
+      "uso_recomendado": "Revestimiento interior en zonas húmedas (baños/cocinas)."
     },
     {
       "id": "TA-70-15-1",
@@ -427,7 +488,10 @@
       "Hmax_m": 3.2,
       "csv": "TA-70-15-1.csv",
       "nombre_comercial": "Trasdosado 70 Z1 STD-15 1 capa",
-      "_perfil_deprecated": "70 Z1"
+      "_perfil_deprecated": "70 Z1",
+      "titulo_pdf": "Trasdosado autoportante 70 mm (STD 15 mm)",
+      "descripcion_sistema": "Sistema de trasdosado interior autoportante con estructura metálica galvanizada de 70 mm y una placa Gypsotech STD BA de 15 mm. Solución sólida para regularización de paramentos interiores en seco.",
+      "uso_recomendado": "Revestimientos interiores en seco con mayor solidez."
     },
     {
       "id": "TA-90-13-1",
@@ -446,7 +510,10 @@
       "Hmax_m": 3.5,
       "csv": "TA-90-13-1.csv",
       "nombre_comercial": "Trasdosado 90 Z1 STD-13 1 capa",
-      "_perfil_deprecated": "90 Z1"
+      "_perfil_deprecated": "90 Z1",
+      "titulo_pdf": "Trasdosado autoportante 90 mm (STD 13 mm)",
+      "descripcion_sistema": "Sistema de trasdosado interior autoportante con estructura metálica galvanizada de 90 mm y una placa Gypsotech STD BA de 13 mm. Adecuado para regularización de muros interiores en seco con mayor espesor de perfilería.",
+      "uso_recomendado": "Revestimiento interior en seco cuando se requiere mayor espesor de estructura."
     },
     {
       "id": "TA-90-13-2",
@@ -465,7 +532,10 @@
       "Hmax_m": 3.5,
       "csv": "TA-90-13-2.csv",
       "nombre_comercial": "Trasdosado 90 Z1 STD-13 2 capas",
-      "_perfil_deprecated": "90 Z1"
+      "_perfil_deprecated": "90 Z1",
+      "titulo_pdf": "Trasdosado autoportante 90 mm (STD 13 mm, doble placa)",
+      "descripcion_sistema": "Sistema de trasdosado interior autoportante con estructura metálica galvanizada de 90 mm y doble placa Gypsotech STD BA de 13 mm. Mayor rigidez para revestimientos interiores en seco.",
+      "uso_recomendado": "Revestimientos interiores en seco con mayor robustez."
     },
     {
       "id": "TA-90-13-AQUA-1",
@@ -484,7 +554,10 @@
       "Hmax_m": 3.5,
       "csv": "TA-90-13-AQUA-1.csv",
       "nombre_comercial": "Trasdosado 90 Z1 AQUA-13 1 capa",
-      "_perfil_deprecated": "90 Z1"
+      "_perfil_deprecated": "90 Z1",
+      "titulo_pdf": "Trasdosado autoportante 90 mm (AQUA 13 mm)",
+      "descripcion_sistema": "Sistema de trasdosado interior autoportante con estructura metálica galvanizada de 90 mm y una placa hidrófuga Gypsotech AQUA H2 BA de 13 mm. Recomendado para muros interiores en zonas húmedas.",
+      "uso_recomendado": "Revestimiento interior en zonas húmedas."
     },
     {
       "id": "TA-90-13-AQUA-2",
@@ -503,7 +576,10 @@
       "Hmax_m": 3.5,
       "csv": "TA-90-13-AQUA-2.csv",
       "nombre_comercial": "Trasdosado 90 Z1 AQUA-13 2 capas",
-      "_perfil_deprecated": "90 Z1"
+      "_perfil_deprecated": "90 Z1",
+      "titulo_pdf": "Trasdosado autoportante 90 mm (AQUA 13 mm, doble placa)",
+      "descripcion_sistema": "Sistema de trasdosado interior autoportante con estructura metálica galvanizada de 90 mm y doble placa hidrófuga Gypsotech AQUA H2 BA de 13 mm. Aporta mayor rigidez en ambientes húmedos.",
+      "uso_recomendado": "Zonas húmedas con mayor exigencia de robustez."
     },
     {
       "id": "TA-90-15-1",
@@ -522,7 +598,10 @@
       "Hmax_m": 3.8,
       "csv": "TA-90-15-1.csv",
       "nombre_comercial": "Trasdosado 90 Z1 STD-15 1 capa",
-      "_perfil_deprecated": "90 Z1"
+      "_perfil_deprecated": "90 Z1",
+      "titulo_pdf": "Trasdosado autoportante 90 mm (STD 15 mm)",
+      "descripcion_sistema": "Sistema de trasdosado interior autoportante con estructura metálica galvanizada de 90 mm y una placa Gypsotech STD BA de 15 mm. Solución sólida para revestimientos interiores en seco.",
+      "uso_recomendado": "Revestimiento interior en seco con mayor solidez."
     },
     {
       "id": "TS-35-13-STD-1",
@@ -541,7 +620,10 @@
       "Hmax_m": 3,
       "csv": "TS-35-13-STD-1.csv",
       "nombre_comercial": "Trasdosado semidirecto Ω35 STD-13 1 capa",
-      "_perfil_deprecated": "Ω35 Z1"
+      "_perfil_deprecated": "Ω35 Z1",
+      "titulo_pdf": "Trasdosado semidirecto Ω35 (STD 13 mm)",
+      "descripcion_sistema": "Sistema de trasdosado interior semidirecto con perfilería tipo Omega Ω35 y una placa Gypsotech STD BA de 13 mm. Solución compacta para regularización de paramentos en interiores secos con mínima pérdida de espacio.",
+      "uso_recomendado": "Revestimiento interior en seco con espesor reducido."
     },
     {
       "id": "TS-35-13-AQUA-1",
@@ -560,7 +642,10 @@
       "Hmax_m": 3,
       "csv": "TS-35-13-AQUA-1.csv",
       "nombre_comercial": "Trasdosado semidirecto Ω35 AQUA-13 1 capa",
-      "_perfil_deprecated": "Ω35 Z1"
+      "_perfil_deprecated": "Ω35 Z1",
+      "titulo_pdf": "Trasdosado semidirecto Ω35 (AQUA 13 mm)",
+      "descripcion_sistema": "Sistema de trasdosado interior semidirecto con perfilería tipo Omega Ω35 y una placa hidrófuga Gypsotech AQUA H2 BA de 13 mm. Adecuado para regularización de paramentos en zonas húmedas con espesor reducido.",
+      "uso_recomendado": "Revestimiento interior en zonas húmedas con espesor reducido."
     },
     {
       "id": "T-TC47-13-1",
@@ -579,7 +664,10 @@
       "Hmax_m": 3,
       "csv": "T-TC47-13-1.csv",
       "nombre_comercial": "Techo TC47 STD-13 1 capa",
-      "_perfil_deprecated": "TC47 Z1"
+      "_perfil_deprecated": "TC47 Z1",
+      "titulo_pdf": "Techo continuo TC47 (STD 13 mm)",
+      "descripcion_sistema": "Sistema de techo continuo interior con estructura metálica TC47 y una placa Gypsotech STD BA de 13 mm. Solución para falsos techos en interiores secos con acabado liso y registrable por mantenimiento mediante aperturas puntuales.",
+      "uso_recomendado": "Techos interiores en zonas secas."
     },
     {
       "id": "T-TC47-13-AQUA-1",
@@ -598,7 +686,10 @@
       "Hmax_m": 3,
       "csv": "T-TC47-13-AQUA-1.csv",
       "nombre_comercial": "Techo TC47 AQUA-13 1 capa",
-      "_perfil_deprecated": "TC47 Z1"
+      "_perfil_deprecated": "TC47 Z1",
+      "titulo_pdf": "Techo continuo TC47 (AQUA 13 mm)",
+      "descripcion_sistema": "Sistema de techo continuo interior con estructura metálica TC47 y una placa hidrófuga Gypsotech AQUA H2 BA de 13 mm. Recomendado para techos en ambientes húmedos.",
+      "uso_recomendado": "Techos en baños, cocinas y zonas húmedas."
     },
     {
       "id": "T-TC60-13-1",
@@ -617,7 +708,10 @@
       "Hmax_m": 3.5,
       "csv": "T-TC60-13-1.csv",
       "nombre_comercial": "Techo TC60 STD-13 1 capa",
-      "_perfil_deprecated": "TC60 Z1"
+      "_perfil_deprecated": "TC60 Z1",
+      "titulo_pdf": "Techo continuo TC60 (STD 13 mm)",
+      "descripcion_sistema": "Sistema de techo continuo interior con estructura metálica TC60 y una placa Gypsotech STD BA de 13 mm. Adecuado cuando se requiere una estructura de techo de mayor capacidad y estabilidad en interiores secos.",
+      "uso_recomendado": "Techos interiores en zonas secas con mayor exigencia estructural."
     },
     {
       "id": "T-TC60-13-AQUA-1",
@@ -636,7 +730,10 @@
       "Hmax_m": 3.5,
       "csv": "T-TC60-13-AQUA-1.csv",
       "nombre_comercial": "Techo TC60 AQUA-13 1 capa",
-      "_perfil_deprecated": "TC60 Z1"
+      "_perfil_deprecated": "TC60 Z1",
+      "titulo_pdf": "Techo continuo TC60 (AQUA 13 mm)",
+      "descripcion_sistema": "Sistema de techo continuo interior con estructura metálica TC60 y una placa hidrófuga Gypsotech AQUA H2 BA de 13 mm. Recomendado para techos en ambientes húmedos con mayor estabilidad de estructura.",
+      "uso_recomendado": "Techos en zonas húmedas con mayor exigencia de estabilidad."
     },
     {
       "id": "EL-70-13-1",
@@ -655,7 +752,10 @@
       "Hmax_m": 3,
       "csv": "EL-70-13-1.csv",
       "nombre_comercial": "Externa Light 70 Z2 13 (1 capa)",
-      "_perfil_deprecated": "70 Z2"
+      "_perfil_deprecated": "70 Z2",
+      "titulo_pdf": "Sistema exterior ligero 70 mm (Externa Light 13 mm)",
+      "descripcion_sistema": "Sistema de cerramiento/revestimiento ligero para aplicaciones exteriores protegidas con estructura metálica galvanizada Z2 de 70 mm y placa Gypsotech Externa Light de 13 mm. Adecuado para soluciones exteriores según diseño del proyecto.",
+      "uso_recomendado": "Aplicaciones exteriores protegidas, fachadas ligeras o zonas expuestas según prescripción del proyecto."
     },
     {
       "id": "EL-90-13-1",
@@ -674,7 +774,10 @@
       "Hmax_m": 3.5,
       "csv": "EL-90-13-1.csv",
       "nombre_comercial": "Externa Light 90 Z2 13 (1 capa)",
-      "_perfil_deprecated": "90 Z2"
+      "_perfil_deprecated": "90 Z2",
+      "titulo_pdf": "Sistema exterior ligero 90 mm (Externa Light 13 mm)",
+      "descripcion_sistema": "Sistema de cerramiento/revestimiento ligero para aplicaciones exteriores protegidas con estructura metálica galvanizada Z2 de 90 mm y placa Gypsotech Externa Light de 13 mm. Mayor profundidad de estructura para soluciones exteriores según diseño del proyecto.",
+      "uso_recomendado": "Aplicaciones exteriores protegidas con mayor espesor de estructura."
     }
   ],
   "_migration": {

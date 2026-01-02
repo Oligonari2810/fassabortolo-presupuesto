@@ -646,12 +646,14 @@
       const container = document.getElementById('descripcionTecnica');
       const content = document.getElementById('descripcionTecnicaContent');
       
-      if (!meta || !meta.descripcion_tecnica_pdf) {
+      const descripcion = meta?.descripcion_sistema || meta?.descripcion_tecnica_pdf;
+      
+      if (!meta || !descripcion) {
         container.style.display = 'none';
         return;
       }
       
-      content.textContent = meta.descripcion_tecnica_pdf;
+      content.textContent = descripcion;
       container.style.display = 'block';
     }
 
