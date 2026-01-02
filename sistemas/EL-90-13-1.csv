@@ -1,10 +1,9 @@
-﻿sku,concepto,unidad,precio,coef,Hmax
-L00XL03200EI,Gypsotech Externa Light 13,m2,29.04,1.025,3.5
-C399041299B,Montante 90/40 Z2,ml,0.743,2.8,3.5
-U309030300B,Rail 90 Z2,ml,0.583,0.7,3.5
-301240,Tornillo exterior 4.0x42,ud,0.158,10,3.5
-304134,Tornillo MM 3.5x9.5,ud,0.014,3,3.5
-301121,Malla Externa Light,ml,0.672,1.0,3.5
-304058,Cinta juntas papel,ml,0.056,1.0,3.5
-304077,Banda estanca 90 mm,ml,0.753,0.6,3.5
-
+codigo,concepto,unidad,rendimiento_m2,precio_catalogo_almeria,familia_precio
+L00XL03200EI,Gypsotech Externa Light 13,m2,1.025,29.04,PLACA
+C399041299B,Montante 90/40 Z2,ml,2.8,0.743,RESTO
+U309030300B,Rail 90 Z2,ml,0.7,0.583,RESTO
+301240,Tornillo exterior 4.0x42,ud,10,0.158,RESTO
+304134,Tornillo MM 3.5x9.5,ud,3,0.014,RESTO
+301121,Malla Externa Light,ml,1.0,0.672,RESTO
+304058,Cinta juntas papel,ml,1.0,0.056,RESTO
+304077,Banda estanca 90 mm,ml,0.6,0.753,RESTO
