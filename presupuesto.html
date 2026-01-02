@@ -817,16 +817,32 @@
 
           let y = logoData ? 52 : 48;
 
+          // Almacenar datos para tabla resumen final
+          const resumenData = [];
+
           proyecto.forEach((p, idx) => {
-            if(y > 250) {
+            if(y > 240) {
               doc.addPage();
               y = 20;
             }
 
-            const precioPorM2 = p.ventaM2 || p.ventaPorM2 || (p.precioVentaSistema || p.totalVenta || p.total || 0) / p.area;
-            const totalSistema = p.precioVentaSistema || p.totalVenta || p.total || 0;
-            const systemName = p.meta?.name || p.system;
-            const descripcion = getDescripcionComercial(p.meta || {});
+            const precioPorM2 = p.ventaM2 || (p.precioVentaSistema || 0) / p.area;
+            const totalSistema = p.precioVentaSistema || 0;
+            const incotermSistema = p.incoterm || 'CIF';
+            const meta = p.meta || {};
+            
+            // Obtener título PDF (fallback a nombre_comercial o name)
+            const tituloPdf = meta.titulo_pdf || meta.nombre_comercial || meta.name || p.system;
+            const sistemaId = meta.id || p.system;
+            
+            // Guardar para tabla resumen
+            resumenData.push({
+              sistema: `${sistemaId} — ${tituloPdf}`,
+              m2: p.area,
+              precioM2: precioPorM2,
+              total: totalSistema,
+              incoterm: incotermSistema
+            });
             
             // Línea separadora
             doc.setDrawColor(220, 220, 220);
@@ -834,60 +850,153 @@
             doc.line(14, y, 196, y);
             y += 8;
             
-            // Nombre del sistema
+            // Encabezado: Sistema: {id} — {titulo_pdf}
             doc.setFontSize(13);
             doc.setFont(undefined, 'bold');
             doc.setTextColor('#2c3e50');
-            doc.text(systemName, 14, y);
-            y += 7;
+            doc.text(`Sistema: ${sistemaId} — ${tituloPdf}`, 14, y);
+            y += 8;
             
-            // Descripción comercial (placeholder para futura descripción técnica)
-            doc.setFontSize(9);
-            doc.setFont(undefined, 'normal');
-            doc.setTextColor('#555');
-            const descripcionTecnica = p.meta?.descripcion_tecnica_pdf || '';
+            // Bloque "Descripción técnica" (solo si existe)
+            const descripcionTecnica = meta.descripcion_tecnica_pdf;
             if (descripcionTecnica) {
+              doc.setFontSize(9);
+              doc.setFont(undefined, 'bold');
+              doc.setTextColor('#555');
+              doc.text('Descripción técnica:', 14, y);
+              y += 5;
+              
+              doc.setFont(undefined, 'normal');
               const descLines = doc.splitTextToSize(descripcionTecnica, 180);
-              doc.text(descLines, 14, y);
-              y += descLines.length * 4 + 4;
-            } else {
-              // Si no hay descripción técnica, mostrar descripción comercial
-              const descLines = doc.splitTextToSize(descripcion, 180);
               doc.text(descLines, 14, y);
               y += descLines.length * 4 + 4;
             }
             
-            // Información del sistema (solo precio venta para cliente)
-            doc.setFontSize(10);
+            // Bloque "Datos principales"
+            doc.setFontSize(9);
+            doc.setFont(undefined, 'bold');
+            doc.setTextColor('#555');
+            doc.text('Datos principales:', 14, y);
+            y += 5;
+            
+            doc.setFont(undefined, 'normal');
             doc.setTextColor('#666');
-            doc.text(`Superficie: ${fmtNumber(p.area, 2)} m²`, 14, y);
-            const incotermSistema = p.incoterm || 'CIF';
-            doc.text(`Precio ${incotermSistema} €/m² **`, 110, y);
+            const perfilMm = meta.perfil_mm || meta.perfil || '—';
+            const capasPorCara = meta.capas_por_cara || meta.capas || '—';
+            const hmax = meta.Hmax_m || meta.hmax || '—';
+            
+            doc.text(`• Superficie: ${fmtNumber(p.area, 2)} m²`, 14, y);
+            y += 5;
+            doc.text(`• Perfil: ${perfilMm}${typeof perfilMm === 'number' ? ' mm' : ''}`, 14, y);
+            y += 5;
+            doc.text(`• Capas: ${capasPorCara} por cara`, 14, y);
+            y += 5;
+            doc.text(`• Hmax: ${typeof hmax === 'number' ? fmtNumber(hmax, 1) : hmax}${typeof hmax === 'number' ? ' m' : ''}`, 14, y);
             y += 8;
             
-            // Total del sistema (destacado)
-            doc.setFontSize(12);
+            // Bloque "Precio"
+            doc.setFontSize(9);
+            doc.setFont(undefined, 'bold');
+            doc.setTextColor('#555');
+            doc.text('Precio:', 14, y);
+            y += 5;
+            
+            doc.setFont(undefined, 'normal');
+            doc.setTextColor('#666');
+            doc.text(`• Precio ${incotermSistema} €/m² **: ${fmtEUR(precioPorM2)}`, 14, y);
+            y += 5;
             doc.setFont(undefined, 'bold');
             doc.setTextColor('#2c3e50');
-            doc.text(`IMPORTE TOTAL SISTEMA: ${fmtEUR(totalSistema)}`, 14, y);
-            y += 15;
+            doc.text(`• Importe total sistema **: ${fmtEUR(totalSistema)}`, 14, y);
+            y += 12;
           });
 
-          // Línea separadora final
+          // Línea separadora antes de resumen
           doc.setDrawColor(220, 220, 220);
           doc.setLineWidth(1);
           doc.line(14, y, 196, y);
           y += 10;
           
-          // Total proyecto (muy destacado)
-          doc.setFontSize(16);
+          // Tabla resumen final
+          const primerIncoterm = proyecto.length > 0 && proyecto[0].incoterm ? proyecto[0].incoterm : 'CIF';
+          
+          if(y > 250) {
+            doc.addPage();
+            y = 20;
+          }
+          
+          doc.setFontSize(11);
+          doc.setFont(undefined, 'bold');
+          doc.setTextColor('#2c3e50');
+          doc.text('RESUMEN DEL PROYECTO', 14, y);
+          y += 8;
+          
+          // Encabezados de tabla
+          doc.setFontSize(9);
+          doc.setFont(undefined, 'bold');
+          doc.setTextColor('#555');
+          doc.text('Sistema', 14, y);
+          doc.text('m²', 70, y);
+          doc.text(`Precio ${primerIncoterm} €/m²`, 85, y);
+          doc.text('Total', 155, y);
+          y += 5;
+          
+          // Línea separadora tabla
+          doc.setDrawColor(200, 200, 200);
+          doc.setLineWidth(0.3);
+          doc.line(14, y, 196, y);
+          y += 5;
+          
+          // Filas de tabla
+          doc.setFontSize(8);
+          doc.setFont(undefined, 'normal');
+          doc.setTextColor('#666');
+          resumenData.forEach(item => {
+            if(y > 270) {
+              doc.addPage();
+              y = 20;
+              // Reimprimir encabezados
+              doc.setFontSize(9);
+              doc.setFont(undefined, 'bold');
+              doc.setTextColor('#555');
+              doc.text('Sistema', 14, y);
+              doc.text('m²', 70, y);
+              doc.text(`Precio ${primerIncoterm} €/m²`, 85, y);
+              doc.text('Total', 155, y);
+              y += 5;
+              doc.setDrawColor(200, 200, 200);
+              doc.line(14, y, 196, y);
+              y += 5;
+              doc.setFontSize(8);
+              doc.setFont(undefined, 'normal');
+              doc.setTextColor('#666');
+            }
+            
+            const sistemaTexto = doc.splitTextToSize(item.sistema, 50);
+            const alturaFila = Math.max(sistemaTexto.length * 4, 5);
+            doc.text(sistemaTexto, 14, y + (alturaFila - sistemaTexto.length * 4) / 2);
+            doc.text(fmtNumber(item.m2, 2), 70, y);
+            doc.text(fmtEUR(item.precioM2), 85, y);
+            doc.text(fmtEUR(item.total), 155, y);
+            y += alturaFila + 2;
+          });
+          
+          y += 3;
+          // Línea separadora antes de total
+          doc.setDrawColor(200, 200, 200);
+          doc.setLineWidth(0.5);
+          doc.line(14, y, 196, y);
+          y += 6;
+          
+          // Total proyecto (destacado)
+          doc.setFontSize(12);
           doc.setFont(undefined, 'bold');
           doc.setTextColor('#e74c3c');
-          doc.text(`TOTAL PROYECTO: ${fmtEUR(total)}`, 14, y);
-          y += 15;
+          doc.text('TOTAL PROYECTO:', 120, y);
+          doc.text(fmtEUR(total), 155, y);
+          y += 12;
           
-          // Nota legal según incoterm (si hay sistemas, usar el incoterm del primero)
-          const primerIncoterm = proyecto.length > 0 && proyecto[0].incoterm ? proyecto[0].incoterm : 'CIF';
+          // Nota legal según incoterm
           let notaLegal = '';
           if (primerIncoterm === 'EXW') {
             notaLegal = '** Precio EXW. No incluye transporte ni impuestos.';
@@ -901,13 +1010,6 @@
           doc.setFont(undefined, 'normal');
           doc.setTextColor('#666');
           doc.text(notaLegal, 14, y);
-          y += 6;
-          
-          // Nota final
-          doc.setFontSize(8);
-          doc.setFont(undefined, 'normal');
-          doc.setTextColor('#999');
-          doc.text('Presupuesto elaborado según sistemas FassaBortolo. Desglose técnico disponible bajo consulta.', 14, y);
 
           doc.save(`Presupuesto_${projectName.replace(/\s+/g,'_')}_${date.replace(/\//g,'-')}.pdf`);
           resolve();

@@ -19,6 +19,8 @@
       "Hmax_m": 3,
       "csv": "M-70-13-1.csv",
       "nombre_comercial": "Muro 70 Z1 STD-13 (1+1)",
+      "titulo_pdf": "Muro interior simple placa",
+      "descripcion_tecnica_pdf": "Sistema de tabique interior con montante y rail de 70 mm, zincado Z1. Una placa de yeso laminado estándar de 13 mm por cada cara. Altura máxima 3 m.",
       "_perfil_deprecated": "70 Z1"
     },
     {
@@ -38,6 +40,8 @@
       "Hmax_m": 3,
       "csv": "M-70-13-2.csv",
       "nombre_comercial": "Muro 70 Z1 STD-13 (2+2)",
+      "titulo_pdf": "Muro interior doble placa",
+      "descripcion_tecnica_pdf": "Sistema de tabique interior con montante y rail de 70 mm, zincado Z1. Dos placas de yeso laminado estándar de 13 mm por cada cara para mayor resistencia acústica. Altura máxima 3 m.",
       "_perfil_deprecated": "70 Z1"
     },
     {
