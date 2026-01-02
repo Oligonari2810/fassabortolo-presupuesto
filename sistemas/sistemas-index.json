@@ -17,12 +17,8 @@
     {"id":"M-90-13-AQUA-2","tipo":"MURO","perfil":"90 Z1","modulacion_mm":600,"placa":"AQUA-13","capas":2,"Hmax_m":3.5,"csv":"M-90-13-AQUA-2.csv","name":"Muro 90 Z1 AQUA-13 (2+2)"},
     {"id":"M-90-15-AQUA-1","tipo":"MURO","perfil":"90 Z1","modulacion_mm":600,"placa":"AQUA-15","capas":1,"Hmax_m":3.8,"csv":"M-90-15-AQUA-1.csv","name":"Muro 90 Z1 AQUA-15 (1+1)"},
     {"id":"M-90-15-AQUA-2","tipo":"MURO","perfil":"90 Z1","modulacion_mm":600,"placa":"AQUA-15","capas":2,"Hmax_m":3.8,"csv":"M-90-15-AQUA-2.csv","name":"Muro 90 Z1 AQUA-15 (2+2)"},
-    {"id":"M-70-13-MIX-2","tipo":"MURO","perfil":"70 Z1","modulacion_mm":600,"placa":"MIX-13","capas":2,"Hmax_m":3.0,"csv":"M-70-13-MIX-2.csv","name":"Muro 70 Z1 AQUA-STD 13 (1+1)"},
     {"id":"M-70-13-AQ-ST-2","tipo":"MURO","perfil":"70 Z1","modulacion_mm":600,"placa":"AQUA-STD-13","capas":2,"Hmax_m":3.0,"csv":"M-70-13-AQ-ST-2.csv","name":"Muro 70 Z1 AQUA-STD 13 (2+2)"},
-    {"id":"M-70-15-MIX-4","tipo":"MURO","perfil":"70 Z1","modulacion_mm":600,"placa":"MIX-15","capas":4,"Hmax_m":3.2,"csv":"M-70-15-MIX-4.csv","name":"Muro 70 Z1 AQUA-STD 15 (2+2)"},
-    {"id":"M-90-13-MIX-2","tipo":"MURO","perfil":"90 Z1","modulacion_mm":600,"placa":"MIX-13","capas":2,"Hmax_m":3.5,"csv":"M-90-13-MIX-2.csv","name":"Muro 90 Z1 AQUA-STD 13 (1+1)"},
-    {"id":"M-90-15-MIX-4","tipo":"MURO","perfil":"90 Z1","modulacion_mm":600,"placa":"MIX-15","capas":4,"Hmax_m":3.8,"csv":"M-90-15-MIX-4.csv","name":"Muro 90 Z1 AQUA-STD 15 (2+2)"},
-    {"id":"M-70-15-AQUA-4","tipo":"MURO","perfil":"70 Z1","modulacion_mm":600,"placa":"AQUA-15","capas":4,"Hmax_m":3.2,"csv":"M-70-15-AQUA-4.csv","name":"Muro 70 Z1 AQUA-15 (2+2)"},
+    {"id":"M-70-15-AQUA-4","tipo":"MURO","perfil":"70 Z1","modulacion_mm":600,"placa":"AQUA-15","capas":2,"Hmax_m":3.2,"csv":"M-70-15-AQUA-4.csv","name":"Muro 70 Z1 AQUA-15 (2+2)"},
     {"id":"TA-70-13-1","tipo":"TRASDOSADO","perfil":"70 Z1","modulacion_mm":600,"placa":"STD-13","capas":1,"Hmax_m":3.0,"csv":"TA-70-13-1.csv","name":"Trasdosado 70 Z1 STD-13 1 capa"},
     {"id":"TA-70-13-2","tipo":"TRASDOSADO","perfil":"70 Z1","modulacion_mm":600,"placa":"STD-13","capas":2,"Hmax_m":3.0,"csv":"TA-70-13-2.csv","name":"Trasdosado 70 Z1 STD-13 2 capas"},
     {"id":"TA-70-13-AQUA-2","tipo":"TRASDOSADO","perfil":"70 Z1","modulacion_mm":600,"placa":"AQUA-13","capas":2,"Hmax_m":3.0,"csv":"TA-70-13-AQUA-2.csv","name":"Trasdosado 70 Z1 AQUA-13 2 capas"},
@@ -38,7 +34,7 @@
     {"id":"T-TC47-13-AQUA-1","tipo":"TECHO","perfil":"TC47 Z1","modulacion_mm":600,"placa":"AQUA-13","capas":1,"Hmax_m":3.0,"csv":"T-TC47-13-AQUA-1.csv","name":"Techo TC47 AQUA-13 1 capa"},
     {"id":"T-TC60-13-1","tipo":"TECHO","perfil":"TC60 Z1","modulacion_mm":600,"placa":"STD-13","capas":1,"Hmax_m":3.5,"csv":"T-TC60-13-1.csv","name":"Techo TC60 STD-13 1 capa"},
     {"id":"T-TC60-13-AQUA-1","tipo":"TECHO","perfil":"TC60 Z1","modulacion_mm":600,"placa":"AQUA-13","capas":1,"Hmax_m":3.5,"csv":"T-TC60-13-AQUA-1.csv","name":"Techo TC60 AQUA-13 1 capa"},
-    {"id":"EL-70-13-1","tipo":"EXTERIOR","perfil":"70 Z2","modulacion_mm":600,"placa":"EXT-13","capas":1,"Hmax_m":3.0,"csv":"EL-70-13-1.csv","name":"Techo TC47 EXTERNA_LIGHT-13 1 capa"},
-    {"id":"EL-90-13-1","tipo":"EXTERIOR","perfil":"90 Z2","modulacion_mm":600,"placa":"EXT-13","capas":1,"Hmax_m":3.5,"csv":"EL-90-13-1.csv","name":"Techo TC60 EXTERNA_LIGHT-13 1 capa"}
+    {"id":"EL-70-13-1","tipo":"EXTERIOR","perfil":"70 Z2","modulacion_mm":600,"placa":"EXT-13","capas":1,"Hmax_m":3.0,"csv":"EL-70-13-1.csv","name":"Externa Light 70 Z2 13 (1 capa)"},
+    {"id":"EL-90-13-1","tipo":"EXTERIOR","perfil":"90 Z2","modulacion_mm":600,"placa":"EXT-13","capas":1,"Hmax_m":3.5,"csv":"EL-90-13-1.csv","name":"Externa Light 90 Z2 13 (1 capa)"}
   ]
 }
