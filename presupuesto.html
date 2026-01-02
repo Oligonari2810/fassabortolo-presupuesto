@@ -646,14 +646,24 @@
       const container = document.getElementById('descripcionTecnica');
       const content = document.getElementById('descripcionTecnicaContent');
       
-      const descripcion = meta?.descripcion_sistema || meta?.descripcion_tecnica_pdf;
+      const descripcionCorta = meta?.descripcion_tecnica_corta;
+      const descripcionLarga = meta?.descripcion_sistema || meta?.descripcion_tecnica_pdf;
       
-      if (!meta || !descripcion) {
+      if (!meta || (!descripcionCorta && !descripcionLarga)) {
         container.style.display = 'none';
         return;
       }
       
-      content.textContent = descripcion;
+      // Mostrar descripción corta primero (si existe), luego la larga
+      let htmlContent = '';
+      if (descripcionCorta) {
+        htmlContent += `<div style="font-weight: 500; margin-bottom: 0.5rem;">${descripcionCorta}</div>`;
+      }
+      if (descripcionLarga) {
+        htmlContent += `<div style="margin-top: ${descripcionCorta ? '0.5' : '0'}rem;">${descripcionLarga}</div>`;
+      }
+      
+      content.innerHTML = htmlContent;
       container.style.display = 'block';
     }
 
