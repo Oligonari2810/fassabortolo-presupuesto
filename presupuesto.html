@@ -390,7 +390,7 @@
           <div><strong>Logística:</strong> <span id="resumenLogistica">—</span></div>
           <div><strong>Coste total:</strong> <span id="resumenCosteTotal">—</span></div>
           <div><strong>Margen:</strong> <span id="resumenMargen">—</span></div>
-          <div><strong>Precio venta/m²:</strong> <span id="resumenVentaM2">—</span></div>
+          <div><strong>Precio <span id="resumenIncotermLabel">CIF</span> /m²:</strong> <span id="resumenVentaM2">—</span></div>
           <div><strong>Total sistema:</strong> <span id="resumenTotal" style="font-size: 1.1em; font-weight: bold; color: #e74c3c;">—</span></div>
         </div>
       </div>
@@ -840,19 +840,28 @@
             doc.text(systemName, 14, y);
             y += 7;
             
-            // Descripción comercial
+            // Descripción comercial (placeholder para futura descripción técnica)
             doc.setFontSize(9);
             doc.setFont(undefined, 'normal');
             doc.setTextColor('#555');
-            const descLines = doc.splitTextToSize(descripcion, 180);
-            doc.text(descLines, 14, y);
-            y += descLines.length * 4 + 4;
+            const descripcionTecnica = p.meta?.descripcion_tecnica_pdf || '';
+            if (descripcionTecnica) {
+              const descLines = doc.splitTextToSize(descripcionTecnica, 180);
+              doc.text(descLines, 14, y);
+              y += descLines.length * 4 + 4;
+            } else {
+              // Si no hay descripción técnica, mostrar descripción comercial
+              const descLines = doc.splitTextToSize(descripcion, 180);
+              doc.text(descLines, 14, y);
+              y += descLines.length * 4 + 4;
+            }
             
             // Información del sistema (solo precio venta para cliente)
             doc.setFontSize(10);
             doc.setTextColor('#666');
             doc.text(`Superficie: ${fmtNumber(p.area, 2)} m²`, 14, y);
-            doc.text(`Precio unitario: ${fmtEUR(precioPorM2)}/m²`, 110, y);
+            const incotermSistema = p.incoterm || 'CIF';
+            doc.text(`Precio ${incotermSistema} €/m² **`, 110, y);
             y += 8;
             
             // Total del sistema (destacado)
