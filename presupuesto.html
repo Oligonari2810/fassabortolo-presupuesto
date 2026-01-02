@@ -925,11 +925,6 @@
             // Rehidratar metadata desde el índice actualizado (no usar meta guardado)
             const metaFresh = systemsIndex.find(s => s.id === sistemaId) || p.meta || {};
             
-            // Debug temporal: verificar que descripcion_sistema llega con texto
-            if (metaFresh.descripcion_sistema) {
-              console.log(`[PDF] Sistema ${sistemaId}: descripcion_sistema encontrada (${metaFresh.descripcion_sistema.length} chars)`);
-            }
-            
             // Obtener título PDF desde metadata fresca (fallback a nombre_comercial o name)
             const tituloPdf = metaFresh.titulo_pdf || metaFresh.nombre_comercial || metaFresh.name || sistemaId;
             
