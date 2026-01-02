@@ -503,6 +503,18 @@
       }
       return 'RESTO';
     }
+    
+    // Funciones globales para detectar tipo de material (aplicación de desperdicio)
+    function esPlaca(sku) {
+      return typeof sku === "string" && sku.toUpperCase().startsWith("L00");
+    }
+    
+    function esPerfileria(sku) {
+      if (typeof sku !== "string") return false;
+      const skuUpper = sku.toUpperCase();
+      // Perfilería: Montantes (C*), Rails (U*), Omega (E*), TC (TC*)
+      return skuUpper.startsWith("C") || skuUpper.startsWith("U") || skuUpper.startsWith("E") || skuUpper.startsWith("TC");
+    }
 
     function parseCSV(text){
       const lines = text.trim().split(/\r?\n/);
