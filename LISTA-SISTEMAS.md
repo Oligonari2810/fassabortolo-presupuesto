@@ -4,7 +4,7 @@
 
 ---
 
-## 📋 MUROS (20 sistemas)
+## 📋 MUROS (21 sistemas)
 
 ### STD - 1 capa
 - **M-70-13-1** | Perfil: 70 Z1 | Placa: STD-13 | 1 capa | Hmax: 3.0m | CSV: M-70-13-1.csv
@@ -41,7 +41,7 @@
 
 ---
 
-## 📋 TRASDOSADOS (8 sistemas)
+## 📋 TRASDOSADOS (10 sistemas)
 
 ### STD - 1 capa
 - **TA-70-13-1** | Perfil: 70 Z1 | Placa: STD-13 | 1 capa | Hmax: 3.0m | CSV: TA-70-13-1.csv
@@ -59,27 +59,21 @@
 ### AQUA - 2 capas
 - **TA-90-13-AQUA-2** | Perfil: 90 Z1 | Placa: AQUA-13 | 2 capas | Hmax: 3.5m | CSV: TA-90-13-AQUA-2.csv
 
+### Semidirectos (Ω35)
+- **TS-35-13-STD-1** | Perfil: Ω35 Z1 | Placa: STD-13 | 1 capa | Hmax: 3.0m | CSV: TS-35-13-STD-1.csv
+- **TS-35-13-AQUA-1** | Perfil: Ω35 Z1 | Placa: AQUA-13 | 1 capa | Hmax: 3.0m | CSV: TS-35-13-AQUA-1.csv
+
 ---
 
-## 📋 TECHOS (6 sistemas)
+## 📋 TECHOS (4 sistemas)
 
-### TC47 - STD
+### TC47
 - **T-TC47-13-1** | Perfil: TC47 Z1 | Placa: STD-13 | 1 capa | Hmax: 3.0m | CSV: T-TC47-13-1.csv
-
-### TC47 - AQUA
 - **T-TC47-13-AQUA-1** | Perfil: TC47 Z1 | Placa: AQUA-13 | 1 capa | Hmax: 3.0m | CSV: T-TC47-13-AQUA-1.csv
 
-### TC60 - STD
+### TC60
 - **T-TC60-13-1** | Perfil: TC60 Z1 | Placa: STD-13 | 1 capa | Hmax: 3.5m | CSV: T-TC60-13-1.csv
-
-### TC60 - AQUA
 - **T-TC60-13-AQUA-1** | Perfil: TC60 Z1 | Placa: AQUA-13 | 1 capa | Hmax: 3.5m | CSV: T-TC60-13-AQUA-1.csv
-
-### OMEGA35 - STD
-- **T-OMEGA35-13-1** | Perfil: OMEGA35 | Placa: STD-13 | 1 capa | Hmax: 3.0m | CSV: T-OMEGA35-13-1.csv
-
-### OMEGA35 - AQUA
-- **T-OMEGA35-13-AQUA-1** | Perfil: OMEGA35 | Placa: AQUA-13 | 1 capa | Hmax: 3.0m | CSV: T-OMEGA35-13-AQUA-1.csv
 
 ---
 
@@ -92,9 +86,9 @@
 
 ## 📊 RESUMEN POR TIPO
 
-- **MUROS**: 20 sistemas (8 STD, 8 AQUA, 1 AQUA-4, 4 MIX)
-- **TRASDOSADOS**: 8 sistemas (6 STD, 2 AQUA)
-- **TECHOS**: 6 sistemas (3 STD, 3 AQUA)
+- **MUROS**: 21 sistemas (8 STD, 8 AQUA, 1 AQUA-4, 4 MIX)
+- **TRASDOSADOS**: 10 sistemas (6 STD, 2 AQUA, 2 Semidirectos Ω35)
+- **TECHOS**: 4 sistemas (2 TC47, 2 TC60)
 - **EXTERIOR**: 2 sistemas
 - **TOTAL**: 37 sistemas
 
@@ -104,5 +98,7 @@
 
 - Todos los SKU están actualizados a códigos oficiales FassaBortolo
 - Todos los precios están verificados según lista oficial
+- Sistemas de 2 capas con coeficientes corregidos (placas: 4.10, riel: 0.40, etc.)
+- Sistemas ordenados por tipo en el selector (MURO, TRASDOSADO, TECHO, EXTERIOR)
+- Selector carga tabla automáticamente al cambiar sistema
 - Sistemas operativos y funcionales
-
