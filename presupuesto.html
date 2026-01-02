@@ -561,6 +561,50 @@
       img.src = svgDataUri;
     }
 
+    function getDescripcionComercial(meta) {
+      const tipo = meta.tipo;
+      const placa = meta.placa;
+      const capas = meta.capas;
+      const perfil = meta.perfil;
+      
+      let desc = '';
+      
+      if(tipo === 'MURO') {
+        if(placa.includes('AQUA')) {
+          desc = capas === 1 ? 'Tabique interior hidrófugo · Simple placa' : 'Tabique interior hidrófugo · Doble placa';
+        } else if(placa.includes('MIX') || placa.includes('AQ-ST')) {
+          desc = 'Tabique interior mixto (hidrófugo/estándar) · Doble placa';
+        } else {
+          desc = capas === 1 ? 'Tabique interior · Simple placa' : 'Tabique interior · Doble placa';
+        }
+        desc += ` · Perfilería ${perfil}`;
+      } else if(tipo === 'TRASDOSADO') {
+        if(meta.perfil.includes('Ω')) {
+          desc = placa.includes('AQUA') 
+            ? 'Trasdosado semidirecto hidrófugo · Perfil Ω35' 
+            : 'Trasdosado semidirecto · Perfil Ω35';
+        } else {
+          if(placa.includes('AQUA')) {
+            desc = capas === 1 ? 'Trasdosado autoportante hidrófugo · Simple placa' : 'Trasdosado autoportante hidrófugo · Doble placa';
+          } else {
+            desc = capas === 1 ? 'Trasdosado autoportante · Simple placa' : 'Trasdosado autoportante · Doble placa';
+          }
+          desc += ` · Perfilería ${perfil}`;
+        }
+      } else if(tipo === 'TECHO') {
+        if(placa.includes('AQUA')) {
+          desc = `Techo continuo hidrófugo · Perfil ${perfil}`;
+        } else {
+          desc = `Techo continuo · Perfil ${perfil}`;
+        }
+        desc += ' · Simple placa';
+      } else if(tipo === 'EXTERIOR') {
+        desc = `Fachada ventilada · Perfilería ${perfil} · Placa externa`;
+      }
+      
+      return desc || 'Sistema constructivo FassaBortolo';
+    }
+
     async function exportPDF(){
       if(proyecto.length === 0){
         alert('No hay sistemas en el proyecto');
@@ -579,11 +623,11 @@
             doc.addImage(logoData, 'PNG', 14, 10, 60, 15);
           }
           
-          doc.setFontSize(18);
+          doc.setFontSize(20);
           doc.setTextColor('#e74c3c');
           doc.text('Presupuesto', 14, logoData ? 28 : 22);
           doc.setFontSize(11);
-          doc.setTextColor('#333');
+          doc.setTextColor('#666');
           doc.text(`Proyecto: ${projectName}`, 14, logoData ? 34 : 32);
           doc.text(`Fecha: ${date}`, 14, logoData ? 40 : 38);
 
@@ -596,43 +640,63 @@
             }
 
             const precioPorM2 = p.total / p.area;
+            const systemName = p.meta?.name || p.system;
+            const descripcion = getDescripcionComercial(p.meta || {});
             
-            doc.setFontSize(12);
-            doc.setTextColor('#2c3e50');
-            doc.text(`${p.system} (${p.area.toFixed(2)} m²)`,14,y);
+            // Línea separadora
+            doc.setDrawColor(220, 220, 220);
+            doc.setLineWidth(0.5);
+            doc.line(14, y, 196, y);
             y += 8;
-
-            const body = p.rows.map(r => [
-              r.concepto,
-              r.unidad,
-              r.coef,
-              EUR(r.precio)
-            ]);
-
-            doc.autoTable({
-              head:[['Material','Unidad','Rendimiento','Precio Unit.']],
-              body:body,
-              startY:y,
-              styles:{fontSize:9},
-              headStyles:{fillColor:'#2c3e50',textColor:'#fff'},
-              alternateRowStyles:{fillColor:'#f8f9fa'},
-              columnStyles: {
-                2: {halign: 'right'},
-                3: {halign: 'right'}
-              }
-            });
-
-            y = doc.lastAutoTable.finalY + 10;
             
+            // Nombre del sistema
+            doc.setFontSize(13);
+            doc.setFont(undefined, 'bold');
+            doc.setTextColor('#2c3e50');
+            doc.text(systemName, 14, y);
+            y += 7;
+            
+            // Descripción comercial
+            doc.setFontSize(9);
+            doc.setFont(undefined, 'normal');
+            doc.setTextColor('#555');
+            const descLines = doc.splitTextToSize(descripcion, 180);
+            doc.text(descLines, 14, y);
+            y += descLines.length * 4 + 4;
+            
+            // Información del sistema
             doc.setFontSize(10);
-            doc.text(`Total ${p.system}: ${EUR(p.total)} (${EUR(precioPorM2)}/m²)`,14,y);
-            y += 12;
+            doc.setTextColor('#666');
+            doc.text(`Superficie: ${p.area.toFixed(2)} m²`, 14, y);
+            doc.text(`Precio unitario: ${EUR(precioPorM2)}/m²`, 110, y);
+            y += 8;
+            
+            // Total del sistema (destacado)
+            doc.setFontSize(12);
+            doc.setFont(undefined, 'bold');
+            doc.setTextColor('#2c3e50');
+            doc.text(`IMPORTE TOTAL SISTEMA: ${EUR(p.total)}`, 14, y);
+            y += 15;
           });
 
-          y += 5;
-          doc.setFontSize(14);
+          // Línea separadora final
+          doc.setDrawColor(220, 220, 220);
+          doc.setLineWidth(1);
+          doc.line(14, y, 196, y);
+          y += 10;
+          
+          // Total proyecto (muy destacado)
+          doc.setFontSize(16);
+          doc.setFont(undefined, 'bold');
           doc.setTextColor('#e74c3c');
-          doc.text(`TOTAL PROYECTO: ${EUR(total)}`,14,y);
+          doc.text(`TOTAL PROYECTO: ${EUR(total)}`, 14, y);
+          
+          // Nota final
+          y += 10;
+          doc.setFontSize(8);
+          doc.setFont(undefined, 'normal');
+          doc.setTextColor('#999');
+          doc.text('Presupuesto elaborado según sistemas FassaBortolo. Desglose técnico disponible bajo consulta.', 14, y);
 
           doc.save(`Presupuesto_${projectName.replace(/\s+/g,'_')}_${date.replace(/\//g,'-')}.pdf`);
           resolve();
