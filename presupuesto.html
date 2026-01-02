@@ -2,82 +2,341 @@
 <html lang="es">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=5,user-scalable=yes" />
+  <meta name="theme-color" content="#2c3e50" />
   <title>Proyecto – AriasGroupCaribe SRL</title>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
   <style>
-    :root{--rojo:#e74c3c;--gris:#2c3e50;--light:#ecf0f1}
-    body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;margin:0;background:var(--light);color:#333}
-    .header{background:var(--gris);color:#fff;padding:14px 24px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:10}
-    .header .logo{font-size:1.4rem;font-weight:800;color:var(--rojo)}
-    .header .back{color:#fff;text-decoration:none;margin-left:auto}
-    .container{max-width:1200px;margin:24px auto;padding:0 24px}
-    .card{background:#fff;border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,.08);padding:24px;margin-bottom:24px}
-    h3{margin-top:0;color:var(--gris);border-bottom:2px solid var(--rojo);padding-bottom:8px;margin-bottom:16px}
-    .row{display:flex;gap:18px;flex-wrap:wrap;align-items:end}
-    label{display:flex;flex-direction:column;font-size:.9rem;gap:6px;flex:1 1 220px}
-    input,select{padding:10px 12px;font-size:14px;border:1px solid #ccc;border-radius:8px}
-    button{padding:10px 16px;border:0;border-radius:8px;background:var(--rojo);color:#fff;font-size:14px;font-weight:600;cursor:pointer;transition:.2s}
-    button:hover{background:#c0392b}
-    .meta{display:flex;gap:18px;flex-wrap:wrap;margin-top:12px}
-    .meta .item{background:var(--light);border-radius:8px;padding:10px 14px;font-size:.85rem;color:#555}
-    table{width:100%;border-collapse:collapse;margin-top:18px;font-size:.9rem}
-    th,td{border-bottom:1px solid #eee;padding:10px 8px;text-align:left}
-    th{font-size:.75rem;text-transform:uppercase;letter-spacing:.05em;color:#666}
-    .num{font-variant-numeric:tabular-nums}
-    .totals{background:var(--gris);color:#fff;border-radius:8px;padding:14px 18px;margin-top:18px;display:flex;gap:24px;flex-wrap:wrap}
-    .totals .lbl{font-size:.75rem;opacity:.9}
-    .totals .val{font-size:1.3rem;font-weight:700}
-    .actions{margin-top:18px;display:flex;gap:12px;flex-wrap:wrap;align-items:center}
-    #fileInput{display:none}
-    .muted{color:#7f8c8d;font-size:.8rem}
-    #projTable{margin-top:16px}
-    #projTable th{background:var(--rojo);color:#fff}
-    .btn-small{padding:4px 8px;font-size:12px;margin:0 2px}
-    .table-wrapper{overflow-x:auto;margin-top:16px;-webkit-overflow-scrolling:touch}
-    
-    /* Responsive - Móvil */
-    @media (max-width: 768px) {
-      .container{padding:0 16px;margin:16px auto}
-      .card{padding:16px;margin-bottom:16px}
-      .header{padding:12px 16px}
-      .header .logo{font-size:1.1rem}
-      .header .back{font-size:.85rem}
-      h3{font-size:1.1rem;padding-bottom:6px;margin-bottom:12px}
-      .row{gap:12px}
-      label{flex:1 1 100%}
-      input,select{font-size:16px;padding:12px}
-      button{width:100%;padding:12px;font-size:16px;margin-top:8px}
-      #addBtn{width:100%}
-      .meta{gap:8px}
-      .meta .item{font-size:.8rem;padding:8px 10px}
-      table{font-size:.8rem;display:block;overflow-x:auto;-webkit-overflow-scrolling:touch}
-      th,td{padding:8px 6px;white-space:nowrap}
-      th{font-size:.7rem}
-      .totals{padding:12px 16px;flex-direction:column;gap:8px;text-align:center}
-      .totals .val{font-size:1.5rem}
-      .actions{flex-direction:column}
-      .actions button{width:100%}
-      .muted{font-size:.75rem;text-align:center}
+    :root{
+      --rojo:#e74c3c;
+      --gris:#2c3e50;
+      --light:#ecf0f1;
+      --font-base:16px;
+      --space-xs:0.5rem;
+      --space-sm:0.75rem;
+      --space-md:1rem;
+      --space-lg:1.5rem;
+      --space-xl:2rem;
+      --tap-target:3rem;
     }
-    
-    /* Responsive - Tablet */
-    @media (min-width: 769px) and (max-width: 1024px) {
-      .container{padding:0 20px}
-      .card{padding:20px}
-      label{flex:1 1 calc(50% - 9px)}
+    *{box-sizing:border-box}
+    body{
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      margin:0;
+      background:var(--light);
+      color:#333;
+      font-size:var(--font-base);
+      line-height:1.5;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+    }
+    .header{
+      background:var(--gris);
+      color:#fff;
+      padding:var(--space-sm) var(--space-md);
+      display:flex;
+      align-items:center;
+      gap:var(--space-sm);
+      position:sticky;
+      top:0;
+      z-index:100;
+      box-shadow:0 2px 4px rgba(0,0,0,.1);
+    }
+    .header .logo{
+      font-size:1.125rem;
+      font-weight:800;
+      color:var(--rojo);
+      flex:1;
+      min-width:0;
+    }
+    .header .back{
+      color:#fff;
+      text-decoration:none;
+      display:flex;
+      align-items:center;
+      gap:var(--space-xs);
+      padding:var(--space-xs);
+      min-height:var(--tap-target);
+      min-width:var(--tap-target);
+      justify-content:center;
+      border-radius:0.5rem;
+      transition:background-color 0.2s;
+    }
+    .header .back:active{background-color:rgba(255,255,255,.1)}
+    .container{
+      max-width:75rem;
+      margin:0 auto;
+      padding:var(--space-md);
+    }
+    .card{
+      background:#fff;
+      border-radius:0.75rem;
+      box-shadow:0 2px 8px rgba(0,0,0,.08);
+      padding:var(--space-md);
+      margin-bottom:var(--space-md);
+    }
+    h3{
+      margin:0 0 var(--space-md) 0;
+      color:var(--gris);
+      border-bottom:2px solid var(--rojo);
+      padding-bottom:var(--space-xs);
+      font-size:1.125rem;
+      font-weight:700;
+    }
+    .row{
+      display:flex;
+      flex-direction:column;
+      gap:var(--space-md);
+    }
+    label{
+      display:flex;
+      flex-direction:column;
+      gap:var(--space-xs);
+      font-size:0.875rem;
+      width:100%;
+    }
+    input[type="text"],
+    input[type="number"],
+    select{
+      width:100%;
+      max-width:100%;
+      padding:var(--space-md);
+      font-size:var(--font-base);
+      border:1px solid #ccc;
+      border-radius:0.5rem;
+      background:#fff;
+      min-height:var(--tap-target);
+      -webkit-appearance:none;
+      appearance:none;
+    }
+    input:focus,select:focus{
+      outline:2px solid var(--rojo);
+      outline-offset:2px;
+      border-color:var(--rojo);
+    }
+    select{
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23333' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+      background-repeat:no-repeat;
+      background-position:right 1rem center;
+      padding-right:2.5rem;
+      word-break:break-word;
+    }
+    select option{word-break:break-word}
+    button{
+      width:100%;
+      padding:var(--space-md);
+      border:0;
+      border-radius:0.5rem;
+      background:var(--rojo);
+      color:#fff;
+      font-size:var(--font-base);
+      font-weight:600;
+      cursor:pointer;
+      min-height:var(--tap-target);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:var(--space-xs);
+      transition:background-color 0.2s,transform 0.1s;
+      position:relative;
+      overflow:hidden;
+    }
+    button:active{
+      background:#c0392b;
+      transform:scale(0.98);
+    }
+    button:active::after{
+      content:'';
+      position:absolute;
+      top:50%;
+      left:50%;
+      width:0;
+      height:0;
+      border-radius:50%;
+      background:rgba(255,255,255,.3);
+      transform:translate(-50%,-50%);
+      animation:ripple 0.4s ease-out;
+    }
+    @keyframes ripple{
+      to{width:200px;height:200px;opacity:0}
+    }
+    .meta{
+      display:flex;
+      flex-wrap:wrap;
+      gap:var(--space-sm);
+      margin-top:var(--space-md);
+    }
+    .meta .item{
+      background:var(--light);
+      border-radius:0.5rem;
+      padding:var(--space-xs) var(--space-sm);
+      font-size:0.8125rem;
+      color:#555;
+    }
+    .table-wrapper{
+      overflow-x:auto;
+      margin-top:var(--space-md);
+      -webkit-overflow-scrolling:touch;
+      scrollbar-width:thin;
+    }
+    .table-wrapper::-webkit-scrollbar{
+      height:0.5rem;
+    }
+    .table-wrapper::-webkit-scrollbar-thumb{
+      background:#ccc;
+      border-radius:0.25rem;
+    }
+    table{
+      width:100%;
+      border-collapse:collapse;
+      font-size:0.875rem;
+      min-width:600px;
+    }
+    th,td{
+      border-bottom:1px solid #eee;
+      padding:var(--space-sm) var(--space-xs);
+      text-align:left;
+      white-space:nowrap;
+    }
+    th{
+      font-size:0.75rem;
+      text-transform:uppercase;
+      letter-spacing:0.05em;
+      color:#666;
+      font-weight:600;
+      background:#f8f9fa;
+      position:sticky;
+      top:0;
+      z-index:1;
+    }
+    .num{
+      font-variant-numeric:tabular-nums;
+      text-align:right;
+    }
+    .totals{
+      background:var(--gris);
+      color:#fff;
+      border-radius:0.5rem;
+      padding:var(--space-md);
+      margin-top:var(--space-md);
+      display:flex;
+      flex-direction:column;
+      gap:var(--space-sm);
+      text-align:center;
+      position:sticky;
+      bottom:0;
+      z-index:10;
+      box-shadow:0 -2px 8px rgba(0,0,0,.1);
+    }
+    .totals .lbl{
+      font-size:0.75rem;
+      opacity:.9;
+    }
+    .totals .val{
+      font-size:1.5rem;
+      font-weight:700;
+    }
+    .actions{
+      margin-top:var(--space-md);
+      display:flex;
+      flex-direction:column;
+      gap:var(--space-sm);
+    }
+    .actions button{
+      width:100%;
+    }
+    .btn-icon-only .btn-label{
+      display:none;
+    }
+    .btn-small{
+      padding:var(--space-xs);
+      font-size:0.75rem;
+      min-height:2.5rem;
+      min-width:2.5rem;
+      width:auto;
+    }
+    .muted{
+      color:#7f8c8d;
+      font-size:0.75rem;
+      margin-top:var(--space-sm);
+      line-height:1.6;
+    }
+    #projTable th{
+      background:var(--rojo);
+      color:#fff;
+    }
+    #fileInput{display:none}
+    @media (min-width:48rem){
+      .container{padding:var(--space-lg)}
+      .card{padding:var(--space-lg);margin-bottom:var(--space-lg)}
+      .header{padding:var(--space-md) var(--space-lg)}
+      .header .logo{font-size:1.375rem}
+      h3{font-size:1.25rem;margin-bottom:var(--space-lg)}
+      .row{
+        flex-direction:row;
+        flex-wrap:wrap;
+        gap:var(--space-md);
+        align-items:flex-end;
+      }
+      label{
+        flex:1 1 auto;
+        min-width:0;
+      }
+      input[type="text"],
+      input[type="number"],
+      select{
+        max-width:7.5rem;
+      }
+      label[style*="flex:1 1 100%"] input{
+        max-width:100%;
+      }
+      button{
+        width:auto;
+        padding:var(--space-sm) var(--space-md);
+        min-width:auto;
+      }
+      .meta{gap:var(--space-md)}
+      .meta .item{font-size:0.875rem;padding:var(--space-xs) var(--space-sm)}
+      table{font-size:0.9375rem;min-width:auto}
+      th,td{padding:var(--space-sm) var(--space-xs)}
+      th{font-size:0.8125rem}
+      .totals{
+        flex-direction:row;
+        gap:var(--space-xl);
+        text-align:left;
+        position:relative;
+        box-shadow:none;
+      }
+      .totals .val{font-size:1.3125rem}
+      .actions{
+        flex-direction:row;
+        gap:var(--space-md);
+      }
+      .actions button{width:auto;flex:1}
+      .btn-icon-only .btn-label{display:inline}
+      .muted{text-align:left}
+    }
+    @media (min-width:64rem){
+      .container{max-width:75rem}
+      .card{padding:var(--space-xl)}
+      h3{font-size:1.5rem}
+      .row{gap:var(--space-lg)}
+      label{flex:1 1 220px}
+      input[type="text"],
+      input[type="number"],
+      select{max-width:7.5rem}
+      table{font-size:0.9375rem}
     }
   </style>
 </head>
 <body>
   <header class="header">
-    <i class="fas fa-project-diagram"></i>
+    <i class="fas fa-project-diagram" aria-hidden="true"></i>
     <div class="logo">AriasGroupCaribe SRL</div>
-    <a class="back" href="index.html"><i class="fas fa-arrow-left"></i> Volver</a>
+    <a class="back" href="index.html" aria-label="Volver al inicio"><i class="fas fa-arrow-left" aria-hidden="true"></i> <span>Volver</span></a>
   </header>
 
   <div class="container">
-    <!-- Nombre del Proyecto -->
     <div class="card">
       <h3>Proyecto</h3>
       <div class="row">
@@ -88,7 +347,6 @@
       </div>
     </div>
 
-    <!-- Añadir Sistema -->
     <div class="card">
       <h3>Añadir Sistema al Proyecto</h3>
       <div class="row">
@@ -108,7 +366,7 @@
           Descuento %
           <input id="discount" type="number" step="0.1" value="0" />
         </label>
-        <button id="addBtn"><i class="fas fa-plus"></i> Añadir</button>
+        <button id="addBtn"><i class="fas fa-plus" aria-hidden="true"></i> Añadir</button>
       </div>
       <div class="meta" id="metaBox"></div>
       
@@ -124,7 +382,6 @@
       </div>
     </div>
 
-    <!-- Proyecto Acumulado -->
     <div class="card">
       <h3>Proyecto Acumulado</h3>
       <div class="table-wrapper">
@@ -142,12 +399,11 @@
       </div>
     </div>
 
-    <!-- Exportaciones -->
     <div class="card">
       <h3>Exportar</h3>
       <div class="actions">
-        <button id="pdfBtn" style="background:#e74c3c"><i class="fas fa-file-pdf"></i> PDF (Cliente)</button>
-        <button id="excelBtn" style="background:#27ae60"><i class="fas fa-file-excel"></i> Excel (Control Interno)</button>
+        <button id="pdfBtn" class="btn-icon-only" style="background:#e74c3c"><i class="fas fa-file-pdf" aria-hidden="true"></i> <span class="btn-label">PDF (Cliente)</span></button>
+        <button id="excelBtn" class="btn-icon-only" style="background:#27ae60"><i class="fas fa-file-excel" aria-hidden="true"></i> <span class="btn-label">Excel (Control Interno)</span></button>
       </div>
       <div class="muted">
         <strong>PDF:</strong> Resumen para cliente (sistemas, materiales, rendimiento, precio/m², total)<br>
@@ -156,7 +412,6 @@
     </div>
   </div>
 
-  <!-- Librerías CDN -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
@@ -164,6 +419,7 @@
 
   <script>
     const EUR = n => new Intl.NumberFormat('es-ES',{style:'currency',currency:'EUR'}).format(n||0);
+    const LOGO_SVG = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA4MDAgMjAwIiB3aWR0aD0iODAwIiBoZWlnaHQ9IjIwMCI+PHRleHQgeD0iMjAiIHk9IjExMCIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjkwIiBmb250LXdlaWdodD0iOTAwIiBmaWxsPSIjZTc0YzNjIj5BUklBUzwvdGV4dD48dGV4dCB4PSIyMCIgeT0iMTYwIiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMzgiIGZvbnQtd2VpZ2h0PSIzMDAiIGZpbGw9IiMyYzNlNTAiPkdST1VQIENhcmliZSBTUkw8L3RleHQ+PC9zdmc+';
 
     async function loadIndex(){
       const res = await fetch('sistemas/sistemas-index.json');
@@ -190,7 +446,7 @@
 
     function toNum(x){ return Number(String(x).replace(',','.'))||0; }
 
-    let proyecto = []; // [{system,area,waste,discount,total,rows,meta}, ...]
+    let proyecto = [];
 
     async function calcularYMostrar(){
       const area = toNum(document.getElementById('area').value);
@@ -267,7 +523,7 @@
           <td class="num">${EUR(precioPorM2)}</td>
           <td class="num">${EUR(p.total)}</td>
           <td>
-            <button onclick="eliminarSistema(${idx})" class="btn-small" style="background:#e74c3c"><i class="fas fa-trash"></i></button>
+            <button onclick="eliminarSistema(${idx})" class="btn-small" style="background:#e74c3c" aria-label="Eliminar sistema"><i class="fas fa-trash" aria-hidden="true"></i></button>
           </td>
         `;
         tbody.appendChild(tr);
@@ -281,26 +537,21 @@
       renderProyecto();
     }
 
-    function svgToImageData(svgText, callback) {
+    function svgToImageData(svgDataUri, callback) {
       const canvas = document.createElement('canvas');
       canvas.width = 800;
       canvas.height = 200;
       const ctx = canvas.getContext('2d');
-      const DOMURL = window.URL || window.webkitURL || window;
       const img = new Image();
-      const svg = new Blob([svgText], {type: 'image/svg+xml;charset=utf-8'});
-      const url = DOMURL.createObjectURL(svg);
       img.onload = function() {
         ctx.drawImage(img, 0, 0);
-        DOMURL.revokeObjectURL(url);
         const imageData = canvas.toDataURL('image/png', 1.0);
         callback(imageData);
       };
       img.onerror = function() {
-        DOMURL.revokeObjectURL(url);
         callback(null);
       };
-      img.src = url;
+      img.src = svgDataUri;
     }
 
     async function exportPDF(){
@@ -315,21 +566,12 @@
       const projectName = document.getElementById('projectName').value || 'Proyecto';
       const total = proyecto.reduce((t,p)=>t+p.total,0);
 
-      // Logo SVG
-      const svgText = `<?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 200" width="800" height="200">
-  <text x="20" y="110" font-family="Arial, sans-serif" font-size="90" font-weight="900" fill="#e74c3c">ARIAS</text>
-  <text x="20" y="160" font-family="Arial, sans-serif" font-size="38" font-weight="300" fill="#2c3e50">GROUP Caribe SRL</text>
-</svg>`;
-
-      // Convertir SVG a imagen y añadir al PDF
       return new Promise((resolve) => {
-        svgToImageData(svgText, (logoData) => {
+        svgToImageData(LOGO_SVG, (logoData) => {
           if(logoData) {
             doc.addImage(logoData, 'PNG', 14, 10, 60, 15);
           }
           
-          // Encabezado (ajustado para dejar espacio al logo)
           doc.setFontSize(18);
           doc.setTextColor('#e74c3c');
           doc.text('Presupuesto', 14, logoData ? 28 : 22);
@@ -340,7 +582,6 @@
 
           let y = logoData ? 52 : 48;
 
-          // Resumen por sistema
           proyecto.forEach((p, idx) => {
             if(y > 250) {
               doc.addPage();
@@ -354,7 +595,6 @@
             doc.text(`${p.system} (${p.area.toFixed(2)} m²)`,14,y);
             y += 8;
 
-            // Tabla de materiales del sistema
             const body = p.rows.map(r => [
               r.concepto,
               r.unidad,
@@ -377,13 +617,11 @@
 
             y = doc.lastAutoTable.finalY + 10;
             
-            // Total del sistema
             doc.setFontSize(10);
             doc.text(`Total ${p.system}: ${EUR(p.total)} (${EUR(precioPorM2)}/m²)`,14,y);
             y += 12;
           });
 
-          // Total proyecto
           y += 5;
           doc.setFontSize(14);
           doc.setTextColor('#e74c3c');
@@ -405,7 +643,6 @@
       const date = new Date().toLocaleDateString('es-ES');
       const projectName = document.getElementById('projectName').value || 'Proyecto';
 
-      // Hoja resumen
       const wsResumen = XLSX.utils.aoa_to_sheet([
         ['PROYECTO:', projectName],
         ['FECHA:', date],
@@ -422,7 +659,6 @@
       ]);
       XLSX.utils.book_append_sheet(wb, wsResumen, 'Resumen');
 
-      // Hoja por cada sistema con desglose completo
       proyecto.forEach(p => {
         const ws = XLSX.utils.aoa_to_sheet([
           ['SISTEMA:', p.system],
