@@ -1,6 +1,6 @@
 sku,concepto,unidad,precio,coef,Hmax
 GYPSOTECH-AQUA-13,Gypsotech AQUA H2 BA 13,m2,9.83,1.025,3.0
-OMEGA-35,Perfil omega 35,ml,1.05,1.67,3.0
+OMEGA-35,Perfil omega 35,ml,0.443,1.67,3.0
 TORN-TA-60,Tornillo TA 5.5x60,ud,0.025,6,3.0
 TORN-PM-25,Tornillo PM 3.5x25,ud,0.014,10,3.0
 CINTA-J-150,Cinta juntas papel,ml,0.056,1.0,3.0
