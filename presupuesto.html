@@ -448,7 +448,7 @@
 
     let proyecto = [];
 
-    async function calcularYMostrar(){
+    async function calcularYMostrar(addToProject = false){
       const area = toNum(document.getElementById('area').value);
       const waste = toNum(document.getElementById('waste').value);
       const discount = toNum(document.getElementById('discount').value);
@@ -495,7 +495,7 @@
 
       const totalConDescuento = totalMat * (1 - discount/100);
 
-      return {
+      const result = {
         system: meta.id,
         systemName: opt.textContent,
         area,
@@ -506,6 +506,13 @@
         rows: rowsData,
         meta
       };
+
+      if(addToProject){
+        proyecto.push(result);
+        renderProyecto();
+      }
+
+      return result;
     }
 
     function renderProyecto(){
@@ -702,12 +709,12 @@
         sel.appendChild(opt);
       });
 
+      sel.addEventListener('change', async()=>{
+        await calcularYMostrar(false);
+      });
+
       document.getElementById('addBtn').addEventListener('click', async()=>{
-        const item = await calcularYMostrar();
-        if(item){
-          proyecto.push(item);
-          renderProyecto();
-        }
+        await calcularYMostrar(true);
       });
 
       document.getElementById('pdfBtn').addEventListener('click', exportPDF);
