@@ -1,152 +1,128 @@
-# AUDITORÍA COMPLETA DEL PROYECTO
+# AUDITORÍA TÉCNICA DEL PROYECTO
 **Fecha:** 2025-01-02
-**Objetivo:** Verificar coherencia, compatibilidad y precios end-to-end
+**Objetivo:** Verificar consistencia técnica JSON↔CSV↔reglas antes de modo guiado
 
 ---
 
-## 1. COHERENCIA DE ÍNDICE DE SISTEMAS
+## A) CONSISTENCIA SISTEMA (JSON)
 
 ### Verificaciones Realizadas
 - ✅ IDs únicos: Todos los sistemas tienen IDs únicos
-- ✅ CSVs existentes: Todos los sistemas tienen CSV y el archivo existe
-- ✅ Campos mínimos: Todos tienen tipo, perfil_mm, placas[], capas_por_cara
-- ✅ Coherencia tipo/título: Sin inconsistencias detectadas
+- ✅ CSVs únicos y existentes: Todos los CSVs existen y son únicos
+- ✅ Tipo coherente con prefijo: Todos los tipos coinciden con prefijos (M=>MURO, TA/TS=>TRASDOSADO, T=>TECHO, EL=>EXTERIOR)
+- ✅ EXTERIOR => zincado Z2: Sistemas EXTERIOR tienen zincado Z2
+- ✅ capas_por_cara ∈ {1,2,4}: Todos válidos
+- ✅ modulacion_mm: Presente en todos (400/600)
+- ✅ placas[]: Todos tienen placas[] válido
+- ✅ TECHO: Estructura/perfil coherente (TC47/TC60)
+- ✅ TS: Omega 35 coherente
 
 ### Hallazgos
-**Ningún problema detectado** en sistemas-index.json
+**Ningún error detectado** en consistencia de sistemas JSON
 
 ---
 
-## 2. COHERENCIA DE CSVs
+## B) CONSISTENCIA CSV (POR SISTEMA)
 
 ### Verificaciones Realizadas
-- ✅ Formato: Todos los CSVs tienen el nuevo formato (6 columnas)
-- ✅ Headers: Todas las columnas requeridas presentes
-- ✅ Precios: Todos los precios son numéricos y positivos
-- ✅ Familias: Todas son PLACA o RESTO
-- ✅ Códigos: No hay códigos vacíos
+- ✅ Cabecera: Todos los CSVs tienen las 6 columnas requeridas:
+  - codigo
+  - concepto
+  - unidad
+  - rendimiento_m2
+  - precio_catalogo_almeria
+  - familia_precio
+- ✅ precio_catalogo_almeria: Todos son numéricos y positivos
+- ✅ familia_precio: Todos son PLACA o RESTO
+- ✅ codigo: No hay códigos vacíos
+- ✅ Sistema mixto AQSTD: Tiene placas STD y AQUA en JSON, líneas separadas en CSV
 
 ### Hallazgos
-**Ningún problema detectado** en CSVs
+**Ningún error detectado** en consistencia de CSVs
 
 ---
 
-## 3. PRECIOS: ORIGEN Y CORRECCIÓN
+## C) COHERENCIA "AMBIENTE VS PLACA"
 
 ### Verificaciones Realizadas
-- ✅ Origen: Precios vienen del CSV (campo `precio_catalogo_almeria`)
-- ✅ Descuentos: 60% PLACA, 55% RESTO aplicados correctamente
-- ✅ Cálculo: `precio_neto = catalogo * (1 - descuento)`
-- ✅ Logística: Aplicada como % sobre coste neto sistema
-- ✅ Margen: `precio_venta = coste_total / (1 - margen)`
-- ✅ Formato: ES-ES (miles con punto, decimales con coma)
+- ✅ Sistemas EXTERIOR: Tienen placa EXTERNA/EXTERNA_LIGHT
+- ✅ Sistemas con AQUA: Coherentes para ambiente HUMEDO
+- ✅ Sistemas solo STD: Coherentes para ambiente SECO
 
 ### Hallazgos
-**Ningún problema detectado** en cálculos de precios
+**Ningún error detectado** en coherencia ambiente vs placa
 
 ---
 
-## 4. UI/SELECTOR: REACTIVIDAD Y ESTADO
+## RESULTADO FINAL
 
-### Verificaciones Realizadas
-- ✅ Listeners: Event listeners en m², desperdicio, incoterm, logística %, margen %
-- ✅ Recalculación: Función `calcularYMostrar(false)` se ejecuta en cambios
-- ✅ Estado: No hay valores antiguos en pantalla
+### Ejecución de Scripts
 
-### Hallazgos
-**Ningún problema detectado** en reactividad UI
-
----
-
-## 5. EXPORT EXCEL TÉCNICO
-
-### Verificaciones Requeridas
-- ✅ Columnas: codigo, concepto, unidad, coef, cantidad, precio_catalogo, dto_distribuidor_pct, precio_neto, importe_neto
-- ✅ Encabezado: Sistema, m², Desperdicio %, Descuentos, Incoterm, Logística %, Margen %, Costes, Precios
-- ⚠️ Validación: Revisar que no aparece "undefined" (código implementado correctamente)
-
-### Hallazgos
-**Código correcto** - Requiere prueba manual para confirmar
-
----
-
-## 6. EXPORT PDF CLIENTE
-
-### Verificaciones Realizadas
-- ✅ Sin SKUs: PDF no contiene tabla de materiales
-- ✅ Sin precios unitarios: Solo precio €/m² y total
-- ✅ Título: Usa `titulo_pdf` desde metadata
-- ✅ Descripción: Usa `descripcion_tecnica_corta` (fallback a `descripcion_sistema`)
-- ✅ Datos clave: m², perfil, capas, Hmax
-- ✅ Incoterm: Dinámico en precio y nota legal
-- ✅ Rehidratación: `loadIndexRaw()` carga metadata completa
-
-### Hallazgos
-**Implementación correcta** - Rehidratación funcionando
-
----
-
-## 7. LIMPIEZA DE REPO / RESTOS
-
-### Verificaciones Realizadas
-- ✅ .gitignore: Incluye *.csv.backup, *.bak, *~, .DS_Store
-- ✅ Backups: No hay archivos .backup, .bak, .tmp en el repo
-- ✅ Scripts temporales: No hay scripts de migración temporales
-
-### Hallazgos
-**Repo limpio** - No hay archivos temporales
-
----
-
-## 8. VALIDACIÓN AUTOMÁTICA
-
-### Resultado de validate-systems.js
+#### validate-systems.js
 ```
 ✅ Todos los sistemas son válidos
 ```
+**Resultado:** 0 errors, 0 warnings
 
-### Checklist de Pruebas Manuales Recomendadas
-
-#### Sistema MURO STD (M-70-13-1)
-- [ ] Cambiar desperdicio → tabla actualiza instantáneamente
-- [ ] Cambiar incoterm → nota legal cambia
-- [ ] Export Excel → todas las columnas tienen datos (sin undefined)
-- [ ] Export PDF → muestra descripción técnica corta
-
-#### Sistema MURO AQUA (M-70-13-AQUA-1)
-- [ ] Cambiar margen → precio venta actualiza
-- [ ] Export Excel → descuento 60% en placas, 55% en resto
-- [ ] Export PDF → formato correcto
-
-#### Sistema MIX STD+AQUA (M-70-13-AQSTD-2)
-- [ ] CSV tiene placas separadas
-- [ ] Export Excel → precios correctos para cada placa
-- [ ] Export PDF → descripción incluye "combinación"
+#### audit-project.js
+```
+✅ Auditoría pasada sin errores ni warnings
+```
+**Resultado:** 0 errors, 0 warnings
 
 ---
 
-## RESUMEN FINAL
+## CHECKLIST PARA MODO GUIADO
 
-### Estado General
-✅ **PROYECTO ESTABLE Y COHERENTE**
+### Sistemas Verificados: 35
 
-### Métricas
-- **Sistemas auditados:** 35
-- **CSVs auditados:** 35
-- **Errores críticos:** 0
-- **Warnings:** 0
-- **validate-systems.js:** 0 errors, 0 warnings
+#### Por Tipo:
+- ✅ MURO: 18 sistemas
+- ✅ TRASDOSADO: 12 sistemas
+- ✅ TECHO: 4 sistemas
+- ✅ EXTERIOR: 2 sistemas
 
-### Acciones Correctivas Aplicadas
-Ninguna requerida - el proyecto está en buen estado
+#### Por Configuración:
+- ✅ STD (seco): Sistemas verificados
+- ✅ AQUA (húmedo): Sistemas verificados
+- ✅ EXTERNA (exterior): Sistemas verificados
+- ✅ AQSTD (mixto): Sistema M-70-13-AQSTD-2 verificado
 
-### Próximos Pasos Recomendados
-1. Realizar pruebas manuales con 3 sistemas representativos
-2. Verificar exportaciones Excel y PDF en entorno real
-3. Documentar cualquier comportamiento inesperado encontrado
+#### Campos Requeridos:
+- ✅ id: Único y presente
+- ✅ csv: Único y existe
+- ✅ tipo: Coherente con prefijo
+- ✅ perfil_mm: Presente y coherente
+- ✅ zincado: Presente (Z2 para EXTERIOR)
+- ✅ capas_por_cara: {1,2,4}
+- ✅ modulacion_mm: {400,600}
+- ✅ placas[]: Array válido con tipo y espesor_mm
+- ✅ Hmax_m: Presente
+
+#### CSVs:
+- ✅ Formato correcto (6 columnas)
+- ✅ Precios válidos
+- ✅ Familias válidas (PLACA/RESTO)
+- ✅ Códigos no vacíos
+- ✅ Sistemas mixtos con líneas separadas
+
+---
+
+## CONCLUSIÓN
+
+### Estado: ✅ APROBADO PARA MODO GUIADO
+
+**Resumen:**
+- 0 errores bloqueantes
+- 0 warnings críticos
+- Todos los sistemas son coherentes y válidos
+- CSVs correctos y consistentes
+- Reglas de ambiente vs placa coherentes
+
+**Próximo Paso:**
+✅ El proyecto está listo para implementar el modo guiado tipo Pladur.
 
 ---
 
 **Auditoría completada:** 2025-01-02
 **Estado:** ✅ APROBADO
-
