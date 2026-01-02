@@ -281,6 +281,28 @@
       renderProyecto();
     }
 
+    function svgToImageData(svgText, callback) {
+      const canvas = document.createElement('canvas');
+      canvas.width = 800;
+      canvas.height = 200;
+      const ctx = canvas.getContext('2d');
+      const DOMURL = window.URL || window.webkitURL || window;
+      const img = new Image();
+      const svg = new Blob([svgText], {type: 'image/svg+xml;charset=utf-8'});
+      const url = DOMURL.createObjectURL(svg);
+      img.onload = function() {
+        ctx.drawImage(img, 0, 0);
+        DOMURL.revokeObjectURL(url);
+        const imageData = canvas.toDataURL('image/png', 1.0);
+        callback(imageData);
+      };
+      img.onerror = function() {
+        DOMURL.revokeObjectURL(url);
+        callback(null);
+      };
+      img.src = url;
+    }
+
     async function exportPDF(){
       if(proyecto.length === 0){
         alert('No hay sistemas en el proyecto');
@@ -293,16 +315,30 @@
       const projectName = document.getElementById('projectName').value || 'Proyecto';
       const total = proyecto.reduce((t,p)=>t+p.total,0);
 
-      // Encabezado
-      doc.setFontSize(18);
-      doc.setTextColor('#e74c3c');
-      doc.text('Presupuesto AriasGroupCaribe SRL',14,22);
-      doc.setFontSize(11);
-      doc.setTextColor('#333');
-      doc.text(`Proyecto: ${projectName}`,14,32);
-      doc.text(`Fecha: ${date}`,14,38);
+      // Logo SVG
+      const svgText = `<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 200" width="800" height="200">
+  <text x="20" y="110" font-family="Arial, sans-serif" font-size="90" font-weight="900" fill="#e74c3c">ARIAS</text>
+  <text x="20" y="160" font-family="Arial, sans-serif" font-size="38" font-weight="300" fill="#2c3e50">GROUP Caribe SRL</text>
+</svg>`;
 
-      let y = 48;
+      // Convertir SVG a imagen y añadir al PDF
+      return new Promise((resolve) => {
+        svgToImageData(svgText, (logoData) => {
+          if(logoData) {
+            doc.addImage(logoData, 'PNG', 14, 10, 60, 15);
+          }
+          
+          // Encabezado (ajustado para dejar espacio al logo)
+          doc.setFontSize(18);
+          doc.setTextColor('#e74c3c');
+          doc.text('Presupuesto', 14, logoData ? 28 : 22);
+          doc.setFontSize(11);
+          doc.setTextColor('#333');
+          doc.text(`Proyecto: ${projectName}`, 14, logoData ? 34 : 32);
+          doc.text(`Fecha: ${date}`, 14, logoData ? 40 : 38);
+
+          let y = logoData ? 52 : 48;
 
       // Resumen por sistema
       proyecto.forEach((p, idx) => {
@@ -354,6 +390,9 @@
       doc.text(`TOTAL PROYECTO: ${EUR(total)}`,14,y);
 
       doc.save(`Presupuesto_${projectName.replace(/\s+/g,'_')}_${date.replace(/\//g,'-')}.pdf`);
+          resolve();
+        });
+      });
     }
 
     function exportExcel(){
