@@ -1588,6 +1588,39 @@
       document.getElementById('pdfBtn').addEventListener('click', exportPDF);
       document.getElementById('excelBtn').addEventListener('click', exportExcel);
       
+      // Toggle Modo Guiado/Experto
+      const modeGuided = document.getElementById('modeGuided');
+      const modeExpert = document.getElementById('modeExpert');
+      const guidedMode = document.getElementById('guidedMode');
+      const expertMode = document.getElementById('expertMode');
+      
+      function switchMode(mode) {
+        if (mode === 'guided') {
+          guidedMode.style.display = 'block';
+          expertMode.style.display = 'none';
+        } else {
+          guidedMode.style.display = 'none';
+          expertMode.style.display = 'block';
+        }
+      }
+      
+      if (modeGuided && modeExpert && guidedMode && expertMode) {
+        modeGuided.addEventListener('change', () => {
+          if (modeGuided.checked) switchMode('guided');
+        });
+        modeExpert.addEventListener('change', () => {
+          if (modeExpert.checked) switchMode('expert');
+        });
+        
+        // Event listeners modo guiado
+        ['guidedAmbiente', 'guidedTipo', 'guidedEstructura', 'guidedSeparacion', 'guidedPlaca', 'guidedEspesor', 'guidedCapas'].forEach(id => {
+          const el = document.getElementById(id);
+          if (el) {
+            el.addEventListener('change', onGuidedFiltersChange);
+          }
+        });
+      }
+      
       // Recálculo automático en tiempo real
       const inputsReactivos = ['area', 'waste', 'logisticaPct', 'margenPct', 'incoterm'];
       inputsReactivos.forEach(id => {
