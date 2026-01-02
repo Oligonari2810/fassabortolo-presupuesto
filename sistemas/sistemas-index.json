@@ -33,6 +33,9 @@
     {"id":"T-TC47-13-AQUA-1","tipo":"TECHO","perfil":"TC47 Z1","modulacion_mm":600,"placa":"AQUA-13","capas":1,"Hmax_m":3.0,"csv":"T-TC47-13-AQUA-1.csv"},
     {"id":"T-TC60-13-1","tipo":"TECHO","perfil":"TC60 Z1","modulacion_mm":600,"placa":"STD-13","capas":1,"Hmax_m":3.5,"csv":"T-TC60-13-1.csv"},
     {"id":"T-TC60-13-AQUA-1","tipo":"TECHO","perfil":"TC60 Z1","modulacion_mm":600,"placa":"AQUA-13","capas":1,"Hmax_m":3.5,"csv":"T-TC60-13-AQUA-1.csv"},
+    {"id":"T-OMEGA35-13-1","tipo":"TECHO","perfil":"OMEGA35","modulacion_mm":600,"placa":"STD-13","capas":1,"Hmax_m":3.0,"csv":"T-OMEGA35-13-1.csv"},
+    {"id":"T-OMEGA35-13-AQUA-1","tipo":"TECHO","perfil":"OMEGA35","modulacion_mm":600,"placa":"AQUA-13","capas":1,"Hmax_m":3.0,"csv":"T-OMEGA35-13-AQUA-1.csv"},
+    {"id":"M-70-15-AQUA-4","tipo":"MURO","perfil":"70 Z1","modulacion_mm":600,"placa":"AQUA-15","capas":4,"Hmax_m":3.2,"csv":"M-70-15-AQUA-4.csv"},
     {"id":"EL-70-13-1","tipo":"EXTERIOR","perfil":"70 Z2","modulacion_mm":600,"placa":"EXT-13","capas":1,"Hmax_m":3.0,"csv":"EL-70-13-1.csv"},
     {"id":"EL-90-13-1","tipo":"EXTERIOR","perfil":"90 Z2","modulacion_mm":600,"placa":"EXT-13","capas":1,"Hmax_m":3.5,"csv":"EL-90-13-1.csv"}
   ]
