@@ -641,7 +641,7 @@
       }
     }
     
-    // Renderizar descripción técnica del sistema
+    // Renderizar descripción del sistema
     function renderDescripcionTecnica(meta) {
       const container = document.getElementById('descripcionTecnica');
       const content = document.getElementById('descripcionTecnicaContent');
@@ -672,10 +672,10 @@
       }
       const meta = JSON.parse(opt.dataset.meta);
 
-      // Renderizar ficha técnica (read-only)
+      // Renderizar información del sistema (read-only)
       renderFichaTecnica(meta);
       
-      // Renderizar descripción técnica si existe
+      // Renderizar descripción del sistema si existe
       renderDescripcionTecnica(meta);
 
       const csvText = await loadCSV(meta.csv);
@@ -943,13 +943,13 @@
             doc.text(`Sistema: ${sistemaId} — ${tituloPdf}`, 14, y);
             y += 8;
             
-            // Bloque "Descripción técnica" (solo si existe)
+            // Bloque "Descripción del sistema" (solo si existe)
             const descripcionTecnica = meta.descripcion_tecnica_pdf;
             if (descripcionTecnica) {
               doc.setFontSize(9);
               doc.setFont(undefined, 'bold');
               doc.setTextColor('#555');
-              doc.text('Descripción técnica:', 14, y);
+              doc.text('Descripción del sistema:', 14, y);
               y += 5;
               
               doc.setFont(undefined, 'normal');
@@ -1242,7 +1242,7 @@
         }
       });
       
-      // Actualizar ficha técnica al cambiar sistema
+      // Actualizar información del sistema al cambiar sistema
       document.getElementById('systemSelect').addEventListener('change', async() => {
         const opt = document.getElementById('systemSelect').selectedOptions[0];
         if (opt) {
@@ -1253,7 +1253,7 @@
         await calcularYMostrar(false);
       });
       
-      // Inicializar ficha técnica con el sistema por defecto
+      // Inicializar información del sistema con el sistema por defecto
       if (sel.options.length > 0) {
         const meta = JSON.parse(sel.options[0].dataset.meta);
         renderFichaTecnica(meta);
