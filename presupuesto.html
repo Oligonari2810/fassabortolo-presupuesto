@@ -512,8 +512,9 @@
     function esPerfileria(sku) {
       if (typeof sku !== "string") return false;
       const skuUpper = sku.toUpperCase();
-      // Perfilería: Montantes (C*), Rails (U*), Omega (E*), TC (TC*)
-      return skuUpper.startsWith("C") || skuUpper.startsWith("U") || skuUpper.startsWith("E") || skuUpper.startsWith("TC");
+      // Perfilería: Montantes (C*), Rails (U*), Omega (E*)
+      // Nota: TC es etiqueta en JSON, no prefijo de SKU (los TC empiezan por C)
+      return skuUpper.startsWith("C") || skuUpper.startsWith("U") || skuUpper.startsWith("E");
     }
 
     function parseCSV(text){
