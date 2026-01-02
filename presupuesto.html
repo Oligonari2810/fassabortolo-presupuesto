@@ -421,10 +421,43 @@
     const EUR = n => new Intl.NumberFormat('es-ES',{style:'currency',currency:'EUR'}).format(n||0);
     const LOGO_SVG = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA4MDAgMjAwIiB3aWR0aD0iODAwIiBoZWlnaHQ9IjIwMCI+PHRleHQgeD0iMjAiIHk9IjExMCIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjkwIiBmb250LXdlaWdodD0iOTAwIiBmaWxsPSIjZTc0YzNjIj5BUklBUzwvdGV4dD48dGV4dCB4PSIyMCIgeT0iMTYwIiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMzgiIGZvbnQtd2VpZ2h0PSIzMDAiIGZpbGw9IiMyYzNlNTAiPkdST1VQIENhcmliZSBTUkw8L3RleHQ+PC9zdmc+';
 
+    // Schema adapter: compatibilidad v1/v2
+    function normalizeSystemToV1(sys) {
+      // Si ya tiene formato viejo (capas y placa string), devolverlo
+      if (sys.capas !== undefined && sys.placa !== undefined && typeof sys.placa === 'string') {
+        return sys;
+      }
+      
+      // Convertir de nuevo schema (v2) a viejo (v1) para compatibilidad
+      const placasStr = Array.isArray(sys.placas) && sys.placas.length > 0
+        ? sys.placas.map(p => `${p.tipo}-${p.espesor_mm}`).join('+')
+        : 'STD-13';
+      
+      return {
+        id: sys.id,
+        tipo: sys.tipo,
+        perfil: sys._perfil_deprecated || (sys.perfil_mm ? `${sys.perfil_mm} ${sys.zincado || 'Z1'}` : '70 Z1'),
+        modulacion_mm: sys.modulacion_mm || 600,
+        placa: placasStr,
+        capas: sys.capas_por_cara || sys.capas || 1,
+        Hmax_m: sys.Hmax_m,
+        csv: sys.csv,
+        name: sys.nombre_comercial || sys.name || sys.id,
+        // Mantener campos nuevos para funciones que los necesiten
+        placas: sys.placas,
+        capas_por_cara: sys.capas_por_cara,
+        estructura: sys.estructura,
+        perfil_mm: sys.perfil_mm,
+        zincado: sys.zincado
+      };
+    }
+
     async function loadIndex(){
       const res = await fetch('sistemas/sistemas-index.json');
       const idx = await res.json();
-      return idx.systems || [];
+      const systems = idx.systems || [];
+      // Normalizar todos los sistemas al formato v1 para compatibilidad
+      return systems.map(normalizeSystemToV1);
     }
 
     function parseCSV(text){
