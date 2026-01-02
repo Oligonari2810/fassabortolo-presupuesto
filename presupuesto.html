@@ -882,10 +882,27 @@
           doc.setFontSize(16);
           doc.setFont(undefined, 'bold');
           doc.setTextColor('#e74c3c');
-          doc.text(`TOTAL PROYECTO: ${EUR(total)}`, 14, y);
+          doc.text(`TOTAL PROYECTO: ${fmtEUR(total)}`, 14, y);
+          y += 15;
+          
+          // Nota legal según incoterm (si hay sistemas, usar el incoterm del primero)
+          const primerIncoterm = proyecto.length > 0 && proyecto[0].incoterm ? proyecto[0].incoterm : 'CIF';
+          let notaLegal = '';
+          if (primerIncoterm === 'EXW') {
+            notaLegal = '** Precio EXW. No incluye transporte ni impuestos.';
+          } else if (primerIncoterm === 'FOB') {
+            notaLegal = '** Precio FOB. No incluye transporte ni impuestos.';
+          } else {
+            notaLegal = '** Precio CIF. No incluye impuestos.';
+          }
+          
+          doc.setFontSize(8);
+          doc.setFont(undefined, 'normal');
+          doc.setTextColor('#666');
+          doc.text(notaLegal, 14, y);
+          y += 6;
           
           // Nota final
-          y += 10;
           doc.setFontSize(8);
           doc.setFont(undefined, 'normal');
           doc.setTextColor('#999');
