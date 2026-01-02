@@ -893,8 +893,8 @@
         return;
       }
 
-      // Cargar índice actualizado de sistemas para rehidratar metadata
-      const systemsIndex = await loadIndex();
+      // Cargar índice actualizado de sistemas para rehidratar metadata (raw, sin normalizar)
+      const systemsIndex = await loadIndexRaw();
 
       const { jsPDF } = window.jspdf;
       const doc = new jsPDF({orientation:'p',unit:'mm',format:'a4'});
