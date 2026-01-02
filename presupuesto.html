@@ -883,6 +883,9 @@
         return;
       }
 
+      // Cargar índice actualizado de sistemas para rehidratar metadata
+      const systemsIndex = await loadIndex();
+
       const { jsPDF } = window.jspdf;
       const doc = new jsPDF({orientation:'p',unit:'mm',format:'a4'});
       const date = new Date().toLocaleDateString('es-ES');
@@ -945,9 +948,9 @@
             doc.text(`Sistema: ${sistemaId} — ${tituloPdf}`, 14, y);
             y += 8;
             
-            // Bloque "Descripción del sistema" (solo si existe)
-            const descripcionSistema = meta.descripcion_sistema || meta.descripcion_tecnica_pdf;
-            if (descripcionSistema) {
+            // Bloque "Descripción del sistema" (solo si existe, desde metadata fresca)
+            const descripcionSistema = metaFresh.descripcion_sistema || metaFresh.descripcion_tecnica_pdf || '';
+            if (descripcionSistema && descripcionSistema.trim()) {
               doc.setFontSize(9);
               doc.setFont(undefined, 'bold');
               doc.setTextColor('#555');
@@ -969,9 +972,9 @@
             
             doc.setFont(undefined, 'normal');
             doc.setTextColor('#666');
-            const perfilMm = meta.perfil_mm || meta.perfil || '—';
-            const capasPorCara = meta.capas_por_cara || meta.capas || '—';
-            const hmax = meta.Hmax_m || meta.hmax || '—';
+            const perfilMm = metaFresh.perfil_mm || metaFresh.perfil || p.meta?.perfil_mm || p.meta?.perfil || '—';
+            const capasPorCara = metaFresh.capas_por_cara || metaFresh.capas || p.meta?.capas_por_cara || p.meta?.capas || '—';
+            const hmax = metaFresh.Hmax_m || metaFresh.hmax || p.meta?.Hmax_m || p.meta?.hmax || '—';
             
             doc.text(`• Superficie: ${fmtNumber(p.area, 2)} m²`, 14, y);
             y += 5;
