@@ -34,6 +34,39 @@
     #projTable{margin-top:16px}
     #projTable th{background:var(--rojo);color:#fff}
     .btn-small{padding:4px 8px;font-size:12px;margin:0 2px}
+    .table-wrapper{overflow-x:auto;margin-top:16px;-webkit-overflow-scrolling:touch}
+    
+    /* Responsive - Móvil */
+    @media (max-width: 768px) {
+      .container{padding:0 16px;margin:16px auto}
+      .card{padding:16px;margin-bottom:16px}
+      .header{padding:12px 16px}
+      .header .logo{font-size:1.1rem}
+      .header .back{font-size:.85rem}
+      h3{font-size:1.1rem;padding-bottom:6px;margin-bottom:12px}
+      .row{gap:12px}
+      label{flex:1 1 100%}
+      input,select{font-size:16px;padding:12px}
+      button{width:100%;padding:12px;font-size:16px;margin-top:8px}
+      #addBtn{width:100%}
+      .meta{gap:8px}
+      .meta .item{font-size:.8rem;padding:8px 10px}
+      table{font-size:.8rem;display:block;overflow-x:auto;-webkit-overflow-scrolling:touch}
+      th,td{padding:8px 6px;white-space:nowrap}
+      th{font-size:.7rem}
+      .totals{padding:12px 16px;flex-direction:column;gap:8px;text-align:center}
+      .totals .val{font-size:1.5rem}
+      .actions{flex-direction:column}
+      .actions button{width:100%}
+      .muted{font-size:.75rem;text-align:center}
+    }
+    
+    /* Responsive - Tablet */
+    @media (min-width: 769px) and (max-width: 1024px) {
+      .container{padding:0 20px}
+      .card{padding:20px}
+      label{flex:1 1 calc(50% - 9px)}
+    }
   </style>
 </head>
 <body>
@@ -79,27 +112,31 @@
       </div>
       <div class="meta" id="metaBox"></div>
       
-      <table id="tbl">
-        <thead>
-          <tr>
-            <th>SKU</th><th>Concepto</th><th>Unidad</th><th>Precio</th><th>Coef</th><th>Cantidad</th><th>Importe</th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
+      <div class="table-wrapper">
+        <table id="tbl">
+          <thead>
+            <tr>
+              <th>SKU</th><th>Concepto</th><th>Unidad</th><th>Precio</th><th>Coef</th><th>Cantidad</th><th>Importe</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
     </div>
 
     <!-- Proyecto Acumulado -->
     <div class="card">
       <h3>Proyecto Acumulado</h3>
-      <table id="projTable">
-        <thead>
-          <tr>
-            <th>Sistema</th><th>m²</th><th>Precio/m²</th><th>Total €</th><th>Acciones</th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
+      <div class="table-wrapper">
+        <table id="projTable">
+          <thead>
+            <tr>
+              <th>Sistema</th><th>m²</th><th>Precio/m²</th><th>Total €</th><th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
       <div class="totals">
         <div><div class="lbl">Total Proyecto</div><div class="val" id="projTotal">—</div></div>
       </div>
@@ -286,12 +323,11 @@
           r.concepto,
           r.unidad,
           r.coef,
-          EUR(r.precio),
-          EUR(precioPorM2)
+          EUR(r.precio)
         ]);
 
         doc.autoTable({
-          head:[['Material','Unidad','Rendimiento','Precio Unit.','Precio/m²']],
+          head:[['Material','Unidad','Rendimiento','Precio Unit.']],
           body:body,
           startY:y,
           styles:{fontSize:9},
@@ -299,8 +335,7 @@
           alternateRowStyles:{fillColor:'#f8f9fa'},
           columnStyles: {
             2: {halign: 'right'},
-            3: {halign: 'right'},
-            4: {halign: 'right'}
+            3: {halign: 'right'}
           }
         });
 
