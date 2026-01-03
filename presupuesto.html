@@ -366,24 +366,17 @@
       <div id="guidedMode" style="margin-bottom: 1rem;">
         <div class="row">
           <label>
-            Ambiente
-            <select id="guidedAmbiente">
-              <option value="SECO">SECO</option>
-              <option value="HUMEDO">HUMEDO</option>
-              <option value="EXTERIOR">EXTERIOR</option>
-            </select>
-          </label>
-          <label>
             Tipo de sistema
             <select id="guidedTipo">
+              <option value="">Seleccionar...</option>
               <option value="MURO">MURO</option>
               <option value="TRASDOSADO">TRASDOSADO</option>
               <option value="TECHO">TECHO</option>
-              <option value="EXTERIOR" style="display:none;">EXTERIOR</option>
+              <option value="EXTERIOR">EXTERIOR</option>
             </select>
           </label>
           <label style="width: 100%;">
-            <div style="font-weight: bold; margin-bottom: 0.5rem;">3. ¿Qué necesitas?</div>
+            <div style="font-weight: bold; margin-bottom: 0.5rem;">¿Qué necesitas?</div>
             <div style="display: flex; flex-direction: column; gap: 0.5rem;">
               <label style="display: flex; align-items: center; gap: 0.5rem;">
                 <input type="radio" name="necesidad" value="seco" id="necesidadSeco">
@@ -1559,12 +1552,10 @@
         });
         
         // Event listeners modo guiado
-        ['guidedAmbiente', 'guidedTipo'].forEach(id => {
-          const el = document.getElementById(id);
-          if (el) {
-            el.addEventListener('change', onGuidedFiltersChange);
-          }
-        });
+        const guidedTipo = document.getElementById('guidedTipo');
+        if (guidedTipo) {
+          guidedTipo.addEventListener('change', onGuidedFiltersChange);
+        }
         
         // Event listeners para radio buttons de necesidad
         const necesidadRadios = document.querySelectorAll('input[name="necesidad"]');
