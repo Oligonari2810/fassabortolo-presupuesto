@@ -350,83 +350,70 @@
     <div class="card">
       <h3>Añadir Sistema al Proyecto</h3>
       
-      <!-- Flujo de selección paso a paso -->
+      <!-- Flujo de selección por criterios -->
       <div id="selectionFlow" style="margin-bottom: 1rem;">
         <!-- Paso 1: Ambiente -->
         <div id="step1" class="step-container">
           <div class="row">
             <label>
-              ¿Dónde va?
+              Ambiente
               <select id="selectAmbiente">
                 <option value="">Seleccionar...</option>
-                <option value="SECO">SECO</option>
-                <option value="HUMEDO">HÚMEDO</option>
-                <option value="EXTERIOR">EXTERIOR</option>
+                <option value="seco">seco</option>
+                <option value="humedo">humedo</option>
+                <option value="exterior">exterior</option>
               </select>
             </label>
           </div>
         </div>
         
-        <!-- Paso 2: Tipo de placa -->
+        <!-- Paso 2: Elemento -->
         <div id="step2" class="step-container" style="display: none;">
           <div class="row">
             <label>
-              ¿Qué placa necesitas?
-              <select id="selectPlaca" disabled>
-                <option value="">Primero selecciona ¿Dónde va?</option>
+              Elemento
+              <select id="selectElemento" disabled>
+                <option value="">Primero selecciona Ambiente</option>
+                <option value="MURO">muro</option>
+                <option value="TRASDOSADO">trasdosado</option>
+                <option value="TECHO">techo</option>
+                <option value="EXTERIOR" style="display: none;" id="elementoEXTERIOROption">exterior</option>
               </select>
             </label>
           </div>
         </div>
         
-        <!-- Paso 3: Tipo de solución -->
+        <!-- Paso 3: Placa -->
         <div id="step3" class="step-container" style="display: none;">
           <div class="row">
             <label>
-              ¿Qué estás construyendo?
-              <select id="selectTipo" disabled>
-                <option value="">Primero selecciona ¿Qué placa necesitas?</option>
-                <option value="MURO">MURO</option>
-                <option value="TRASDOSADO">TRASDOSADO</option>
-                <option value="TECHO">TECHO</option>
-                <option value="EXTERIOR" style="display: none;" id="tipoEXTERIOROption">EXTERIOR</option>
+              Placa
+              <select id="selectPlaca" disabled>
+                <option value="">Primero selecciona Elemento</option>
               </select>
             </label>
           </div>
         </div>
         
-        <!-- Paso 4: Perfilería -->
+        <!-- Paso 4: Estructura/Perfilería -->
         <div id="step4" class="step-container" style="display: none;">
           <div class="row">
             <label>
-              ¿Qué perfilería?
-              <select id="selectPerfileria" disabled>
-                <option value="">Primero selecciona ¿Qué estás construyendo?</option>
+              Estructura/Perfilería
+              <select id="selectEstructura" disabled>
+                <option value="">Primero selecciona Placa</option>
               </select>
             </label>
           </div>
         </div>
         
-        <!-- Paso 5: Modulación -->
+        <!-- Paso 5: Capas -->
         <div id="step5" class="step-container" style="display: none;">
-          <div class="row">
-            <label>
-              Modulación
-              <select id="selectModulacion" disabled>
-                <option value="">Primero selecciona ¿Qué perfilería?</option>
-                <option value="600">600 mm</option>
-              </select>
-            </label>
-          </div>
-        </div>
-        
-        <!-- Paso 6: Capas -->
-        <div id="step6" class="step-container" style="display: none;">
           <div class="row">
             <label>
               Capas
               <select id="selectCapas" disabled>
-                <option value="">Primero selecciona Modulación</option>
+                <option value="">Primero selecciona Estructura/Perfilería</option>
               </select>
             </label>
           </div>
@@ -1619,9 +1606,12 @@
     }
 
     (async()=>{
-      // Cargar sistemas index raw
-      if (systemsIndexRaw.length === 0) {
-        systemsIndexRaw = await loadIndexRaw();
+      // Cargar sistemas index (enriquecido para filtrado, base para CSV)
+      if (systemsIndexEnriched.length === 0) {
+        systemsIndexEnriched = await loadIndexEnriched();
+      }
+      if (systemsIndexBase.length === 0) {
+        systemsIndexBase = await loadIndexBase();
       }
 
       document.getElementById('addBtn').addEventListener('click', async()=>{
