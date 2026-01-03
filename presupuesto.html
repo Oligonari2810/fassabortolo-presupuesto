@@ -350,13 +350,67 @@
     <div class="card">
       <h3>Añadir Sistema al Proyecto</h3>
       
-      <!-- Selector de sistema -->
-      <div class="row">
-        <label>
-          Sistema FassaBortolo
-          <select id="systemSelect"></select>
-        </label>
+      <!-- Modo Guiado: Árbol de decisión -->
+      <div id="guidedMode" style="margin-bottom: 1rem;">
+        <div class="row">
+          <label>
+            1. Ambiente
+            <select id="guidedAmbiente">
+              <option value="">Seleccionar...</option>
+              <option value="SECO">SECO (interior normal)</option>
+              <option value="HUMEDO">HÚMEDO (baños/cocinas)</option>
+              <option value="EXTERIOR">EXTERIOR</option>
+            </select>
+          </label>
+        </div>
+        <div class="row">
+          <label>
+            2. Tipo de placa
+            <select id="guidedPlaca" disabled>
+              <option value="">Primero selecciona Ambiente</option>
+            </select>
+          </label>
+        </div>
+        <div class="row">
+          <label>
+            3. Tipo de solución
+            <select id="guidedTipo" disabled>
+              <option value="">Selecciona Placa primero</option>
+            </select>
+          </label>
+        </div>
+        <div class="row">
+          <label>
+            4. Estructura / Perfilería
+            <select id="guidedEstructura" disabled>
+              <option value="">Selecciona Tipo primero</option>
+            </select>
+          </label>
+        </div>
+        <div class="row">
+          <label>
+            5. Modulación
+            <select id="guidedModulacion" disabled>
+              <option value="">Selecciona Estructura primero</option>
+            </select>
+          </label>
+        </div>
+        <div class="row">
+          <label>
+            6. Capas por cara
+            <select id="guidedCapas" disabled>
+              <option value="">Selecciona Modulación primero</option>
+            </select>
+          </label>
+        </div>
+        <div id="guidedSistemasResultado" style="margin-top: 1rem; display: none;">
+          <div style="font-weight: bold; margin-bottom: 0.5rem;">7. Sistema resultante:</div>
+          <div id="guidedSistemasLista"></div>
+        </div>
       </div>
+      
+      <!-- Selector directo (oculto, usado internamente) -->
+      <select id="systemSelect" style="display: none;"></select>
       
       <!-- Campos de entrada -->
       <div class="row" style="margin-top: 1rem;">
@@ -1268,11 +1322,17 @@
       document.getElementById('pdfBtn').addEventListener('click', exportPDF);
       document.getElementById('excelBtn').addEventListener('click', exportExcel);
       
-      // Event listener para selector de sistema
+      // Event listener para selector de sistema (oculto, usado por modo guiado)
       const systemSelect = document.getElementById('systemSelect');
       if (systemSelect) {
         systemSelect.addEventListener('change', async() => await calcularYMostrar(false));
       }
+      
+      // Inicializar modo guiado
+      if (systemsIndexRaw.length === 0) {
+        systemsIndexRaw = await loadIndexRaw();
+      }
+      initGuidedMode();
       
       // Recálculo automático en tiempo real
       const inputsReactivos = ['area', 'waste', 'logisticaPct', 'margenPct', 'incoterm'];
