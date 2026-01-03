@@ -667,7 +667,17 @@
       }
       
       // Cargar ambientes y sistemas
-      const ambientes = await loadAmbientes();
+      let ambientes;
+      try {
+        ambientes = await loadAmbientes();
+        console.log('✅ Ambientes cargados:', ambientes.length);
+      } catch (error) {
+        console.error('❌ Error al cargar ambientes:', error);
+        contenedor.innerHTML = '<div style="padding: 1rem; background: #fee; color: #c33; border-radius: 4px;">Error al cargar ambientes. Por favor, recarga la página.</div>';
+        contenedor.style.display = 'block';
+        return;
+      }
+      
       const ambiente = ambientes.find(a => a.id === necesidadId);
       
       if (!ambiente) {
@@ -677,7 +687,16 @@
       }
       
       if (systemsIndexRaw.length === 0) {
-        systemsIndexRaw = await loadIndexRaw();
+        try {
+          const idxRaw = await loadIndexRaw();
+          systemsIndexRaw = idxRaw.systems || [];
+          console.log('✅ systemsIndexRaw cargado en filtrarSistemas:', systemsIndexRaw.length, 'sistemas');
+        } catch (error) {
+          console.error('❌ Error al cargar systemsIndexRaw:', error);
+          contenedor.innerHTML = '<div style="padding: 1rem; background: #fee; color: #c33; border-radius: 4px;">Error al cargar sistemas. Por favor, recarga la página.</div>';
+          contenedor.style.display = 'block';
+          return;
+        }
       }
       
       // Filtrar sistemas según el filtro del ambiente y el tipo seleccionado
