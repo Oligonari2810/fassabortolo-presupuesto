@@ -644,6 +644,17 @@
       return idx.systems || [];
     }
     
+    // Inicializar índices al cargar la página
+    document.addEventListener('DOMContentLoaded', async () => {
+      if (systemsIndexEnriched.length === 0) {
+        systemsIndexEnriched = await loadIndexEnriched();
+      }
+      if (systemsIndexBase.length === 0) {
+        systemsIndexBase = await loadIndexBase();
+      }
+      initSelectionFlow();
+    });
+    
     // Función para cargar CSV y calcular (equivalente a cargarCSV)
     async function cargarCSV(systemId) {
       if (systemsIndexBase.length === 0) {
@@ -780,6 +791,81 @@
       return result;
     }
     
+    // Actualizar opciones de elemento según ambiente
+    async function updateElementoOptions(ambiente) {
+      const selectElemento = document.getElementById('selectElemento');
+      const selectPlaca = document.getElementById('selectPlaca');
+      const selectEstructura = document.getElementById('selectEstructura');
+      const selectCapas = document.getElementById('selectCapas');
+      
+      if (!selectElemento) return;
+      
+      // Cargar índices si están vacíos
+      if (systemsIndexEnriched.length === 0) {
+        systemsIndexEnriched = await loadIndexEnriched();
+      }
+      
+      // Filtrar sistemas por ambiente
+      const sistemasFiltrados = systemsIndexEnriched.filter(sys => {
+        if (!sys.ambiente_tags || !Array.isArray(sys.ambiente_tags)) return false;
+        
+        if (ambiente === 'seco') {
+          return sys.ambiente_tags.includes('seco');
+        } else if (ambiente === 'humedo') {
+          return sys.ambiente_tags.includes('humedo');
+        } else if (ambiente === 'exterior') {
+          return sys.ambiente_tags.includes('exterior');
+        }
+        return false;
+      });
+      
+      // Obtener elementos únicos (MURO, TRASDOSADO, TECHO, EXTERIOR)
+      const elementosUnicos = new Set();
+      sistemasFiltrados.forEach(sys => {
+        const elemento = sys.elemento || sys.tipo;
+        if (elemento) {
+          elementosUnicos.add(elemento);
+        }
+      });
+      
+      // Ordenar elementos (MURO, TRASDOSADO, TECHO, EXTERIOR)
+      const ordenElementos = ['MURO', 'TRASDOSADO', 'TECHO', 'EXTERIOR'];
+      const elementosOrdenados = Array.from(elementosUnicos).sort((a, b) => {
+        const idxA = ordenElementos.indexOf(a);
+        const idxB = ordenElementos.indexOf(b);
+        if (idxA === -1 && idxB === -1) return a.localeCompare(b);
+        if (idxA === -1) return 1;
+        if (idxB === -1) return -1;
+        return idxA - idxB;
+      });
+      
+      // Rellenar select de elemento
+      selectElemento.innerHTML = '<option value="">Seleccionar...</option>';
+      elementosOrdenados.forEach(elemento => {
+        const option = document.createElement('option');
+        option.value = elemento;
+        option.textContent = elemento;
+        selectElemento.appendChild(option);
+      });
+      
+      // Habilitar select de elemento si hay opciones
+      selectElemento.disabled = elementosOrdenados.length === 0;
+      
+      // Resetear y deshabilitar selects dependientes
+      if (selectPlaca) {
+        selectPlaca.innerHTML = '<option value="">Seleccionar...</option>';
+        selectPlaca.disabled = true;
+      }
+      if (selectEstructura) {
+        selectEstructura.innerHTML = '<option value="">Seleccionar...</option>';
+        selectEstructura.disabled = true;
+      }
+      if (selectCapas) {
+        selectCapas.innerHTML = '<option value="">Seleccionar...</option>';
+        selectCapas.disabled = true;
+      }
+    }
+    
     // Filtrar sistemas finales y mostrar resultado
     async function filtrarYMostrarSistemas() {
       const selectAmbiente = document.getElementById('selectAmbiente');
@@ -802,61 +888,89 @@
         return;
       }
       
-      // Mapeo para compatibilidad con filtrado existente (temporal)
-      const tipo = elemento;
-      const perfileria = estructura;
-      const modulacion = 600; // Valor fijo (solo 600mm existe actualmente)
-      
+      // Cargar índices si están vacíos
       if (systemsIndexEnriched.length === 0) {
         systemsIndexEnriched = await loadIndexEnriched();
       }
+      if (systemsIndexBase.length === 0) {
+        systemsIndexBase = await loadIndexBase();
+      }
       
+      // Filtrar sistemas usando systemsIndexEnriched
       const sistemasFiltrados = systemsIndexEnriched.filter(sys => {
-        if (sys.tipo !== tipo) return false;
-        const placasSistema = sys.placas.map(p => p.tipo);
-        if (!placasSistema.includes(placa)) return false;
-        if (sys.capas_por_cara != capas) return false;
-        if (sys.modulacion_mm != modulacion) return false;
-        
-        if (perfileria.includes('TC')) {
-          if (sys.estructura !== 'tc' || `TC${sys.perfil_mm}` !== perfileria) return false;
-        } else if (perfileria === 'Ω35') {
-          if (sys.estructura !== 'omega' || sys.perfil_mm !== 35) return false;
-        } else if (perfileria.includes('Z2')) {
-          if (sys.zincado !== 'Z2' || `${sys.perfil_mm} Z2` !== perfileria) return false;
-        } else {
-          const perfil = perfileria.match(/\d+/)?.[0];
-          const zinc = perfileria.includes('Z2') ? 'Z2' : (perfileria.includes('Z1') ? 'Z1' : '');
-          if (sys.perfil_mm != perfil || (zinc && sys.zincado !== zinc)) return false;
+        // Filtrar por ambiente
+        if (!sys.ambiente_tags || !Array.isArray(sys.ambiente_tags)) return false;
+        let matchAmbiente = false;
+        if (ambiente === 'seco') {
+          matchAmbiente = sys.ambiente_tags.includes('seco');
+        } else if (ambiente === 'humedo') {
+          matchAmbiente = sys.ambiente_tags.includes('humedo');
+        } else if (ambiente === 'exterior') {
+          matchAmbiente = sys.ambiente_tags.includes('exterior');
         }
+        if (!matchAmbiente) return false;
+        
+        // Filtrar por elemento
+        const sysElemento = sys.elemento || sys.tipo;
+        if (sysElemento !== elemento) return false;
+        
+        // Filtrar por placa
+        const placaTipos = sys.placa_tipos || (sys.placas ? sys.placas.map(p => p.tipo) : []);
+        if (!placaTipos.includes(placa)) return false;
+        
+        // Filtrar por estructura
+        const estructuraTipo = sys.estructura_tipo || sys.estructura;
+        if (estructura.includes('TC')) {
+          if (estructuraTipo !== 'tc' && !estructuraTipo.startsWith('tc')) return false;
+          const perfil = estructura.match(/TC(\d+)/)?.[1];
+          if (perfil && sys.perfil_mm != perfil) return false;
+        } else if (estructura === 'Ω35') {
+          if (estructuraTipo !== 'omega') return false;
+          if (sys.perfil_mm !== 35) return false;
+        } else if (estructura.includes('Z2')) {
+          if (sys.zincado !== 'Z2') return false;
+          const perfil = estructura.match(/(\d+)/)?.[1];
+          if (perfil && sys.perfil_mm != perfil) return false;
+        } else {
+          // Montante/rail: formato "70Z1" o "90"
+          const perfil = estructura.match(/(\d+)/)?.[1];
+          if (perfil && sys.perfil_mm != perfil) return false;
+          if (estructura.includes('Z2') && sys.zincado !== 'Z2') return false;
+          if (estructura.includes('Z1') && sys.zincado !== 'Z1') return false;
+        }
+        
+        // Filtrar por capas
+        if (sys.capas_por_cara != capas) return false;
+        
+        // Filtrar por modulación (solo 600mm existe actualmente)
+        if (sys.modulacion_mm != 600) return false;
+        
         return true;
       });
       
       const resultadoContainer = document.getElementById('resultadoContainer');
       const stepResult = document.getElementById('stepResult');
       
-      if (systemsIndexBase.length === 0) {
-        systemsIndexBase = await loadIndexBase();
-      }
-      
       if (sistemasFiltrados.length === 0) {
         resultadoContainer.innerHTML = '<div style="padding: 0.75rem; background: #fee; color: #c33; border-radius: 4px;">No hay sistemas disponibles para esta combinación.</div>';
         stepResult.style.display = 'block';
+        sistemaActualMeta = null;
         return;
       }
       
       if (sistemasFiltrados.length === 1) {
-        // Auto-selección
+        // Auto-selección: buscar meta completa en systemsIndexBase y setear sistemaActualMeta
         const sistemaEnriched = sistemasFiltrados[0];
-        const sistema = systemsIndexBase.find(s => s.id === sistemaEnriched.id);
-        if (sistema) {
-          sistemaActualMeta = sistema;
-          resultadoContainer.innerHTML = `<div style="padding: 0.75rem; background: #d4edda; color: #155724; border-radius: 4px; font-weight: 600;">Sistema seleccionado: ${sistema.nombre_comercial || sistema.id}</div>`;
+        const sistemaBase = systemsIndexBase.find(s => s.id === sistemaEnriched.id);
+        if (sistemaBase) {
+          sistemaActualMeta = sistemaBase;
+          resultadoContainer.innerHTML = `<div style="padding: 0.75rem; background: #d4edda; color: #155724; border-radius: 4px; font-weight: 600;">Sistema seleccionado: ${sistemaBase.nombre_comercial || sistemaBase.id}</div>`;
           stepResult.style.display = 'block';
-          await cargarCSV(sistema.id);
+          // Disparar render del sistema seleccionado
+          await cargarCSV(sistemaBase.id);
         }
       } else {
-        // Mostrar lista
+        // Mostrar lista de sistemas disponibles
         let html = '<div style="font-weight: 600; margin-bottom: 0.5rem;">Selecciona un sistema:</div>';
         html += '<div style="display: flex; flex-direction: column; gap: 0.5rem;">';
         sistemasFiltrados.forEach(sysEnriched => {
@@ -870,12 +984,267 @@
         html += '</div>';
         resultadoContainer.innerHTML = html;
         stepResult.style.display = 'block';
+        sistemaActualMeta = null;
       }
     }
     
     // Función global para seleccionar sistema final
     window.seleccionarSistemaFinal = async function(systemId) {
       await cargarCSV(systemId);
+    }
+    
+    // Actualizar opciones de placa según ambiente y elemento
+    async function updatePlacaOptions(ambiente, elemento) {
+      const selectPlaca = document.getElementById('selectPlaca');
+      const selectEstructura = document.getElementById('selectEstructura');
+      const selectCapas = document.getElementById('selectCapas');
+      
+      if (!selectPlaca) return;
+      
+      // Cargar índices si están vacíos
+      if (systemsIndexEnriched.length === 0) {
+        systemsIndexEnriched = await loadIndexEnriched();
+      }
+      
+      // Filtrar sistemas por ambiente y elemento
+      const sistemasFiltrados = systemsIndexEnriched.filter(sys => {
+        if (!sys.ambiente_tags || !Array.isArray(sys.ambiente_tags)) return false;
+        
+        // Filtrar por ambiente
+        let matchAmbiente = false;
+        if (ambiente === 'seco') {
+          matchAmbiente = sys.ambiente_tags.includes('seco');
+        } else if (ambiente === 'humedo') {
+          matchAmbiente = sys.ambiente_tags.includes('humedo');
+        } else if (ambiente === 'exterior') {
+          matchAmbiente = sys.ambiente_tags.includes('exterior');
+        }
+        if (!matchAmbiente) return false;
+        
+        // Filtrar por elemento
+        const sysElemento = sys.elemento || sys.tipo;
+        return sysElemento === elemento;
+      });
+      
+      // Obtener tipos de placa únicos
+      const placasUnicas = new Set();
+      sistemasFiltrados.forEach(sys => {
+        if (sys.placa_tipos && Array.isArray(sys.placa_tipos)) {
+          sys.placa_tipos.forEach(tipo => placasUnicas.add(tipo));
+        } else if (sys.placas && Array.isArray(sys.placas)) {
+          sys.placas.forEach(p => {
+            if (p.tipo) placasUnicas.add(p.tipo);
+          });
+        }
+      });
+      
+      // Ordenar placas (STD, AQUA, LIGNUM, EXTERNA_LIGHT)
+      const ordenPlacas = ['STD', 'AQUA', 'LIGNUM', 'EXTERNA_LIGHT'];
+      const placasOrdenadas = Array.from(placasUnicas).sort((a, b) => {
+        const idxA = ordenPlacas.indexOf(a);
+        const idxB = ordenPlacas.indexOf(b);
+        if (idxA === -1 && idxB === -1) return a.localeCompare(b);
+        if (idxA === -1) return 1;
+        if (idxB === -1) return -1;
+        return idxA - idxB;
+      });
+      
+      // Rellenar select de placa
+      selectPlaca.innerHTML = '<option value="">Seleccionar...</option>';
+      placasOrdenadas.forEach(placa => {
+        const option = document.createElement('option');
+        option.value = placa;
+        option.textContent = placa;
+        selectPlaca.appendChild(option);
+      });
+      
+      // Habilitar selectPlaca si hay opciones
+      selectPlaca.disabled = placasOrdenadas.length === 0;
+      
+      // Resetear y deshabilitar selects dependientes
+      if (selectEstructura) {
+        selectEstructura.innerHTML = '<option value="">Seleccionar...</option>';
+        selectEstructura.disabled = true;
+      }
+      if (selectCapas) {
+        selectCapas.innerHTML = '<option value="">Seleccionar...</option>';
+        selectCapas.disabled = true;
+      }
+    }
+    
+    // Actualizar opciones de estructura según ambiente, elemento y placa
+    async function updateEstructuraOptions(ambiente, elemento, placa) {
+      const selectEstructura = document.getElementById('selectEstructura');
+      const selectCapas = document.getElementById('selectCapas');
+      
+      if (!selectEstructura) return;
+      
+      // Cargar índices si están vacíos
+      if (systemsIndexEnriched.length === 0) {
+        systemsIndexEnriched = await loadIndexEnriched();
+      }
+      
+      // Filtrar sistemas por ambiente, elemento y placa
+      const sistemasFiltrados = systemsIndexEnriched.filter(sys => {
+        if (!sys.ambiente_tags || !Array.isArray(sys.ambiente_tags)) return false;
+        
+        // Filtrar por ambiente
+        let matchAmbiente = false;
+        if (ambiente === 'seco') {
+          matchAmbiente = sys.ambiente_tags.includes('seco');
+        } else if (ambiente === 'humedo') {
+          matchAmbiente = sys.ambiente_tags.includes('humedo');
+        } else if (ambiente === 'exterior') {
+          matchAmbiente = sys.ambiente_tags.includes('exterior');
+        }
+        if (!matchAmbiente) return false;
+        
+        // Filtrar por elemento
+        const sysElemento = sys.elemento || sys.tipo;
+        if (sysElemento !== elemento) return false;
+        
+        // Filtrar por placa (debe incluir el tipo de placa seleccionado)
+        const placaTipos = sys.placa_tipos || (sys.placas ? sys.placas.map(p => p.tipo) : []);
+        return placaTipos.includes(placa);
+      });
+      
+      // Obtener estructuras únicas
+      const estructurasUnicas = new Set();
+      sistemasFiltrados.forEach(sys => {
+        const estructuraTipo = sys.estructura_tipo || sys.estructura;
+        if (!estructuraTipo) return;
+        
+        // Formatear estructura según tipo
+        if (estructuraTipo === 'montante_rail') {
+          const perfil = sys.perfil_mm;
+          const zinc = sys.zincado || '';
+          if (perfil) {
+            estructurasUnicas.add(`${perfil}${zinc}`);
+          }
+        } else if (estructuraTipo === 'omega') {
+          estructurasUnicas.add('Ω35');
+        } else if (estructuraTipo.startsWith('tc')) {
+          const perfil = sys.perfil_mm;
+          if (perfil) {
+            estructurasUnicas.add(`TC${perfil}`);
+          }
+        } else if (estructuraTipo === 'exterior') {
+          const perfil = sys.perfil_mm;
+          if (perfil && sys.zincado === 'Z2') {
+            estructurasUnicas.add(`${perfil} Z2`);
+          }
+        }
+      });
+      
+      // Ordenar estructuras
+      const estructurasOrdenadas = Array.from(estructurasUnicas).sort((a, b) => {
+        // Extraer números para ordenación numérica
+        const numA = parseInt(a.match(/\d+/)?.[0] || '0');
+        const numB = parseInt(b.match(/\d+/)?.[0] || '0');
+        if (numA !== numB) return numA - numB;
+        return a.localeCompare(b);
+      });
+      
+      // Rellenar select de estructura
+      selectEstructura.innerHTML = '<option value="">Seleccionar...</option>';
+      estructurasOrdenadas.forEach(estructura => {
+        const option = document.createElement('option');
+        option.value = estructura;
+        option.textContent = estructura;
+        selectEstructura.appendChild(option);
+      });
+      
+      // Habilitar selectEstructura si hay opciones
+      selectEstructura.disabled = estructurasOrdenadas.length === 0;
+      
+      // Resetear y deshabilitar select dependiente
+      if (selectCapas) {
+        selectCapas.innerHTML = '<option value="">Seleccionar...</option>';
+        selectCapas.disabled = true;
+      }
+    }
+    
+    // Actualizar opciones de capas según ambiente, elemento, placa y estructura
+    async function updateCapasOptions(ambiente, elemento, placa, estructura) {
+      const selectCapas = document.getElementById('selectCapas');
+      
+      if (!selectCapas) return;
+      
+      // Cargar índices si están vacíos
+      if (systemsIndexEnriched.length === 0) {
+        systemsIndexEnriched = await loadIndexEnriched();
+      }
+      
+      // Filtrar sistemas por ambiente, elemento, placa y estructura
+      const sistemasFiltrados = systemsIndexEnriched.filter(sys => {
+        if (!sys.ambiente_tags || !Array.isArray(sys.ambiente_tags)) return false;
+        
+        // Filtrar por ambiente
+        let matchAmbiente = false;
+        if (ambiente === 'seco') {
+          matchAmbiente = sys.ambiente_tags.includes('seco');
+        } else if (ambiente === 'humedo') {
+          matchAmbiente = sys.ambiente_tags.includes('humedo');
+        } else if (ambiente === 'exterior') {
+          matchAmbiente = sys.ambiente_tags.includes('exterior');
+        }
+        if (!matchAmbiente) return false;
+        
+        // Filtrar por elemento
+        const sysElemento = sys.elemento || sys.tipo;
+        if (sysElemento !== elemento) return false;
+        
+        // Filtrar por placa
+        const placaTipos = sys.placa_tipos || (sys.placas ? sys.placas.map(p => p.tipo) : []);
+        if (!placaTipos.includes(placa)) return false;
+        
+        // Filtrar por estructura
+        const estructuraTipo = sys.estructura_tipo || sys.estructura;
+        if (estructura.includes('TC')) {
+          if (estructuraTipo !== 'tc' && !estructuraTipo.startsWith('tc')) return false;
+          const perfil = estructura.match(/TC(\d+)/)?.[1];
+          if (perfil && sys.perfil_mm != perfil) return false;
+        } else if (estructura === 'Ω35') {
+          if (estructuraTipo !== 'omega') return false;
+          if (sys.perfil_mm !== 35) return false;
+        } else if (estructura.includes('Z2')) {
+          if (sys.zincado !== 'Z2') return false;
+          const perfil = estructura.match(/(\d+)/)?.[1];
+          if (perfil && sys.perfil_mm != perfil) return false;
+        } else {
+          // Montante/rail: formato "70Z1" o "90"
+          const perfil = estructura.match(/(\d+)/)?.[1];
+          if (perfil && sys.perfil_mm != perfil) return false;
+          if (estructura.includes('Z2') && sys.zincado !== 'Z2') return false;
+          if (estructura.includes('Z1') && sys.zincado !== 'Z1') return false;
+        }
+        
+        return true;
+      });
+      
+      // Obtener capas únicas (solo 1 o 2)
+      const capasUnicas = new Set();
+      sistemasFiltrados.forEach(sys => {
+        const capas = sys.capas_por_cara;
+        if (capas === 1 || capas === 2) {
+          capasUnicas.add(capas);
+        }
+      });
+      
+      // Ordenar capas (1, 2)
+      const capasOrdenadas = Array.from(capasUnicas).sort((a, b) => a - b);
+      
+      // Rellenar select de capas
+      selectCapas.innerHTML = '<option value="">Seleccionar...</option>';
+      capasOrdenadas.forEach(capa => {
+        const option = document.createElement('option');
+        option.value = capa;
+        option.textContent = `${capa} (${capa}+${capa})`;
+        selectCapas.appendChild(option);
+      });
+      
+      // Habilitar selectCapas si hay opciones
+      selectCapas.disabled = capasOrdenadas.length === 0;
     }
     
     // Inicializar event listeners del flujo
