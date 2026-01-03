@@ -773,7 +773,6 @@
     
     // Función principal cuando cambian los filtros del modo guiado (NUEVO FLUJO)
     async function onGuidedFiltersChange() {
-      const ambiente = document.getElementById('guidedAmbiente').value;
       const tipo = document.getElementById('guidedTipo').value;
       const necesidadRadio = document.querySelector('input[name="necesidad"]:checked');
       const necesidad = necesidadRadio ? necesidadRadio.value : '';
@@ -786,13 +785,6 @@
       
       messageDiv.style.display = 'none';
       multipleDiv.style.display = 'none';
-      
-      if (ambiente === 'EXTERIOR') {
-        document.getElementById('guidedTipo').value = 'EXTERIOR';
-        document.getElementById('guidedTipo').options[3].style.display = 'block';
-      } else {
-        document.getElementById('guidedTipo').options[3].style.display = 'none';
-      }
       
       // Si hay tipo y necesidad, filtrar sistemas
       if (tipo && necesidad) {
