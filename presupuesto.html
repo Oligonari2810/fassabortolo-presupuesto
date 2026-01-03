@@ -1477,8 +1477,14 @@
 
     (async()=>{
       // Cargar sistemas index raw al inicio (para modo guiado)
-      if (systemsIndexRaw.length === 0) {
-        systemsIndexRaw = await loadIndexRaw();
+      try {
+        if (systemsIndexRaw.length === 0) {
+          const idxRaw = await loadIndexRaw();
+          systemsIndexRaw = idxRaw.systems || [];
+          console.log('✅ systemsIndexRaw cargado:', systemsIndexRaw.length, 'sistemas');
+        }
+      } catch (error) {
+        console.error('❌ Error al cargar systemsIndexRaw:', error);
       }
       
       const systems = await loadIndex();
