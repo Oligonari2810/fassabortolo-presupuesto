@@ -1476,6 +1476,11 @@
     }
 
     (async()=>{
+      // Cargar sistemas index raw al inicio (para modo guiado)
+      if (systemsIndexRaw.length === 0) {
+        systemsIndexRaw = await loadIndexRaw();
+      }
+      
       const systems = await loadIndex();
       const tipoOrder = {'MURO':1,'TRASDOSADO':2,'TECHO':3,'EXTERIOR':4};
       const sorted = systems.sort((a,b)=>{
@@ -1516,6 +1521,11 @@
       }
       
       if (modeGuided && modeExpert && guidedMode && expertMode) {
+        // Inicializar modo guiado por defecto
+        if (modeGuided.checked) {
+          switchMode('guided');
+        }
+        
         modeGuided.addEventListener('change', () => {
           if (modeGuided.checked) switchMode('guided');
         });
