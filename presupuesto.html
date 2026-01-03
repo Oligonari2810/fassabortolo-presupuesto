@@ -351,52 +351,11 @@
       <h3>Añadir Sistema al Proyecto</h3>
       
       <!-- Selector de sistema -->
-      <div style="margin-bottom: 1rem;">
-        <div class="row">
-          <label>
-            Tipo de sistema
-            <select id="guidedTipo">
-              <option value="">Seleccionar...</option>
-              <option value="MURO">MURO</option>
-              <option value="TRASDOSADO">TRASDOSADO</option>
-              <option value="TECHO">TECHO</option>
-              <option value="EXTERIOR">EXTERIOR</option>
-            </select>
-          </label>
-          <label style="width: 100%;">
-            <div style="font-weight: bold; margin-bottom: 0.5rem;">¿Qué necesitas?</div>
-            <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-              <label style="display: flex; align-items: center; gap: 0.5rem;">
-                <input type="radio" name="necesidad" value="seco" id="necesidadSeco">
-                <span>Interior seco (dormitorios, oficinas)</span>
-              </label>
-              <label style="display: flex; align-items: center; gap: 0.5rem;">
-                <input type="radio" name="necesidad" value="humedo" id="necesidadHumedo">
-                <span>Interior húmedo (baños, cocinas)</span>
-              </label>
-              <label style="display: flex; align-items: center; gap: 0.5rem;">
-                <input type="radio" name="necesidad" value="exterior" id="necesidadExterior">
-                <span>Exterior protegido</span>
-              </label>
-              <label style="display: flex; align-items: center; gap: 0.5rem;">
-                <input type="radio" name="necesidad" value="robusto" id="necesidadRobusto">
-                <span>Alta exigencia (doble capa)</span>
-              </label>
-              <label style="display: flex; align-items: center; gap: 0.5rem;">
-                <input type="radio" name="necesidad" value="ligero" id="necesidadLigero">
-                <span>Espesor reducido (máximo espacio)</span>
-              </label>
-            </div>
-          </label>
-        </div>
-        <div id="sistemasFiltrados" style="margin-top: 1rem; display: none;"></div>
-        <div id="guidedMessage" style="margin-top: 0.5rem; padding: 0.75rem; border-radius: 4px; display: none;"></div>
-        <div id="guidedMultipleMatches" style="margin-top: 0.5rem; display: none;">
-          <label>
-            Sistemas equivalentes
-            <select id="guidedMultipleSelect"></select>
-          </label>
-        </div>
+      <div class="row">
+        <label>
+          Sistema FassaBortolo
+          <select id="systemSelect"></select>
+        </label>
       </div>
       
       <!-- Campos de entrada -->
@@ -603,27 +562,7 @@
       return skuUpper.startsWith("C") || skuUpper.startsWith("U") || skuUpper.startsWith("E");
     }
     
-    // ========== MODO GUIADO ==========
-    let systemsIndexRaw = [];
-    
-    // ========== FUNCIONES ANTIGUAS ELIMINADAS ==========
-    // Las siguientes funciones fueron eliminadas porque el nuevo flujo usa filtrarSistemas()
-    // basado en ambientes.json en lugar de filtrar por estructura/placa/espesor/capas
-    // - findSystemMatch() - eliminada
-    // - updateEstructuraOptions() - eliminada  
-    // - updatePlacaOptions() - eliminada
-    // - updateEspesorCapasOptions() - eliminada
-    
-    // ========== FUNCIONES FILTRADO POR NECESIDAD ==========
-    
-    // Función para cargar ambientes.json
-    async function loadAmbientes() {
-      const res = await fetch('ambientes.json');
-      return await res.json();
-    }
-    
-    // Función para filtrar sistemas según necesidad
-    async function filtrarSistemas(necesidadId) {
+    // Funciones de filtrado guiado eliminadas - usando selector directo
       if (!necesidadId) {
         document.getElementById('sistemasFiltrados').style.display = 'none';
         return;
@@ -1615,17 +1554,6 @@
     }
 
     (async()=>{
-      // Cargar sistemas index raw al inicio
-      try {
-        if (systemsIndexRaw.length === 0) {
-          const idxRaw = await loadIndexRaw();
-          systemsIndexRaw = idxRaw.systems || [];
-          console.log('✅ systemsIndexRaw cargado:', systemsIndexRaw.length, 'sistemas');
-        }
-      } catch (error) {
-        console.error('❌ Error al cargar systemsIndexRaw:', error);
-      }
-      
       const systems = await loadIndex();
       const tipoOrder = {'MURO':1,'TRASDOSADO':2,'TECHO':3,'EXTERIOR':4};
       const sorted = systems.sort((a,b)=>{
@@ -1649,17 +1577,11 @@
       document.getElementById('pdfBtn').addEventListener('click', exportPDF);
       document.getElementById('excelBtn').addEventListener('click', exportExcel);
       
-      // Event listeners para selector de sistema
-      const guidedTipo = document.getElementById('guidedTipo');
-      if (guidedTipo) {
-        guidedTipo.addEventListener('change', onGuidedFiltersChange);
+      // Event listener para selector de sistema
+      const systemSelect = document.getElementById('systemSelect');
+      if (systemSelect) {
+        systemSelect.addEventListener('change', async() => await calcularYMostrar(false));
       }
-      
-      // Event listeners para radio buttons de necesidad
-      const necesidadRadios = document.querySelectorAll('input[name="necesidad"]');
-      necesidadRadios.forEach(radio => {
-        radio.addEventListener('change', onGuidedFiltersChange);
-      });
       
       // Recálculo automático en tiempo real
       const inputsReactivos = ['area', 'waste', 'logisticaPct', 'margenPct', 'incoterm'];
