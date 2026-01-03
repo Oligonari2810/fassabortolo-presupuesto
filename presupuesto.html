@@ -357,20 +357,12 @@
           <div class="row">
             <label>
               ¿Dónde va?
-              <div style="display: flex; flex-direction: column; gap: 0.5rem; margin-top: 0.5rem;">
-                <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
-                  <input type="radio" name="ambiente" value="SECO" id="ambienteSECO">
-                  <span>SECO</span>
-                </label>
-                <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
-                  <input type="radio" name="ambiente" value="HUMEDO" id="ambienteHUMEDO">
-                  <span>HÚMEDO</span>
-                </label>
-                <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
-                  <input type="radio" name="ambiente" value="EXTERIOR" id="ambienteEXTERIOR">
-                  <span>EXTERIOR</span>
-                </label>
-              </div>
+              <select id="selectAmbiente">
+                <option value="">Seleccionar...</option>
+                <option value="SECO">SECO</option>
+                <option value="HUMEDO">HÚMEDO</option>
+                <option value="EXTERIOR">EXTERIOR</option>
+              </select>
             </label>
           </div>
         </div>
@@ -380,9 +372,9 @@
           <div class="row">
             <label>
               ¿Qué placa necesitas?
-              <div style="display: flex; flex-direction: column; gap: 0.5rem; margin-top: 0.5rem;" id="placasContainer">
-                <!-- Se llena dinámicamente -->
-              </div>
+              <select id="selectPlaca" disabled>
+                <option value="">Primero selecciona ¿Dónde va?</option>
+              </select>
             </label>
           </div>
         </div>
@@ -392,24 +384,13 @@
           <div class="row">
             <label>
               ¿Qué estás construyendo?
-              <div style="display: flex; flex-direction: column; gap: 0.5rem; margin-top: 0.5rem;">
-                <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
-                  <input type="radio" name="tipo" value="MURO" id="tipoMURO">
-                  <span>MURO</span>
-                </label>
-                <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
-                  <input type="radio" name="tipo" value="TRASDOSADO" id="tipoTRASDOSADO">
-                  <span>TRASDOSADO</span>
-                </label>
-                <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
-                  <input type="radio" name="tipo" value="TECHO" id="tipoTECHO">
-                  <span>TECHO</span>
-                </label>
-                <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; display: none;" id="tipoEXTERIORLabel">
-                  <input type="radio" name="tipo" value="EXTERIOR" id="tipoEXTERIOR">
-                  <span>EXTERIOR</span>
-                </label>
-              </div>
+              <select id="selectTipo" disabled>
+                <option value="">Primero selecciona ¿Qué placa necesitas?</option>
+                <option value="MURO">MURO</option>
+                <option value="TRASDOSADO">TRASDOSADO</option>
+                <option value="TECHO">TECHO</option>
+                <option value="EXTERIOR" style="display: none;" id="tipoEXTERIOROption">EXTERIOR</option>
+              </select>
             </label>
           </div>
         </div>
@@ -419,9 +400,9 @@
           <div class="row">
             <label>
               ¿Qué perfilería?
-              <div style="display: flex; flex-direction: column; gap: 0.5rem; margin-top: 0.5rem;" id="perfileriaContainer">
-                <!-- Se llena dinámicamente -->
-              </div>
+              <select id="selectPerfileria" disabled>
+                <option value="">Primero selecciona ¿Qué estás construyendo?</option>
+              </select>
             </label>
           </div>
         </div>
@@ -431,12 +412,10 @@
           <div class="row">
             <label>
               Modulación
-              <div style="display: flex; flex-direction: column; gap: 0.5rem; margin-top: 0.5rem;">
-                <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
-                  <input type="radio" name="modulacion" value="600" id="modulacion600" checked>
-                  <span>600 mm</span>
-                </label>
-              </div>
+              <select id="selectModulacion" disabled>
+                <option value="">Primero selecciona ¿Qué perfilería?</option>
+                <option value="600">600 mm</option>
+              </select>
             </label>
           </div>
         </div>
@@ -446,9 +425,9 @@
           <div class="row">
             <label>
               Capas
-              <div style="display: flex; flex-direction: column; gap: 0.5rem; margin-top: 0.5rem;" id="capasContainer">
-                <!-- Se llena dinámicamente -->
-              </div>
+              <select id="selectCapas" disabled>
+                <option value="">Primero selecciona Modulación</option>
+              </select>
             </label>
           </div>
         </div>
@@ -460,11 +439,6 @@
           </div>
         </div>
       </div>
-      
-      <!-- Variable global para almacenar el sistema seleccionado -->
-      <script>
-        window.sistemaSeleccionadoActual = null;
-      </script>
       
       <!-- Campos de entrada -->
       <div class="row" style="margin-top: 1rem;">
