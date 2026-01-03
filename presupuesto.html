@@ -382,36 +382,33 @@
               <option value="EXTERIOR" style="display:none;">EXTERIOR</option>
             </select>
           </label>
-          <label>
-            Estructura/Perfilería
-            <select id="guidedEstructura">
-              <option value="">Seleccionar...</option>
-            </select>
+          <label style="width: 100%;">
+            <div style="font-weight: bold; margin-bottom: 0.5rem;">3. ¿Qué necesitas?</div>
+            <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+              <label style="display: flex; align-items: center; gap: 0.5rem;">
+                <input type="radio" name="necesidad" value="seco" id="necesidadSeco">
+                <span>Interior seco (dormitorios, oficinas)</span>
+              </label>
+              <label style="display: flex; align-items: center; gap: 0.5rem;">
+                <input type="radio" name="necesidad" value="humedo" id="necesidadHumedo">
+                <span>Interior húmedo (baños, cocinas)</span>
+              </label>
+              <label style="display: flex; align-items: center; gap: 0.5rem;">
+                <input type="radio" name="necesidad" value="exterior" id="necesidadExterior">
+                <span>Exterior protegido</span>
+              </label>
+              <label style="display: flex; align-items: center; gap: 0.5rem;">
+                <input type="radio" name="necesidad" value="robusto" id="necesidadRobusto">
+                <span>Alta exigencia (doble capa)</span>
+              </label>
+              <label style="display: flex; align-items: center; gap: 0.5rem;">
+                <input type="radio" name="necesidad" value="ligero" id="necesidadLigero">
+                <span>Espesor reducido (máximo espacio)</span>
+              </label>
+            </div>
           </label>
-          <label>
-            Separación (mm)
-            <select id="guidedSeparacion">
-              <option value="600">600</option>
-            </select>
-          </label>
-          <label>
-            Placa
-            <select id="guidedPlaca">
-              <option value="">Seleccionar...</option>
-            </select>
-          </label>
-          <label>
-            Espesor (mm)
-            <select id="guidedEspesor">
-              <option value="">Seleccionar...</option>
-            </select>
-          </label>
-          <label>
-            Capas por cara
-            <select id="guidedCapas">
-              <option value="">Seleccionar...</option>
-            </select>
-          </label>
+        </div>
+        <div id="sistemasFiltrados" style="margin-top: 1rem; display: none;"></div>
         </div>
         <div id="guidedMessage" style="margin-top: 0.5rem; padding: 0.75rem; border-radius: 4px; display: none;"></div>
         <div id="guidedMultipleMatches" style="margin-top: 0.5rem; display: none;">
@@ -800,15 +797,128 @@
       });
     }
     
-    // Función principal cuando cambian los filtros del modo guiado
+    // ========== FUNCIONES FILTRADO POR NECESIDAD ==========
+    
+    // Función para cargar ambientes.json
+    async function loadAmbientes() {
+      const res = await fetch('ambientes.json');
+      return await res.json();
+    }
+    
+    // Función para filtrar sistemas según necesidad
+    async function filtrarSistemas(necesidadId) {
+      if (!necesidadId) {
+        document.getElementById('sistemasFiltrados').style.display = 'none';
+        return;
+      }
+      
+      const contenedor = document.getElementById('sistemasFiltrados');
+      const tipo = document.getElementById('guidedTipo').value;
+      
+      if (!tipo) {
+        contenedor.style.display = 'none';
+        return;
+      }
+      
+      // Cargar ambientes y sistemas
+      const ambientes = await loadAmbientes();
+      const ambiente = ambientes.find(a => a.id === necesidadId);
+      
+      if (!ambiente) {
+        console.error('Ambiente no encontrado:', necesidadId);
+        contenedor.style.display = 'none';
+        return;
+      }
+      
+      if (systemsIndexRaw.length === 0) {
+        systemsIndexRaw = await loadIndexRaw();
+      }
+      
+      // Filtrar sistemas según el filtro del ambiente y el tipo seleccionado
+      const sistemasFiltrados = systemsIndexRaw.filter(sys => {
+        // Primero filtrar por tipo
+        if (sys.tipo !== tipo) return false;
+        
+        // Aplicar filtros del ambiente
+        const filtro = ambiente.filtro;
+        
+        // Filtro es_humedo
+        if (filtro.hasOwnProperty('es_humedo')) {
+          if (sys.es_humedo !== filtro.es_humedo) return false;
+        }
+        
+        // Filtro es_exterior
+        if (filtro.hasOwnProperty('es_exterior')) {
+          if (sys.es_exterior !== filtro.es_exterior) return false;
+        }
+        
+        // Filtro es_doble_capa
+        if (filtro.hasOwnProperty('es_doble_capa')) {
+          if (sys.es_doble_capa !== filtro.es_doble_capa) return false;
+        }
+        
+        // Filtro perfil_mm (array de valores permitidos)
+        if (filtro.hasOwnProperty('perfil_mm')) {
+          if (!Array.isArray(filtro.perfil_mm)) return false;
+          if (!filtro.perfil_mm.includes(sys.perfil_mm)) return false;
+        }
+        
+        return true;
+      });
+      
+      // Mostrar sistemas filtrados
+      const addBtn = document.getElementById('addBtn');
+      if (sistemasFiltrados.length === 0) {
+        contenedor.innerHTML = '<div style="padding: 1rem; background: #fee; color: #c33; border-radius: 4px;">No hay sistemas disponibles para esta necesidad y tipo.</div>';
+        contenedor.style.display = 'block';
+        if (addBtn) addBtn.disabled = true;
+        return;
+      }
+      
+      let html = '<div style="font-weight: bold; margin-bottom: 0.5rem;">4. Sistema recomendado:</div>';
+      html += '<div style="display: flex; flex-direction: column; gap: 0.5rem;">';
+      
+      sistemasFiltrados.forEach(sys => {
+        const nombre = sys.nombre_comercial || sys.id;
+        const descripcion = sys.descripcion_tecnica_corta || sys.descripcion_sistema || '';
+        html += `
+          <div style="border: 1px solid #ddd; padding: 0.75rem; border-radius: 4px; background: #fff;">
+            <div style="font-weight: 600; margin-bottom: 0.25rem;">${nombre}</div>
+            ${descripcion ? `<div style="font-size: 0.875rem; color: #666; margin-bottom: 0.5rem;">${descripcion}</div>` : ''}
+            <button onclick="seleccionarSistema('${sys.id}')" style="padding: 0.5rem 1rem; background: #e74c3c; color: white; border: none; border-radius: 4px; cursor: pointer;">Seleccionar</button>
+          </div>
+        `;
+      });
+      
+      html += '</div>';
+      contenedor.innerHTML = html;
+      contenedor.style.display = 'block';
+    }
+    
+    // Función para seleccionar un sistema (llamada desde el botón) - debe ser global para onclick
+    window.seleccionarSistema = async function(systemId) {
+      const systemSelect = document.getElementById('systemSelect');
+      const addBtn = document.getElementById('addBtn');
+      
+      // Buscar el sistema en el selector experto
+      for (let i = 0; i < systemSelect.options.length; i++) {
+        const opt = systemSelect.options[i];
+        const meta = JSON.parse(opt.dataset.meta || '{}');
+        if (meta.id === systemId) {
+          systemSelect.value = opt.value;
+          systemSelect.dispatchEvent(new Event('change'));
+          addBtn.disabled = false;
+          break;
+        }
+      }
+    }
+    
+    // Función principal cuando cambian los filtros del modo guiado (NUEVO FLUJO)
     async function onGuidedFiltersChange() {
       const ambiente = document.getElementById('guidedAmbiente').value;
       const tipo = document.getElementById('guidedTipo').value;
-      const estructura = document.getElementById('guidedEstructura').value;
-      const separacion = document.getElementById('guidedSeparacion').value;
-      const placa = document.getElementById('guidedPlaca').value;
-      const espesor = document.getElementById('guidedEspesor').value;
-      const capas = document.getElementById('guidedCapas').value;
+      const necesidadRadio = document.querySelector('input[name="necesidad"]:checked');
+      const necesidad = necesidadRadio ? necesidadRadio.value : '';
       
       const messageDiv = document.getElementById('guidedMessage');
       const multipleDiv = document.getElementById('guidedMultipleMatches');
@@ -826,67 +936,17 @@
         document.getElementById('guidedTipo').options[3].style.display = 'none';
       }
       
-      if (systemsIndexRaw.length === 0) {
-        systemsIndexRaw = await loadIndexRaw();
-      }
-      
-      if (tipo) updateEstructuraOptions(tipo, systemsIndexRaw);
-      if (ambiente) updatePlacaOptions(ambiente);
-      if (estructura && placa) updateEspesorCapasOptions({ tipo, estructura, separacion, placa }, systemsIndexRaw);
-      
-      if (ambiente && tipo && estructura && separacion && placa && espesor && capas) {
-        const matches = findSystemMatch({ ambiente, tipo, estructura, separacion, placa, espesor, capas }, systemsIndexRaw);
-        
-        if (matches.length === 0) {
-          messageDiv.style.display = 'block';
-          messageDiv.style.background = '#fee';
-          messageDiv.style.color = '#c33';
-          messageDiv.textContent = 'No existe sistema definido para esta combinación';
-          addBtn.disabled = true;
-        } else if (matches.length === 1) {
-          const systemSelect = document.getElementById('systemSelect');
-          const match = matches[0];
-          for (let i = 0; i < systemSelect.options.length; i++) {
-            const opt = systemSelect.options[i];
-            if (opt.value === match.csv) {
-              systemSelect.value = match.csv;
-              systemSelect.dispatchEvent(new Event('change'));
-              break;
-            }
-          }
-          messageDiv.style.display = 'none';
-          addBtn.disabled = false;
-        } else {
-          multipleDiv.style.display = 'block';
-          const multipleSelect = document.getElementById('guidedMultipleSelect');
-          multipleSelect.innerHTML = '';
-          matches.forEach(match => {
-            const opt = document.createElement('option');
-            opt.value = match.id;
-            opt.textContent = `${match.id} - ${match.nombre_comercial || match.id}`;
-            opt.dataset.csv = match.csv;
-            multipleSelect.appendChild(opt);
-          });
-          multipleSelect.onchange = () => {
-            const selected = matches.find(m => m.id === multipleSelect.value);
-            if (selected) {
-              const systemSelect = document.getElementById('systemSelect');
-              for (let i = 0; i < systemSelect.options.length; i++) {
-                const opt = systemSelect.options[i];
-                if (opt.value === selected.csv) {
-                  systemSelect.value = selected.csv;
-                  systemSelect.dispatchEvent(new Event('change'));
-                  break;
-                }
-              }
-            }
-          };
-          addBtn.disabled = false;
-        }
+      // Si hay tipo y necesidad, filtrar sistemas
+      if (tipo && necesidad) {
+        await filtrarSistemas(necesidad);
+        // El botón se habilita cuando se selecciona un sistema desde filtrarSistemas
       } else {
+        document.getElementById('sistemasFiltrados').style.display = 'none';
         addBtn.disabled = true;
       }
     }
+    
+    // ========== FIN FILTRADO POR NECESIDAD ==========
     // ========== FIN MODO GUIADO ==========
 
     function parseCSV(text){
@@ -1618,11 +1678,17 @@
         });
         
         // Event listeners modo guiado
-        ['guidedAmbiente', 'guidedTipo', 'guidedEstructura', 'guidedSeparacion', 'guidedPlaca', 'guidedEspesor', 'guidedCapas'].forEach(id => {
+        ['guidedAmbiente', 'guidedTipo'].forEach(id => {
           const el = document.getElementById(id);
           if (el) {
             el.addEventListener('change', onGuidedFiltersChange);
           }
+        });
+        
+        // Event listeners para radio buttons de necesidad
+        const necesidadRadios = document.querySelectorAll('input[name="necesidad"]');
+        necesidadRadios.forEach(radio => {
+          radio.addEventListener('change', onGuidedFiltersChange);
         });
       }
       

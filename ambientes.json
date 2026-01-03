@@ -1,0 +1,44 @@
+[
+  {
+    "id": "seco",
+    "nombre": "Interior seco",
+    "descripcion": "Dormitorios, oficinas, salones",
+    "filtro": {
+      "es_humedo": false,
+      "es_exterior": false
+    }
+  },
+  {
+    "id": "humedo",
+    "nombre": "Interior húmedo",
+    "descripcion": "Baños, cocinas, spas, lavanderías",
+    "filtro": {
+      "es_humedo": true
+    }
+  },
+  {
+    "id": "exterior",
+    "nombre": "Exterior protegido",
+    "descripcion": "Fachadas ventiladas, cerramientos bajo cubierta",
+    "filtro": {
+      "es_exterior": true
+    }
+  },
+  {
+    "id": "robusto",
+    "nombre": "Alta exigencia (doble capa)",
+    "descripcion": "Hoteles, clínicas, zonas de alto tránsito",
+    "filtro": {
+      "es_doble_capa": true
+    }
+  },
+  {
+    "id": "ligero",
+    "nombre": "Espesor reducido",
+    "descripcion": "Máximo aprovechamiento de espacio",
+    "filtro": {
+      "perfil_mm": [35, 47]
+    }
+  }
+]
+
