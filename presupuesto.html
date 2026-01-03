@@ -350,20 +350,8 @@
     <div class="card">
       <h3>Añadir Sistema al Proyecto</h3>
       
-      <!-- Toggle Modo Guiado/Experto -->
-      <div style="margin-bottom: 1rem; padding: 0.75rem; background: #f8f9fa; border-radius: 4px; display: flex; align-items: center; gap: 1rem;">
-        <label style="flex: 0 0 auto; margin: 0; font-weight: 600;">
-          <input type="radio" name="modeToggle" value="guided" id="modeGuided" checked />
-          Modo Guiado
-        </label>
-        <label style="flex: 0 0 auto; margin: 0; font-weight: 600;">
-          <input type="radio" name="modeToggle" value="expert" id="modeExpert" />
-          Modo Experto
-        </label>
-      </div>
-      
-      <!-- Modo Guiado -->
-      <div id="guidedMode" style="margin-bottom: 1rem;">
+      <!-- Selector de sistema -->
+      <div style="margin-bottom: 1rem;">
         <div class="row">
           <label>
             Tipo de sistema
@@ -411,17 +399,7 @@
         </div>
       </div>
       
-      <!-- Modo Experto (oculto por defecto) -->
-      <div id="expertMode" style="display: none;">
-        <div class="row">
-          <label>
-            Sistema FassaBortolo
-            <select id="systemSelect"></select>
-          </label>
-        </div>
-      </div>
-      
-      <!-- Campos comunes (disponibles en ambos modos) -->
+      <!-- Campos de entrada -->
       <div class="row" style="margin-top: 1rem;">
         <label>
           m² (superficie)
@@ -1671,47 +1649,17 @@
       document.getElementById('pdfBtn').addEventListener('click', exportPDF);
       document.getElementById('excelBtn').addEventListener('click', exportExcel);
       
-      // Toggle Modo Guiado/Experto
-      const modeGuided = document.getElementById('modeGuided');
-      const modeExpert = document.getElementById('modeExpert');
-      const guidedMode = document.getElementById('guidedMode');
-      const expertMode = document.getElementById('expertMode');
-      
-      function switchMode(mode) {
-        if (mode === 'guided') {
-          guidedMode.style.display = 'block';
-          expertMode.style.display = 'none';
-        } else {
-          guidedMode.style.display = 'none';
-          expertMode.style.display = 'block';
-        }
+      // Event listeners para selector de sistema
+      const guidedTipo = document.getElementById('guidedTipo');
+      if (guidedTipo) {
+        guidedTipo.addEventListener('change', onGuidedFiltersChange);
       }
       
-      if (modeGuided && modeExpert && guidedMode && expertMode) {
-        // Inicializar modo guiado por defecto
-        if (modeGuided.checked) {
-          switchMode('guided');
-        }
-        
-        modeGuided.addEventListener('change', () => {
-          if (modeGuided.checked) switchMode('guided');
-        });
-        modeExpert.addEventListener('change', () => {
-          if (modeExpert.checked) switchMode('expert');
-        });
-        
-        // Event listeners modo guiado
-        const guidedTipo = document.getElementById('guidedTipo');
-        if (guidedTipo) {
-          guidedTipo.addEventListener('change', onGuidedFiltersChange);
-        }
-        
-        // Event listeners para radio buttons de necesidad
-        const necesidadRadios = document.querySelectorAll('input[name="necesidad"]');
-        necesidadRadios.forEach(radio => {
-          radio.addEventListener('change', onGuidedFiltersChange);
-        });
-      }
+      // Event listeners para radio buttons de necesidad
+      const necesidadRadios = document.querySelectorAll('input[name="necesidad"]');
+      necesidadRadios.forEach(radio => {
+        radio.addEventListener('change', onGuidedFiltersChange);
+      });
       
       // Recálculo automático en tiempo real
       const inputsReactivos = ['area', 'waste', 'logisticaPct', 'margenPct', 'incoterm'];
