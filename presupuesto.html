@@ -350,67 +350,121 @@
     <div class="card">
       <h3>Añadir Sistema al Proyecto</h3>
       
-      <!-- Modo Guiado: Árbol de decisión -->
-      <div id="guidedMode" style="margin-bottom: 1rem;">
-        <div class="row">
-          <label>
-            1. Ambiente
-            <select id="guidedAmbiente">
-              <option value="">Seleccionar...</option>
-              <option value="SECO">SECO (interior normal)</option>
-              <option value="HUMEDO">HÚMEDO (baños/cocinas)</option>
-              <option value="EXTERIOR">EXTERIOR</option>
-            </select>
-          </label>
+      <!-- Flujo de selección paso a paso -->
+      <div id="selectionFlow" style="margin-bottom: 1rem;">
+        <!-- Paso 1: Ambiente -->
+        <div id="step1" class="step-container">
+          <div class="row">
+            <label>
+              ¿Dónde va?
+              <div style="display: flex; flex-direction: column; gap: 0.5rem; margin-top: 0.5rem;">
+                <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                  <input type="radio" name="ambiente" value="SECO" id="ambienteSECO">
+                  <span>SECO</span>
+                </label>
+                <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                  <input type="radio" name="ambiente" value="HUMEDO" id="ambienteHUMEDO">
+                  <span>HÚMEDO</span>
+                </label>
+                <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                  <input type="radio" name="ambiente" value="EXTERIOR" id="ambienteEXTERIOR">
+                  <span>EXTERIOR</span>
+                </label>
+              </div>
+            </label>
+          </div>
         </div>
-        <div class="row">
-          <label>
-            2. Tipo de placa
-            <select id="guidedPlaca" disabled>
-              <option value="">Primero selecciona Ambiente</option>
-            </select>
-          </label>
+        
+        <!-- Paso 2: Tipo de placa -->
+        <div id="step2" class="step-container" style="display: none;">
+          <div class="row">
+            <label>
+              ¿Qué placa necesitas?
+              <div style="display: flex; flex-direction: column; gap: 0.5rem; margin-top: 0.5rem;" id="placasContainer">
+                <!-- Se llena dinámicamente -->
+              </div>
+            </label>
+          </div>
         </div>
-        <div class="row">
-          <label>
-            3. Tipo de solución
-            <select id="guidedTipo" disabled>
-              <option value="">Selecciona Placa primero</option>
-            </select>
-          </label>
+        
+        <!-- Paso 3: Tipo de solución -->
+        <div id="step3" class="step-container" style="display: none;">
+          <div class="row">
+            <label>
+              ¿Qué estás construyendo?
+              <div style="display: flex; flex-direction: column; gap: 0.5rem; margin-top: 0.5rem;">
+                <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                  <input type="radio" name="tipo" value="MURO" id="tipoMURO">
+                  <span>MURO</span>
+                </label>
+                <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                  <input type="radio" name="tipo" value="TRASDOSADO" id="tipoTRASDOSADO">
+                  <span>TRASDOSADO</span>
+                </label>
+                <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                  <input type="radio" name="tipo" value="TECHO" id="tipoTECHO">
+                  <span>TECHO</span>
+                </label>
+                <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; display: none;" id="tipoEXTERIORLabel">
+                  <input type="radio" name="tipo" value="EXTERIOR" id="tipoEXTERIOR">
+                  <span>EXTERIOR</span>
+                </label>
+              </div>
+            </label>
+          </div>
         </div>
-        <div class="row">
-          <label>
-            4. Estructura / Perfilería
-            <select id="guidedEstructura" disabled>
-              <option value="">Selecciona Tipo primero</option>
-            </select>
-          </label>
+        
+        <!-- Paso 4: Perfilería -->
+        <div id="step4" class="step-container" style="display: none;">
+          <div class="row">
+            <label>
+              ¿Qué perfilería?
+              <div style="display: flex; flex-direction: column; gap: 0.5rem; margin-top: 0.5rem;" id="perfileriaContainer">
+                <!-- Se llena dinámicamente -->
+              </div>
+            </label>
+          </div>
         </div>
-        <div class="row">
-          <label>
-            5. Modulación
-            <select id="guidedModulacion" disabled>
-              <option value="">Selecciona Estructura primero</option>
-            </select>
-          </label>
+        
+        <!-- Paso 5: Modulación -->
+        <div id="step5" class="step-container" style="display: none;">
+          <div class="row">
+            <label>
+              Modulación
+              <div style="display: flex; flex-direction: column; gap: 0.5rem; margin-top: 0.5rem;">
+                <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                  <input type="radio" name="modulacion" value="600" id="modulacion600" checked>
+                  <span>600 mm</span>
+                </label>
+              </div>
+            </label>
+          </div>
         </div>
-        <div class="row">
-          <label>
-            6. Capas por cara
-            <select id="guidedCapas" disabled>
-              <option value="">Selecciona Modulación primero</option>
-            </select>
-          </label>
+        
+        <!-- Paso 6: Capas -->
+        <div id="step6" class="step-container" style="display: none;">
+          <div class="row">
+            <label>
+              Capas
+              <div style="display: flex; flex-direction: column; gap: 0.5rem; margin-top: 0.5rem;" id="capasContainer">
+                <!-- Se llena dinámicamente -->
+              </div>
+            </label>
+          </div>
         </div>
-        <div id="guidedSistemasResultado" style="margin-top: 1rem; display: none;">
-          <div style="font-weight: bold; margin-bottom: 0.5rem;">7. Sistema resultante:</div>
-          <div id="guidedSistemasLista"></div>
+        
+        <!-- Resultado: Sistemas encontrados -->
+        <div id="stepResult" class="step-container" style="display: none; margin-top: 1rem; padding: 1rem; background: #f8f9fa; border-radius: 4px;">
+          <div id="resultadoContainer">
+            <!-- Se llena dinámicamente -->
+          </div>
         </div>
       </div>
       
-      <!-- Selector directo (oculto, usado internamente) -->
-      <select id="systemSelect" style="display: none;"></select>
+      <!-- Variable global para almacenar el sistema seleccionado -->
+      <script>
+        window.sistemaSeleccionadoActual = null;
+      </script>
       
       <!-- Campos de entrada -->
       <div class="row" style="margin-top: 1rem;">
@@ -616,7 +670,413 @@
       return skuUpper.startsWith("C") || skuUpper.startsWith("U") || skuUpper.startsWith("E");
     }
     
-    // Funciones de filtrado guiado eliminadas - usando selector directo
+    // ========== FLUJO DE SELECCIÓN PASO A PASO ==========
+    let systemsIndexRaw = [];
+    let sistemaActualMeta = null;
+    
+    // Función para cargar sistemas index raw
+    async function loadIndexRaw() {
+      const res = await fetch('sistemas/sistemas-index.json');
+      const idx = await res.json();
+      return idx.systems || [];
+    }
+    
+    // Función para cargar CSV y calcular (equivalente a cargarCSV)
+    async function cargarCSV(systemId) {
+      if (systemsIndexRaw.length === 0) {
+        systemsIndexRaw = await loadIndexRaw();
+      }
+      const sistema = systemsIndexRaw.find(s => s.id === systemId);
+      if (!sistema) {
+        throw new Error(`Sistema ${systemId} no encontrado`);
+      }
+      sistemaActualMeta = sistema;
+      await calcularYMostrarConSistema(sistema, false);
+    }
+    
+    // Función auxiliar: calcularYMostrar pero recibiendo el sistema directamente
+    async function calcularYMostrarConSistema(meta, addToProject = false) {
+      const area = toNum(document.getElementById('area').value);
+      const waste = toNum(document.getElementById('waste').value);
+      const logisticaPct = toNum(document.getElementById('logisticaPct').value);
+      const margenPct = toNum(document.getElementById('margenPct').value);
+      const incoterm = document.getElementById('incoterm').value;
+      
+      if (!meta || area <= 0) {
+        document.getElementById('resumenSistema').style.display = 'none';
+        document.getElementById('fichaTecnica').style.display = 'none';
+        document.getElementById('descripcionTecnica').style.display = 'none';
+        return null;
+      }
+
+      // Renderizar información del sistema (read-only)
+      renderFichaTecnica(meta);
+      
+      // Renderizar descripción del sistema si existe
+      renderDescripcionTecnica(meta);
+
+      const csvText = await loadCSV(meta.csv);
+      const rows = parseCSV(csvText);
+      const tbody = document.querySelector('#tbl tbody');
+      tbody.innerHTML = '';
+      let costeNetoSistema = 0;
+      const rowsData = [];
+
+      for(const r of rows){
+        try {
+          const precioCatalogo = toNum(r.precio_catalogo_almeria);
+          const familia = (r.familia_precio || detectarFamilia(r.concepto, r.codigo || r.sku)).trim().toUpperCase();
+          
+          if (!precioCatalogo) {
+            throw new Error(`Falta precio_catalogo_almeria para ${r.codigo || r.concepto}`);
+          }
+          if (!familia || (familia !== 'PLACA' && familia !== 'RESTO')) {
+            throw new Error(`Falta o inválida familia_precio para ${r.codigo || r.concepto}`);
+          }
+          
+          // Descuento según familia
+          const dtoDistribuidorPct = familia === 'PLACA' ? 60 : 55;
+          const precioNeto = precioCatalogo * (1 - dtoDistribuidorPct / 100);
+          
+          // Rendimiento y cantidad (desperdicio solo a PLACAS y PERFILERÍA)
+          const rendimiento = toNum(r.rendimiento_m2);
+          const sku = (r.codigo || r.sku || '').toString();
+          const aplicarDesperdicio = esPlaca(sku) || esPerfileria(sku);
+          const factorDesperdicio = aplicarDesperdicio ? (1 + waste/100) : 1;
+          const qty = area * rendimiento * factorDesperdicio;
+          const importeNeto = qty * precioNeto;
+          costeNetoSistema += importeNeto;
+
+          rowsData.push({
+            ...r,
+            precioCatalogo,
+            familia,
+            dtoDistribuidorPct,
+            precioNeto,
+            rendimiento,
+            qty,
+            importeNeto,
+            aplicarDesperdicio
+          });
+
+          const tr = document.createElement('tr');
+          // Determinar decimales según unidad
+          const decimalsQty = r.unidad === 'ud' ? 0 : 3;
+          tr.innerHTML = `
+            <td class="num">${r.codigo || r.sku}</td>
+            <td>${r.concepto}</td>
+            <td class="num">${r.unidad}</td>
+            <td class="num">${fmtEUR(precioCatalogo)}</td>
+            <td class="num">${dtoDistribuidorPct}%</td>
+            <td class="num">${fmtEUR(precioNeto)}</td>
+            <td class="num">${fmtNumber(rendimiento, 2)}</td>
+            <td class="num">${fmtNumber(qty, decimalsQty)}</td>
+            <td class="num">${fmtEUR(importeNeto)}</td>
+          `;
+          tbody.appendChild(tr);
+        } catch(err) {
+          console.error('Error procesando fila:', err, r);
+        }
+      }
+
+      const costeTotalSistema = costeNetoSistema * (1 + logisticaPct / 100);
+      const precioVentaSistema = costeTotalSistema / (1 - margenPct / 100);
+      const precioVentaM2 = precioVentaSistema / area;
+
+      document.getElementById('resumenCosteNeto').textContent = fmtEUR(costeNetoSistema);
+      document.getElementById('resumenLogistica').textContent = `${incoterm} ${fmtNumber(logisticaPct, 1)}% (${fmtEUR(costeTotalSistema - costeNetoSistema)})`;
+      document.getElementById('resumenCosteTotal').textContent = fmtEUR(costeTotalSistema);
+      document.getElementById('resumenMargen').textContent = `${fmtNumber(margenPct, 1)}%`;
+      document.getElementById('resumenIncotermLabel').textContent = incoterm;
+      document.getElementById('resumenVentaM2').textContent = fmtEUR(precioVentaM2);
+      document.getElementById('resumenTotal').textContent = fmtEUR(precioVentaSistema);
+      document.getElementById('resumenSistema').style.display = 'block';
+
+      const result = {
+        system: meta.id,
+        systemName: meta.nombre_comercial || meta.id,
+        area,
+        waste,
+        incoterm,
+        logisticaPct,
+        margenPct,
+        costeNetoSistema,
+        costeTotalSistema,
+        precioVentaSistema,
+        costeTotalM2: costeTotalSistema / area,
+        ventaM2: precioVentaM2,
+        rows: rowsData,
+        meta
+      };
+
+      if(addToProject){
+        proyecto.push(result);
+        renderProyecto();
+      }
+
+      return result;
+    }
+    
+    // Obtener placas permitidas según ambiente
+    function getPlacasByAmbiente(ambiente) {
+      if (ambiente === 'SECO') return [{value: 'STD', label: 'STD'}, {value: 'LIGNUM', label: 'LIGNUM'}];
+      if (ambiente === 'HUMEDO') return [{value: 'AQUA', label: 'AQUA H2'}];
+      if (ambiente === 'EXTERIOR') return [{value: 'EXTERNA', label: 'EXTERNA LIGHT'}];
+      return [];
+    }
+    
+    // Mostrar paso siguiente y ocultar anteriores
+    function mostrarPaso(numPaso) {
+      for (let i = 1; i <= 6; i++) {
+        const step = document.getElementById(`step${i}`);
+        if (step) {
+          step.style.display = i <= numPaso ? 'block' : 'none';
+        }
+      }
+    }
+    
+    // Actualizar opciones de placa
+    function updatePlacaOptions(ambiente) {
+      const container = document.getElementById('placasContainer');
+      const placas = getPlacasByAmbiente(ambiente);
+      container.innerHTML = placas.map(p => `
+        <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+          <input type="radio" name="placa" value="${p.value}" id="placa${p.value}">
+          <span>${p.label}</span>
+        </label>
+      `).join('');
+      mostrarPaso(2);
+      document.getElementById('stepResult').style.display = 'none';
+    }
+    
+    // Actualizar opciones de tipo (mostrar EXTERIOR solo si placa EXTERNA)
+    function updateTipoOptions(placa) {
+      const tipoEXTERIORLabel = document.getElementById('tipoEXTERIORLabel');
+      if (tipoEXTERIORLabel) {
+        tipoEXTERIORLabel.style.display = placa === 'EXTERNA' ? 'flex' : 'none';
+        if (placa !== 'EXTERNA') {
+          document.getElementById('tipoEXTERIOR').checked = false;
+        }
+      }
+      mostrarPaso(3);
+      document.getElementById('stepResult').style.display = 'none';
+    }
+    
+    // Actualizar opciones de perfilería según tipo y placa
+    async function updatePerfileriaOptions(tipo, placa, ambiente) {
+      const container = document.getElementById('perfileriaContainer');
+      if (systemsIndexRaw.length === 0) {
+        systemsIndexRaw = await loadIndexRaw();
+      }
+      
+      const estructurasUnicas = new Set();
+      systemsIndexRaw.forEach(sys => {
+        if (sys.tipo !== tipo) return;
+        const placasSistema = sys.placas.map(p => p.tipo);
+        if (!placasSistema.includes(placa)) return;
+        
+        if (tipo === 'MURO' || tipo === 'TRASDOSADO') {
+          if (sys.estructura === 'montante_rail') {
+            estructurasUnicas.add(`${sys.perfil_mm}${sys.zincado || ''}`);
+          } else if (sys.estructura === 'omega') {
+            estructurasUnicas.add('Ω35');
+          }
+        } else if (tipo === 'TECHO') {
+          if (sys.estructura === 'tc') {
+            estructurasUnicas.add(`TC${sys.perfil_mm}`);
+          }
+        } else if (tipo === 'EXTERIOR') {
+          estructurasUnicas.add(`${sys.perfil_mm} Z2`);
+        }
+      });
+      
+      const estructuras = Array.from(estructurasUnicas).sort();
+      container.innerHTML = estructuras.map(est => `
+        <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+          <input type="radio" name="perfileria" value="${est}" id="perfileria${est.replace(/[^a-zA-Z0-9]/g, '')}">
+          <span>${est}</span>
+        </label>
+      `).join('');
+      mostrarPaso(4);
+      document.getElementById('stepResult').style.display = 'none';
+    }
+    
+    // Actualizar opciones de modulación (solo 600mm por ahora)
+    function updateModulacionOptions() {
+      mostrarPaso(5);
+      document.getElementById('stepResult').style.display = 'none';
+    }
+    
+    // Actualizar opciones de capas
+    async function updateCapasOptions(tipo, placa, perfileria) {
+      const container = document.getElementById('capasContainer');
+      if (systemsIndexRaw.length === 0) {
+        systemsIndexRaw = await loadIndexRaw();
+      }
+      
+      const capasUnicas = new Set();
+      systemsIndexRaw.forEach(sys => {
+        if (sys.tipo !== tipo) return;
+        const placasSistema = sys.placas.map(p => p.tipo);
+        if (!placasSistema.includes(placa)) return;
+        
+        // Filtrar por perfilería
+        if (perfileria.includes('TC')) {
+          if (sys.estructura !== 'tc' || `TC${sys.perfil_mm}` !== perfileria) return;
+        } else if (perfileria === 'Ω35') {
+          if (sys.estructura !== 'omega' || sys.perfil_mm !== 35) return;
+        } else if (perfileria.includes('Z2')) {
+          if (sys.zincado !== 'Z2' || `${sys.perfil_mm} Z2` !== perfileria) return;
+        } else {
+          const perfil = perfileria.match(/\d+/)?.[0];
+          const zinc = perfileria.includes('Z2') ? 'Z2' : (perfileria.includes('Z1') ? 'Z1' : '');
+          if (sys.perfil_mm != perfil || (zinc && sys.zincado !== zinc)) return;
+        }
+        
+        if (sys.modulacion_mm == 600) {
+          capasUnicas.add(sys.capas_por_cara);
+        }
+      });
+      
+      const capas = [1, 2].filter(c => capasUnicas.has(c));
+      container.innerHTML = capas.map(c => `
+        <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+          <input type="radio" name="capas" value="${c}" id="capas${c}">
+          <span>${c} (${c}+${c})</span>
+        </label>
+      `).join('');
+      mostrarPaso(6);
+      document.getElementById('stepResult').style.display = 'none';
+    }
+    
+    // Filtrar sistemas finales y mostrar resultado
+    async function filtrarYMostrarSistemas() {
+      const ambiente = document.querySelector('input[name="ambiente"]:checked')?.value;
+      const placa = document.querySelector('input[name="placa"]:checked')?.value;
+      const tipo = document.querySelector('input[name="tipo"]:checked')?.value;
+      const perfileria = document.querySelector('input[name="perfileria"]:checked')?.value;
+      const modulacion = document.querySelector('input[name="modulacion"]:checked')?.value;
+      const capas = document.querySelector('input[name="capas"]:checked')?.value;
+      
+      if (!ambiente || !placa || !tipo || !perfileria || !modulacion || !capas) {
+        return;
+      }
+      
+      if (systemsIndexRaw.length === 0) {
+        systemsIndexRaw = await loadIndexRaw();
+      }
+      
+      const sistemasFiltrados = systemsIndexRaw.filter(sys => {
+        if (sys.tipo !== tipo) return false;
+        const placasSistema = sys.placas.map(p => p.tipo);
+        if (!placasSistema.includes(placa)) return false;
+        if (sys.capas_por_cara != capas) return false;
+        if (sys.modulacion_mm != modulacion) return false;
+        
+        if (perfileria.includes('TC')) {
+          if (sys.estructura !== 'tc' || `TC${sys.perfil_mm}` !== perfileria) return false;
+        } else if (perfileria === 'Ω35') {
+          if (sys.estructura !== 'omega' || sys.perfil_mm !== 35) return false;
+        } else if (perfileria.includes('Z2')) {
+          if (sys.zincado !== 'Z2' || `${sys.perfil_mm} Z2` !== perfileria) return false;
+        } else {
+          const perfil = perfileria.match(/\d+/)?.[0];
+          const zinc = perfileria.includes('Z2') ? 'Z2' : (perfileria.includes('Z1') ? 'Z1' : '');
+          if (sys.perfil_mm != perfil || (zinc && sys.zincado !== zinc)) return false;
+        }
+        return true;
+      });
+      
+      const resultadoContainer = document.getElementById('resultadoContainer');
+      const stepResult = document.getElementById('stepResult');
+      
+      if (sistemasFiltrados.length === 0) {
+        resultadoContainer.innerHTML = '<div style="padding: 0.75rem; background: #fee; color: #c33; border-radius: 4px;">No hay sistemas disponibles para esta combinación.</div>';
+        stepResult.style.display = 'block';
+        return;
+      }
+      
+      if (sistemasFiltrados.length === 1) {
+        // Auto-selección
+        const sistema = sistemasFiltrados[0];
+        resultadoContainer.innerHTML = `<div style="padding: 0.75rem; background: #d4edda; color: #155724; border-radius: 4px; font-weight: 600;">Sistema seleccionado: ${sistema.nombre_comercial || sistema.id}</div>`;
+        stepResult.style.display = 'block';
+        await cargarCSV(sistema.id);
+      } else {
+        // Mostrar lista
+        let html = '<div style="font-weight: 600; margin-bottom: 0.5rem;">Selecciona un sistema:</div>';
+        html += '<div style="display: flex; flex-direction: column; gap: 0.5rem;">';
+        sistemasFiltrados.forEach(sys => {
+          html += `<div style="border: 1px solid #ddd; padding: 0.75rem; border-radius: 4px; background: #fff; cursor: pointer; transition: background 0.2s;" onmouseover="this.style.background='#f0f0f0'" onmouseout="this.style.background='#fff'" onclick="seleccionarSistemaFinal('${sys.id}')">
+                     <div style="font-weight: 600; margin-bottom: 0.25rem;">${sys.nombre_comercial || sys.id}</div>
+                     <button style="padding: 0.5rem 1rem; background: #e74c3c; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: 600; margin-top: 0.5rem;">Seleccionar</button>
+                   </div>`;
+        });
+        html += '</div>';
+        resultadoContainer.innerHTML = html;
+        stepResult.style.display = 'block';
+      }
+    }
+    
+    // Función global para seleccionar sistema final
+    window.seleccionarSistemaFinal = async function(systemId) {
+      await cargarCSV(systemId);
+    }
+    
+    // Inicializar event listeners del flujo
+    function initSelectionFlow() {
+      // Paso 1: Ambiente
+      document.querySelectorAll('input[name="ambiente"]').forEach(radio => {
+        radio.addEventListener('change', () => {
+          updatePlacaOptions(radio.value);
+        });
+      });
+      
+      // Paso 2: Placa
+      document.addEventListener('change', (e) => {
+        if (e.target.name === 'placa') {
+          updateTipoOptions(e.target.value);
+        }
+      });
+      
+      // Paso 3: Tipo
+      document.addEventListener('change', async (e) => {
+        if (e.target.name === 'tipo') {
+          const ambiente = document.querySelector('input[name="ambiente"]:checked')?.value;
+          const placa = document.querySelector('input[name="placa"]:checked')?.value;
+          if (systemsIndexRaw.length === 0) {
+            systemsIndexRaw = await loadIndexRaw();
+          }
+          await updatePerfileriaOptions(e.target.value, placa, ambiente);
+        }
+      });
+      
+      // Paso 4: Perfilería
+      document.addEventListener('change', async (e) => {
+        if (e.target.name === 'perfileria') {
+          updateModulacionOptions();
+        }
+      });
+      
+      // Paso 5: Modulación (auto-avanzar al paso 6)
+      document.addEventListener('change', async (e) => {
+        if (e.target.name === 'modulacion') {
+          const tipo = document.querySelector('input[name="tipo"]:checked')?.value;
+          const placa = document.querySelector('input[name="placa"]:checked')?.value;
+          const perfileria = document.querySelector('input[name="perfileria"]:checked')?.value;
+          await updateCapasOptions(tipo, placa, perfileria);
+        }
+      });
+      
+      // Paso 6: Capas
+      document.addEventListener('change', async (e) => {
+        if (e.target.name === 'capas') {
+          await filtrarYMostrarSistemas();
+        }
+      });
+    }
+    
+    // ========== FIN FLUJO DE SELECCIÓN ==========
 
     function parseCSV(text){
       const lines = text.trim().split(/\r?\n/);
@@ -739,131 +1199,17 @@
     let proyecto = [];
 
     async function calcularYMostrar(addToProject = false){
-      const area = toNum(document.getElementById('area').value);
-      const waste = toNum(document.getElementById('waste').value);
-      const logisticaPct = toNum(document.getElementById('logisticaPct').value);
-      const margenPct = toNum(document.getElementById('margenPct').value);
-      const incoterm = document.getElementById('incoterm').value;
-      const opt = document.getElementById('systemSelect').selectedOptions[0];
-      if(!opt || area <= 0) {
-        document.getElementById('resumenSistema').style.display = 'none';
-        document.getElementById('fichaTecnica').style.display = 'none';
-        document.getElementById('descripcionTecnica').style.display = 'none';
-        return null;
+      // Usar sistemaActualMeta si está disponible (flujo paso a paso)
+      if (sistemaActualMeta) {
+        return await calcularYMostrarConSistema(sistemaActualMeta, addToProject);
       }
-      const meta = JSON.parse(opt.dataset.meta);
-
-      // Renderizar información del sistema (read-only)
-      renderFichaTecnica(meta);
-      
-      // Renderizar descripción del sistema si existe
-      renderDescripcionTecnica(meta);
-
-      const csvText = await loadCSV(meta.csv);
-      const rows = parseCSV(csvText);
-      const tbody = document.querySelector('#tbl tbody');
-      tbody.innerHTML = '';
-      let costeNetoSistema = 0;
-      const rowsData = [];
-
-      for(const r of rows){
-        try {
-          const precioCatalogo = toNum(r.precio_catalogo_almeria);
-          const familia = (r.familia_precio || detectarFamilia(r.concepto, r.codigo || r.sku)).trim().toUpperCase();
-          
-          if (!precioCatalogo) {
-            throw new Error(`Falta precio_catalogo_almeria para ${r.codigo || r.concepto}`);
-          }
-          if (!familia || (familia !== 'PLACA' && familia !== 'RESTO')) {
-            throw new Error(`Falta o inválida familia_precio para ${r.codigo || r.concepto}`);
-          }
-          
-          // Descuento según familia
-          const dtoDistribuidorPct = familia === 'PLACA' ? 60 : 55;
-          const precioNeto = precioCatalogo * (1 - dtoDistribuidorPct / 100);
-          
-          // Rendimiento y cantidad (desperdicio solo a PLACAS y PERFILERÍA)
-          const rendimiento = toNum(r.rendimiento_m2);
-          const sku = (r.codigo || r.sku || '').toString();
-          const aplicarDesperdicio = esPlaca(sku) || esPerfileria(sku);
-          const factorDesperdicio = aplicarDesperdicio ? (1 + waste/100) : 1;
-          const qty = area * rendimiento * factorDesperdicio;
-          const importeNeto = qty * precioNeto;
-          costeNetoSistema += importeNeto;
-
-          rowsData.push({
-            ...r,
-            precioCatalogo,
-            familia,
-            dtoDistribuidorPct,
-            precioNeto,
-            rendimiento,
-            qty,
-            importeNeto,
-            aplicarDesperdicio
-          });
-
-          const tr = document.createElement('tr');
-          // Determinar decimales según unidad
-          const decimalsQty = r.unidad === 'ud' ? 0 : 3;
-          tr.innerHTML = `
-            <td class="num">${r.codigo || r.sku}</td>
-            <td>${r.concepto}</td>
-            <td class="num">${r.unidad}</td>
-            <td class="num">${fmtEUR(precioCatalogo)}</td>
-            <td class="num">${dtoDistribuidorPct}%</td>
-            <td class="num">${fmtEUR(precioNeto)}</td>
-            <td class="num">${fmtNumber(rendimiento, 2)}</td>
-            <td class="num">${fmtNumber(qty, decimalsQty)}</td>
-            <td class="num">${fmtEUR(importeNeto)}</td>
-          `;
-          tbody.appendChild(tr);
-        } catch(err) {
-          console.error('Error calculando costes:', err);
-          alert(`Error en ${r.codigo || r.concepto}: ${err.message}`);
-        }
-      }
-
-      // Cálculos a nivel sistema
-      const costeTotalSistema = costeNetoSistema * (1 + logisticaPct / 100);
-      const precioVentaSistema = costeTotalSistema / (1 - margenPct / 100);
-      const costeTotalM2 = costeTotalSistema / area;
-      const ventaM2 = precioVentaSistema / area;
-
-      // Mostrar resumen
-      document.getElementById('resumenCosteNeto').textContent = fmtEUR(costeNetoSistema);
-      document.getElementById('resumenLogistica').textContent = `${incoterm} ${fmtNumber(logisticaPct, 1)}% (${fmtEUR(costeTotalSistema - costeNetoSistema)})`;
-      document.getElementById('resumenCosteTotal').textContent = fmtEUR(costeTotalSistema);
-      document.getElementById('resumenMargen').textContent = `${fmtNumber(margenPct, 1)}%`;
-      document.getElementById('resumenIncotermLabel').textContent = incoterm;
-      document.getElementById('resumenVentaM2').textContent = fmtEUR(ventaM2);
-      document.getElementById('resumenTotal').textContent = fmtEUR(precioVentaSistema);
-      document.getElementById('resumenSistema').style.display = 'block';
-
-      const result = {
-        system: meta.id,
-        systemName: opt.textContent,
-        area,
-        waste,
-        incoterm,
-        logisticaPct,
-        margenPct,
-        costeNetoSistema,
-        costeTotalSistema,
-        precioVentaSistema,
-        costeTotalM2,
-        ventaM2,
-        rows: rowsData,
-        meta
-      };
-
-      if(addToProject){
-        proyecto.push(result);
-        renderProyecto();
-      }
-
-      return result;
+      // Fallback: si no hay sistema seleccionado, no hacer nada
+      document.getElementById('resumenSistema').style.display = 'none';
+      document.getElementById('fichaTecnica').style.display = 'none';
+      document.getElementById('descripcionTecnica').style.display = 'none';
+      return null;
     }
+    
 
     function renderProyecto(){
       const tbody = document.querySelector('#projTable tbody');
@@ -1299,21 +1645,10 @@
     }
 
     (async()=>{
-      const systems = await loadIndex();
-      const tipoOrder = {'MURO':1,'TRASDOSADO':2,'TECHO':3,'EXTERIOR':4};
-      const sorted = systems.sort((a,b)=>{
-        const orderA = tipoOrder[a.tipo] || 99;
-        const orderB = tipoOrder[b.tipo] || 99;
-        return orderA - orderB;
-      });
-      const sel = document.getElementById('systemSelect');
-      sorted.forEach(s=>{
-        const opt = document.createElement('option');
-        opt.value = s.csv;
-        opt.textContent = s.name || `${s.id} | ${s.tipo} | ${s.perfil} | ${s.placa} | ${s.capas} capa(s)/cara`;
-        opt.dataset.meta = JSON.stringify(s);
-        sel.appendChild(opt);
-      });
+      // Cargar sistemas index raw
+      if (systemsIndexRaw.length === 0) {
+        systemsIndexRaw = await loadIndexRaw();
+      }
 
       document.getElementById('addBtn').addEventListener('click', async()=>{
         await calcularYMostrar(true);
@@ -1322,17 +1657,8 @@
       document.getElementById('pdfBtn').addEventListener('click', exportPDF);
       document.getElementById('excelBtn').addEventListener('click', exportExcel);
       
-      // Event listener para selector de sistema (oculto, usado por modo guiado)
-      const systemSelect = document.getElementById('systemSelect');
-      if (systemSelect) {
-        systemSelect.addEventListener('change', async() => await calcularYMostrar(false));
-      }
-      
-      // Inicializar modo guiado
-      if (systemsIndexRaw.length === 0) {
-        systemsIndexRaw = await loadIndexRaw();
-      }
-      initGuidedMode();
+      // Inicializar flujo de selección paso a paso
+      initSelectionFlow();
       
       // Recálculo automático en tiempo real
       const inputsReactivos = ['area', 'waste', 'logisticaPct', 'margenPct', 'incoterm'];
@@ -1343,24 +1669,6 @@
           el.addEventListener('change', async() => await calcularYMostrar(false));
         }
       });
-      
-      // Actualizar información del sistema al cambiar sistema
-      document.getElementById('systemSelect').addEventListener('change', async() => {
-        const opt = document.getElementById('systemSelect').selectedOptions[0];
-        if (opt) {
-          const meta = JSON.parse(opt.dataset.meta);
-          renderFichaTecnica(meta);
-          renderDescripcionTecnica(meta);
-        }
-        await calcularYMostrar(false);
-      });
-      
-      // Inicializar información del sistema con el sistema por defecto
-      if (sel.options.length > 0) {
-        const meta = JSON.parse(sel.options[0].dataset.meta);
-        renderFichaTecnica(meta);
-        renderDescripcionTecnica(meta);
-      }
       
       renderProyecto();
     })();
