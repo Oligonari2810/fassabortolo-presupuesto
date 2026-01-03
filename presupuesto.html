@@ -592,12 +592,6 @@
       return systems.map(normalizeSystemToV1);
     }
     
-    // Función auxiliar para obtener metadata completa (sin normalizar campos nuevos)
-    async function loadIndexRaw(){
-      const res = await fetch('sistemas/sistemas-index.json');
-      const idx = await res.json();
-      return idx.systems || []; // Devolver raw, sin normalizar
-    }
 
     // Detectar formato CSV (legacy vs nuevo)
     function detectarFormatoCSV(header) {
@@ -632,11 +626,19 @@
     }
     
     // ========== FLUJO DE SELECCIÓN PASO A PASO ==========
-    let systemsIndexRaw = [];
+    let systemsIndexEnriched = [];
+    let systemsIndexBase = [];
     let sistemaActualMeta = null;
     
-    // Función para cargar sistemas index raw
-    async function loadIndexRaw() {
+    // Función para cargar sistemas index enriquecido (para filtrado)
+    async function loadIndexEnriched() {
+      const res = await fetch('sistemas/sistemas-index.enriched.json');
+      const idx = await res.json();
+      return idx.systems || [];
+    }
+    
+    // Función para cargar sistemas index base (para metadata completa)
+    async function loadIndexBase() {
       const res = await fetch('sistemas/sistemas-index.json');
       const idx = await res.json();
       return idx.systems || [];
@@ -644,10 +646,10 @@
     
     // Función para cargar CSV y calcular (equivalente a cargarCSV)
     async function cargarCSV(systemId) {
-      if (systemsIndexRaw.length === 0) {
-        systemsIndexRaw = await loadIndexRaw();
+      if (systemsIndexBase.length === 0) {
+        systemsIndexBase = await loadIndexBase();
       }
-      const sistema = systemsIndexRaw.find(s => s.id === systemId);
+      const sistema = systemsIndexBase.find(s => s.id === systemId);
       if (!sistema) {
         throw new Error(`Sistema ${systemId} no encontrado`);
       }
@@ -778,156 +780,38 @@
       return result;
     }
     
-    // Obtener placas permitidas según ambiente
-    function getPlacasByAmbiente(ambiente) {
-      if (ambiente === 'SECO') return [{value: 'STD', label: 'STD'}, {value: 'LIGNUM', label: 'LIGNUM'}];
-      if (ambiente === 'HUMEDO') return [{value: 'AQUA', label: 'AQUA H2'}];
-      if (ambiente === 'EXTERIOR') return [{value: 'EXTERNA', label: 'EXTERNA LIGHT'}];
-      return [];
-    }
-    
-    // Mostrar paso siguiente y ocultar anteriores
-    function mostrarPaso(numPaso) {
-      for (let i = 1; i <= 6; i++) {
-        const step = document.getElementById(`step${i}`);
-        if (step) {
-          step.style.display = i <= numPaso ? 'block' : 'none';
-        }
-      }
-    }
-    
-    // Actualizar opciones de placa
-    function updatePlacaOptions(ambiente) {
-      const container = document.getElementById('placasContainer');
-      const placas = getPlacasByAmbiente(ambiente);
-      container.innerHTML = placas.map(p => `
-        <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
-          <input type="radio" name="placa" value="${p.value}" id="placa${p.value}">
-          <span>${p.label}</span>
-        </label>
-      `).join('');
-      mostrarPaso(2);
-      document.getElementById('stepResult').style.display = 'none';
-    }
-    
-    // Actualizar opciones de tipo (mostrar EXTERIOR solo si placa EXTERNA)
-    function updateTipoOptions(placa) {
-      const tipoEXTERIORLabel = document.getElementById('tipoEXTERIORLabel');
-      if (tipoEXTERIORLabel) {
-        tipoEXTERIORLabel.style.display = placa === 'EXTERNA' ? 'flex' : 'none';
-        if (placa !== 'EXTERNA') {
-          document.getElementById('tipoEXTERIOR').checked = false;
-        }
-      }
-      mostrarPaso(3);
-      document.getElementById('stepResult').style.display = 'none';
-    }
-    
-    // Actualizar opciones de perfilería según tipo y placa
-    async function updatePerfileriaOptions(tipo, placa, ambiente) {
-      const container = document.getElementById('perfileriaContainer');
-      if (systemsIndexRaw.length === 0) {
-        systemsIndexRaw = await loadIndexRaw();
-      }
-      
-      const estructurasUnicas = new Set();
-      systemsIndexRaw.forEach(sys => {
-        if (sys.tipo !== tipo) return;
-        const placasSistema = sys.placas.map(p => p.tipo);
-        if (!placasSistema.includes(placa)) return;
-        
-        if (tipo === 'MURO' || tipo === 'TRASDOSADO') {
-          if (sys.estructura === 'montante_rail') {
-            estructurasUnicas.add(`${sys.perfil_mm}${sys.zincado || ''}`);
-          } else if (sys.estructura === 'omega') {
-            estructurasUnicas.add('Ω35');
-          }
-        } else if (tipo === 'TECHO') {
-          if (sys.estructura === 'tc') {
-            estructurasUnicas.add(`TC${sys.perfil_mm}`);
-          }
-        } else if (tipo === 'EXTERIOR') {
-          estructurasUnicas.add(`${sys.perfil_mm} Z2`);
-        }
-      });
-      
-      const estructuras = Array.from(estructurasUnicas).sort();
-      container.innerHTML = estructuras.map(est => `
-        <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
-          <input type="radio" name="perfileria" value="${est}" id="perfileria${est.replace(/[^a-zA-Z0-9]/g, '')}">
-          <span>${est}</span>
-        </label>
-      `).join('');
-      mostrarPaso(4);
-      document.getElementById('stepResult').style.display = 'none';
-    }
-    
-    // Actualizar opciones de modulación (solo 600mm por ahora)
-    function updateModulacionOptions() {
-      mostrarPaso(5);
-      document.getElementById('stepResult').style.display = 'none';
-    }
-    
-    // Actualizar opciones de capas
-    async function updateCapasOptions(tipo, placa, perfileria) {
-      const container = document.getElementById('capasContainer');
-      if (systemsIndexRaw.length === 0) {
-        systemsIndexRaw = await loadIndexRaw();
-      }
-      
-      const capasUnicas = new Set();
-      systemsIndexRaw.forEach(sys => {
-        if (sys.tipo !== tipo) return;
-        const placasSistema = sys.placas.map(p => p.tipo);
-        if (!placasSistema.includes(placa)) return;
-        
-        // Filtrar por perfilería
-        if (perfileria.includes('TC')) {
-          if (sys.estructura !== 'tc' || `TC${sys.perfil_mm}` !== perfileria) return;
-        } else if (perfileria === 'Ω35') {
-          if (sys.estructura !== 'omega' || sys.perfil_mm !== 35) return;
-        } else if (perfileria.includes('Z2')) {
-          if (sys.zincado !== 'Z2' || `${sys.perfil_mm} Z2` !== perfileria) return;
-        } else {
-          const perfil = perfileria.match(/\d+/)?.[0];
-          const zinc = perfileria.includes('Z2') ? 'Z2' : (perfileria.includes('Z1') ? 'Z1' : '');
-          if (sys.perfil_mm != perfil || (zinc && sys.zincado !== zinc)) return;
-        }
-        
-        if (sys.modulacion_mm == 600) {
-          capasUnicas.add(sys.capas_por_cara);
-        }
-      });
-      
-      const capas = [1, 2].filter(c => capasUnicas.has(c));
-      container.innerHTML = capas.map(c => `
-        <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
-          <input type="radio" name="capas" value="${c}" id="capas${c}">
-          <span>${c} (${c}+${c})</span>
-        </label>
-      `).join('');
-      mostrarPaso(6);
-      document.getElementById('stepResult').style.display = 'none';
-    }
-    
     // Filtrar sistemas finales y mostrar resultado
     async function filtrarYMostrarSistemas() {
-      const ambiente = document.querySelector('input[name="ambiente"]:checked')?.value;
-      const placa = document.querySelector('input[name="placa"]:checked')?.value;
-      const tipo = document.querySelector('input[name="tipo"]:checked')?.value;
-      const perfileria = document.querySelector('input[name="perfileria"]:checked')?.value;
-      const modulacion = document.querySelector('input[name="modulacion"]:checked')?.value;
-      const capas = document.querySelector('input[name="capas"]:checked')?.value;
+      const selectAmbiente = document.getElementById('selectAmbiente');
+      const selectElemento = document.getElementById('selectElemento');
+      const selectPlaca = document.getElementById('selectPlaca');
+      const selectEstructura = document.getElementById('selectEstructura');
+      const selectCapas = document.getElementById('selectCapas');
       
-      if (!ambiente || !placa || !tipo || !perfileria || !modulacion || !capas) {
+      if (!selectAmbiente || !selectElemento || !selectPlaca || !selectEstructura || !selectCapas) {
         return;
       }
       
-      if (systemsIndexRaw.length === 0) {
-        systemsIndexRaw = await loadIndexRaw();
+      const ambiente = selectAmbiente.value;
+      const elemento = selectElemento.value;
+      const placa = selectPlaca.value;
+      const estructura = selectEstructura.value;
+      const capas = selectCapas.value;
+      
+      if (!ambiente || !elemento || !placa || !estructura || !capas) {
+        return;
       }
       
-      const sistemasFiltrados = systemsIndexRaw.filter(sys => {
+      // Mapeo para compatibilidad con filtrado existente (temporal)
+      const tipo = elemento;
+      const perfileria = estructura;
+      const modulacion = 600; // Valor fijo (solo 600mm existe actualmente)
+      
+      if (systemsIndexEnriched.length === 0) {
+        systemsIndexEnriched = await loadIndexEnriched();
+      }
+      
+      const sistemasFiltrados = systemsIndexEnriched.filter(sys => {
         if (sys.tipo !== tipo) return false;
         const placasSistema = sys.placas.map(p => p.tipo);
         if (!placasSistema.includes(placa)) return false;
@@ -951,6 +835,10 @@
       const resultadoContainer = document.getElementById('resultadoContainer');
       const stepResult = document.getElementById('stepResult');
       
+      if (systemsIndexBase.length === 0) {
+        systemsIndexBase = await loadIndexBase();
+      }
+      
       if (sistemasFiltrados.length === 0) {
         resultadoContainer.innerHTML = '<div style="padding: 0.75rem; background: #fee; color: #c33; border-radius: 4px;">No hay sistemas disponibles para esta combinación.</div>';
         stepResult.style.display = 'block';
@@ -959,17 +847,23 @@
       
       if (sistemasFiltrados.length === 1) {
         // Auto-selección
-        const sistema = sistemasFiltrados[0];
-        resultadoContainer.innerHTML = `<div style="padding: 0.75rem; background: #d4edda; color: #155724; border-radius: 4px; font-weight: 600;">Sistema seleccionado: ${sistema.nombre_comercial || sistema.id}</div>`;
-        stepResult.style.display = 'block';
-        await cargarCSV(sistema.id);
+        const sistemaEnriched = sistemasFiltrados[0];
+        const sistema = systemsIndexBase.find(s => s.id === sistemaEnriched.id);
+        if (sistema) {
+          sistemaActualMeta = sistema;
+          resultadoContainer.innerHTML = `<div style="padding: 0.75rem; background: #d4edda; color: #155724; border-radius: 4px; font-weight: 600;">Sistema seleccionado: ${sistema.nombre_comercial || sistema.id}</div>`;
+          stepResult.style.display = 'block';
+          await cargarCSV(sistema.id);
+        }
       } else {
         // Mostrar lista
         let html = '<div style="font-weight: 600; margin-bottom: 0.5rem;">Selecciona un sistema:</div>';
         html += '<div style="display: flex; flex-direction: column; gap: 0.5rem;">';
-        sistemasFiltrados.forEach(sys => {
-          html += `<div style="border: 1px solid #ddd; padding: 0.75rem; border-radius: 4px; background: #fff; cursor: pointer; transition: background 0.2s;" onmouseover="this.style.background='#f0f0f0'" onmouseout="this.style.background='#fff'" onclick="seleccionarSistemaFinal('${sys.id}')">
-                     <div style="font-weight: 600; margin-bottom: 0.25rem;">${sys.nombre_comercial || sys.id}</div>
+        sistemasFiltrados.forEach(sysEnriched => {
+          const sys = systemsIndexBase.find(s => s.id === sysEnriched.id);
+          const nombre = sys ? (sys.nombre_comercial || sys.id) : (sysEnriched.nombre_comercial || sysEnriched.id);
+          html += `<div style="border: 1px solid #ddd; padding: 0.75rem; border-radius: 4px; background: #fff; cursor: pointer; transition: background 0.2s;" onmouseover="this.style.background='#f0f0f0'" onmouseout="this.style.background='#fff'" onclick="seleccionarSistemaFinal('${sysEnriched.id}')">
+                     <div style="font-weight: 600; margin-bottom: 0.25rem;">${nombre}</div>
                      <button style="padding: 0.5rem 1rem; background: #e74c3c; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: 600; margin-top: 0.5rem;">Seleccionar</button>
                    </div>`;
         });
@@ -986,54 +880,61 @@
     
     // Inicializar event listeners del flujo
     function initSelectionFlow() {
+      const selectAmbiente = document.getElementById('selectAmbiente');
+      const selectElemento = document.getElementById('selectElemento');
+      const selectPlaca = document.getElementById('selectPlaca');
+      const selectEstructura = document.getElementById('selectEstructura');
+      const selectCapas = document.getElementById('selectCapas');
+      
+      if (!selectAmbiente || !selectElemento || !selectPlaca || !selectEstructura || !selectCapas) {
+        return;
+      }
+      
       // Paso 1: Ambiente
-      document.querySelectorAll('input[name="ambiente"]').forEach(radio => {
-        radio.addEventListener('change', () => {
-          updatePlacaOptions(radio.value);
-        });
-      });
-      
-      // Paso 2: Placa
-      document.addEventListener('change', (e) => {
-        if (e.target.name === 'placa') {
-          updateTipoOptions(e.target.value);
-        }
-      });
-      
-      // Paso 3: Tipo
-      document.addEventListener('change', async (e) => {
-        if (e.target.name === 'tipo') {
-          const ambiente = document.querySelector('input[name="ambiente"]:checked')?.value;
-          const placa = document.querySelector('input[name="placa"]:checked')?.value;
-          if (systemsIndexRaw.length === 0) {
-            systemsIndexRaw = await loadIndexRaw();
-          }
-          await updatePerfileriaOptions(e.target.value, placa, ambiente);
-        }
-      });
-      
-      // Paso 4: Perfilería
-      document.addEventListener('change', async (e) => {
-        if (e.target.name === 'perfileria') {
-          updateModulacionOptions();
-        }
-      });
-      
-      // Paso 5: Modulación (auto-avanzar al paso 6)
-      document.addEventListener('change', async (e) => {
-        if (e.target.name === 'modulacion') {
-          const tipo = document.querySelector('input[name="tipo"]:checked')?.value;
-          const placa = document.querySelector('input[name="placa"]:checked')?.value;
-          const perfileria = document.querySelector('input[name="perfileria"]:checked')?.value;
-          await updateCapasOptions(tipo, placa, perfileria);
-        }
-      });
-      
-      // Paso 6: Capas
-      document.addEventListener('change', async (e) => {
-        if (e.target.name === 'capas') {
+      selectAmbiente.addEventListener('change', async () => {
+        const ambiente = selectAmbiente.value;
+        if (ambiente) {
+          await updateElementoOptions(ambiente);
           await filtrarYMostrarSistemas();
         }
+      });
+      
+      // Paso 2: Elemento
+      selectElemento.addEventListener('change', async () => {
+        const ambiente = selectAmbiente.value;
+        const elemento = selectElemento.value;
+        if (ambiente && elemento) {
+          await updatePlacaOptions(ambiente, elemento);
+          await filtrarYMostrarSistemas();
+        }
+      });
+      
+      // Paso 3: Placa
+      selectPlaca.addEventListener('change', async () => {
+        const ambiente = selectAmbiente.value;
+        const elemento = selectElemento.value;
+        const placa = selectPlaca.value;
+        if (ambiente && elemento && placa) {
+          await updateEstructuraOptions(ambiente, elemento, placa);
+          await filtrarYMostrarSistemas();
+        }
+      });
+      
+      // Paso 4: Estructura/Perfilería
+      selectEstructura.addEventListener('change', async () => {
+        const ambiente = selectAmbiente.value;
+        const elemento = selectElemento.value;
+        const placa = selectPlaca.value;
+        const estructura = selectEstructura.value;
+        if (ambiente && elemento && placa && estructura) {
+          await updateCapasOptions(ambiente, elemento, placa, estructura);
+          await filtrarYMostrarSistemas();
+        }
+      });
+      
+      // Paso 5: Capas
+      selectCapas.addEventListener('change', async () => {
+        await filtrarYMostrarSistemas();
       });
     }
     
@@ -1269,8 +1170,11 @@
         return;
       }
 
-      // Cargar índice actualizado de sistemas para rehidratar metadata (raw, sin normalizar)
-      const systemsIndex = await loadIndexRaw();
+      // Cargar índice actualizado de sistemas para rehidratar metadata
+      if (systemsIndexBase.length === 0) {
+        systemsIndexBase = await loadIndexBase();
+      }
+      const systemsIndex = systemsIndexBase;
 
       const { jsPDF } = window.jspdf;
       const doc = new jsPDF({orientation:'p',unit:'mm',format:'a4'});
