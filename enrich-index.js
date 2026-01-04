@@ -18,9 +18,9 @@ function enrichSystem(system) {
     ambienteTags.push('humedo');
   }
   
-  // Si tipo EXTERIOR => exterior
+  // Si tipo EXTERIOR => semi-intemperie
   if (system.tipo === 'EXTERIOR') {
-    ambienteTags.push('exterior');
+    ambienteTags.push('semi-intemperie');
     // Exterior siempre Z2
     if (!enriched.zincado) enriched.zincado = 'Z2';
   }

@@ -17,8 +17,8 @@
     }
   },
   {
-    "id": "exterior",
-    "nombre": "Exterior protegido",
+    "id": "semi-intemperie",
+    "nombre": "Semi-intemperie",
     "descripcion": "Fachadas ventiladas, cerramientos bajo cubierta",
     "filtro": {
       "es_exterior": true

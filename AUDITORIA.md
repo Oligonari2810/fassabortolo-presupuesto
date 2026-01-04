@@ -99,7 +99,7 @@
 #### Por Configuración:
 - ✅ STD (seco): Sistemas verificados
 - ✅ AQUA (húmedo): Sistemas verificados
-- ✅ EXTERNA (exterior): Sistemas verificados
+- ✅ EXTERNA (semi-intemperie): Sistemas verificados
 - ✅ AQSTD (mixto): Sistema M-70-13-AQSTD-2 verificado
 
 #### Campos Requeridos:

@@ -361,7 +361,7 @@
                 <option value="">Seleccionar...</option>
                 <option value="seco">seco</option>
                 <option value="humedo">humedo</option>
-                <option value="exterior">exterior</option>
+                <option value="semi-intemperie">semi-intemperie</option>
               </select>
             </label>
           </div>
@@ -377,7 +377,7 @@
                 <option value="MURO">muro</option>
                 <option value="TRASDOSADO">trasdosado</option>
                 <option value="TECHO">techo</option>
-                <option value="EXTERIOR" style="display: none;" id="elementoEXTERIOROption">exterior</option>
+                <option value="EXTERIOR" style="display: none;" id="elementoEXTERIOROption">semi-intemperie</option>
               </select>
             </label>
           </div>
@@ -629,6 +629,29 @@
     let systemsIndexEnriched = [];
     let systemsIndexBase = [];
     let sistemaActualMeta = null;
+    let selectionFlowInitialized = false;
+    
+    function setStepVisible(stepId, visible) {
+      const el = document.getElementById(stepId);
+      if (!el) return;
+      el.style.display = visible ? 'block' : 'none';
+    }
+    
+    function clearSelectionResult() {
+      const resultadoContainer = document.getElementById('resultadoContainer');
+      if (resultadoContainer) resultadoContainer.innerHTML = '';
+      setStepVisible('stepResult', false);
+      sistemaActualMeta = null;
+    }
+    
+    function hideSistemaOutputs() {
+      const resumen = document.getElementById('resumenSistema');
+      const ficha = document.getElementById('fichaTecnica');
+      const desc = document.getElementById('descripcionTecnica');
+      if (resumen) resumen.style.display = 'none';
+      if (ficha) ficha.style.display = 'none';
+      if (desc) desc.style.display = 'none';
+    }
     
     // Función para cargar sistemas index enriquecido (para filtrado)
     async function loadIndexEnriched() {
@@ -813,8 +836,8 @@
           return sys.ambiente_tags.includes('seco');
         } else if (ambiente === 'humedo') {
           return sys.ambiente_tags.includes('humedo');
-        } else if (ambiente === 'exterior') {
-          return sys.ambiente_tags.includes('exterior');
+        } else if (ambiente === 'semi-intemperie') {
+          return sys.ambiente_tags.includes('semi-intemperie');
         }
         return false;
       });
@@ -885,6 +908,8 @@
       const capas = selectCapas.value;
       
       if (!ambiente || !elemento || !placa || !estructura || !capas) {
+        clearSelectionResult();
+        hideSistemaOutputs();
         return;
       }
       
@@ -905,8 +930,8 @@
           matchAmbiente = sys.ambiente_tags.includes('seco');
         } else if (ambiente === 'humedo') {
           matchAmbiente = sys.ambiente_tags.includes('humedo');
-        } else if (ambiente === 'exterior') {
-          matchAmbiente = sys.ambiente_tags.includes('exterior');
+        } else if (ambiente === 'semi-intemperie') {
+          matchAmbiente = sys.ambiente_tags.includes('semi-intemperie');
         }
         if (!matchAmbiente) return false;
         
@@ -1016,8 +1041,8 @@
           matchAmbiente = sys.ambiente_tags.includes('seco');
         } else if (ambiente === 'humedo') {
           matchAmbiente = sys.ambiente_tags.includes('humedo');
-        } else if (ambiente === 'exterior') {
-          matchAmbiente = sys.ambiente_tags.includes('exterior');
+        } else if (ambiente === 'semi-intemperie') {
+          matchAmbiente = sys.ambiente_tags.includes('semi-intemperie');
         }
         if (!matchAmbiente) return false;
         
@@ -1094,8 +1119,8 @@
           matchAmbiente = sys.ambiente_tags.includes('seco');
         } else if (ambiente === 'humedo') {
           matchAmbiente = sys.ambiente_tags.includes('humedo');
-        } else if (ambiente === 'exterior') {
-          matchAmbiente = sys.ambiente_tags.includes('exterior');
+        } else if (ambiente === 'semi-intemperie') {
+          matchAmbiente = sys.ambiente_tags.includes('semi-intemperie');
         }
         if (!matchAmbiente) return false;
         
@@ -1128,7 +1153,7 @@
           if (perfil) {
             estructurasUnicas.add(`TC${perfil}`);
           }
-        } else if (estructuraTipo === 'exterior') {
+        } else if (estructuraTipo === 'semi-intemperie') {
           const perfil = sys.perfil_mm;
           if (perfil && sys.zincado === 'Z2') {
             estructurasUnicas.add(`${perfil} Z2`);
@@ -1185,8 +1210,8 @@
           matchAmbiente = sys.ambiente_tags.includes('seco');
         } else if (ambiente === 'humedo') {
           matchAmbiente = sys.ambiente_tags.includes('humedo');
-        } else if (ambiente === 'exterior') {
-          matchAmbiente = sys.ambiente_tags.includes('exterior');
+        } else if (ambiente === 'semi-intemperie') {
+          matchAmbiente = sys.ambiente_tags.includes('semi-intemperie');
         }
         if (!matchAmbiente) return false;
         
@@ -1249,6 +1274,9 @@
     
     // Inicializar event listeners del flujo
     function initSelectionFlow() {
+      if (selectionFlowInitialized) return;
+      selectionFlowInitialized = true;
+      
       const selectAmbiente = document.getElementById('selectAmbiente');
       const selectElemento = document.getElementById('selectElemento');
       const selectPlaca = document.getElementById('selectPlaca');
@@ -1259,12 +1287,28 @@
         return;
       }
       
+      // Estado inicial UI
+      setStepVisible('step2', false);
+      setStepVisible('step3', false);
+      setStepVisible('step4', false);
+      setStepVisible('step5', false);
+      clearSelectionResult();
+      hideSistemaOutputs();
+      
       // Paso 1: Ambiente
       selectAmbiente.addEventListener('change', async () => {
         const ambiente = selectAmbiente.value;
+        clearSelectionResult();
+        hideSistemaOutputs();
+        setStepVisible('step3', false);
+        setStepVisible('step4', false);
+        setStepVisible('step5', false);
         if (ambiente) {
+          setStepVisible('step2', true);
           await updateElementoOptions(ambiente);
           await filtrarYMostrarSistemas();
+        } else {
+          setStepVisible('step2', false);
         }
       });
       
@@ -1272,9 +1316,16 @@
       selectElemento.addEventListener('change', async () => {
         const ambiente = selectAmbiente.value;
         const elemento = selectElemento.value;
+        clearSelectionResult();
+        hideSistemaOutputs();
+        setStepVisible('step4', false);
+        setStepVisible('step5', false);
         if (ambiente && elemento) {
+          setStepVisible('step3', true);
           await updatePlacaOptions(ambiente, elemento);
           await filtrarYMostrarSistemas();
+        } else {
+          setStepVisible('step3', false);
         }
       });
       
@@ -1283,9 +1334,15 @@
         const ambiente = selectAmbiente.value;
         const elemento = selectElemento.value;
         const placa = selectPlaca.value;
+        clearSelectionResult();
+        hideSistemaOutputs();
+        setStepVisible('step5', false);
         if (ambiente && elemento && placa) {
+          setStepVisible('step4', true);
           await updateEstructuraOptions(ambiente, elemento, placa);
           await filtrarYMostrarSistemas();
+        } else {
+          setStepVisible('step4', false);
         }
       });
       
@@ -1295,14 +1352,21 @@
         const elemento = selectElemento.value;
         const placa = selectPlaca.value;
         const estructura = selectEstructura.value;
+        clearSelectionResult();
+        hideSistemaOutputs();
         if (ambiente && elemento && placa && estructura) {
+          setStepVisible('step5', true);
           await updateCapasOptions(ambiente, elemento, placa, estructura);
           await filtrarYMostrarSistemas();
+        } else {
+          setStepVisible('step5', false);
         }
       });
       
       // Paso 5: Capas
       selectCapas.addEventListener('change', async () => {
+        clearSelectionResult();
+        hideSistemaOutputs();
         await filtrarYMostrarSistemas();
       });
     }
