@@ -822,6 +822,62 @@
       "perfil_tipo": "perfil omega"
     },
     {
+      "id": "TS-OMEGA35-13-STD-1",
+      "tipo": "TRASDOSADO",
+      "estructura": "omega",
+      "perfil_mm": 35,
+      "zincado": "Z1",
+      "modulacion_mm": 600,
+      "capas_por_cara": 1,
+      "placas": [
+        {
+          "tipo": "STD",
+          "espesor_mm": 13
+        }
+      ],
+      "Hmax_m": 3,
+      "csv": "T-OMEGA35-13-1.csv",
+      "nombre_comercial": "Trasdosado semidirecto Ω35 STD-13 (CSV OMEGA)",
+      "_perfil_deprecated": "Ω35 Z1",
+      "titulo_pdf": "Trasdosado semidirecto Ω35 (STD 13 mm) — variante OMEGA",
+      "descripcion_sistema": "Sistema de trasdosado interior semidirecto con perfilería tipo Omega Ω35 y una placa Gypsotech STD BA de 13 mm. Variante basada en CSV histórico (OMEGA).",
+      "uso_recomendado": "Revestimiento interior en seco con espesor reducido.",
+      "descripcion_tecnica_corta": "Trasdosado semidirecto Ω35, placa Gypsotech STD BA 13 mm, perfilería FassaBortolo Z1. Variante OMEGA.",
+      "placa_tipo": "STD",
+      "es_humedo": false,
+      "es_exterior": false,
+      "es_doble_capa": false,
+      "perfil_tipo": "perfil omega"
+    },
+    {
+      "id": "TS-OMEGA35-13-AQUA-1",
+      "tipo": "TRASDOSADO",
+      "estructura": "omega",
+      "perfil_mm": 35,
+      "zincado": "Z1",
+      "modulacion_mm": 600,
+      "capas_por_cara": 1,
+      "placas": [
+        {
+          "tipo": "AQUA",
+          "espesor_mm": 13
+        }
+      ],
+      "Hmax_m": 3,
+      "csv": "T-OMEGA35-13-AQUA-1.csv",
+      "nombre_comercial": "Trasdosado semidirecto Ω35 AQUA-13 (CSV OMEGA)",
+      "_perfil_deprecated": "Ω35 Z1",
+      "titulo_pdf": "Trasdosado semidirecto Ω35 (AQUA 13 mm) — variante OMEGA",
+      "descripcion_sistema": "Sistema de trasdosado interior semidirecto con perfilería tipo Omega Ω35 y una placa hidrófuga Gypsotech AQUA H2 BA de 13 mm. Variante basada en CSV histórico (OMEGA).",
+      "uso_recomendado": "Revestimiento interior en zonas húmedas con espesor reducido.",
+      "descripcion_tecnica_corta": "Trasdosado semidirecto Ω35, placa Gypsotech AQUA H2 BA 13 mm, perfilería FassaBortolo Z1. Variante OMEGA.",
+      "placa_tipo": "AQUA",
+      "es_humedo": true,
+      "es_exterior": false,
+      "es_doble_capa": false,
+      "perfil_tipo": "perfil omega"
+    },
+    {
       "id": "T-TC47-13-1",
       "tipo": "TECHO",
       "estructura": "tc",
