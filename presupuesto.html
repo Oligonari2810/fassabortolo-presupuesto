@@ -361,7 +361,7 @@
                 <option value="">Seleccionar...</option>
                 <option value="seco">seco</option>
                 <option value="humedo">humedo</option>
-                <option value="exterior">exterior</option>
+                <option value="semi-intemperie">semi-intemperie</option>
               </select>
             </label>
           </div>
@@ -377,7 +377,7 @@
                 <option value="MURO">muro</option>
                 <option value="TRASDOSADO">trasdosado</option>
                 <option value="TECHO">techo</option>
-                <option value="EXTERIOR" style="display: none;" id="elementoEXTERIOROption">exterior</option>
+                <option value="EXTERIOR" style="display: none;" id="elementoEXTERIOROption">semi-intemperie</option>
               </select>
             </label>
           </div>
@@ -836,8 +836,8 @@
           return sys.ambiente_tags.includes('seco');
         } else if (ambiente === 'humedo') {
           return sys.ambiente_tags.includes('humedo');
-        } else if (ambiente === 'exterior') {
-          return sys.ambiente_tags.includes('exterior');
+        } else if (ambiente === 'semi-intemperie') {
+          return sys.ambiente_tags.includes('semi-intemperie');
         }
         return false;
       });
@@ -930,8 +930,8 @@
           matchAmbiente = sys.ambiente_tags.includes('seco');
         } else if (ambiente === 'humedo') {
           matchAmbiente = sys.ambiente_tags.includes('humedo');
-        } else if (ambiente === 'exterior') {
-          matchAmbiente = sys.ambiente_tags.includes('exterior');
+        } else if (ambiente === 'semi-intemperie') {
+          matchAmbiente = sys.ambiente_tags.includes('semi-intemperie');
         }
         if (!matchAmbiente) return false;
         
@@ -1041,8 +1041,8 @@
           matchAmbiente = sys.ambiente_tags.includes('seco');
         } else if (ambiente === 'humedo') {
           matchAmbiente = sys.ambiente_tags.includes('humedo');
-        } else if (ambiente === 'exterior') {
-          matchAmbiente = sys.ambiente_tags.includes('exterior');
+        } else if (ambiente === 'semi-intemperie') {
+          matchAmbiente = sys.ambiente_tags.includes('semi-intemperie');
         }
         if (!matchAmbiente) return false;
         
@@ -1119,8 +1119,8 @@
           matchAmbiente = sys.ambiente_tags.includes('seco');
         } else if (ambiente === 'humedo') {
           matchAmbiente = sys.ambiente_tags.includes('humedo');
-        } else if (ambiente === 'exterior') {
-          matchAmbiente = sys.ambiente_tags.includes('exterior');
+        } else if (ambiente === 'semi-intemperie') {
+          matchAmbiente = sys.ambiente_tags.includes('semi-intemperie');
         }
         if (!matchAmbiente) return false;
         
@@ -1153,7 +1153,7 @@
           if (perfil) {
             estructurasUnicas.add(`TC${perfil}`);
           }
-        } else if (estructuraTipo === 'exterior') {
+        } else if (estructuraTipo === 'semi-intemperie') {
           const perfil = sys.perfil_mm;
           if (perfil && sys.zincado === 'Z2') {
             estructurasUnicas.add(`${perfil} Z2`);
@@ -1210,8 +1210,8 @@
           matchAmbiente = sys.ambiente_tags.includes('seco');
         } else if (ambiente === 'humedo') {
           matchAmbiente = sys.ambiente_tags.includes('humedo');
-        } else if (ambiente === 'exterior') {
-          matchAmbiente = sys.ambiente_tags.includes('exterior');
+        } else if (ambiente === 'semi-intemperie') {
+          matchAmbiente = sys.ambiente_tags.includes('semi-intemperie');
         }
         if (!matchAmbiente) return false;
         

@@ -1289,17 +1289,17 @@
       "csv": "EL-70-13-1.csv",
       "nombre_comercial": "Externa Light 70 Z2 13 (1 capa)",
       "_perfil_deprecated": "70 Z2",
-      "titulo_pdf": "Sistema exterior ligero 70 mm (Externa Light 13 mm)",
-      "descripcion_sistema": "Sistema de cerramiento/revestimiento ligero para aplicaciones exteriores protegidas con estructura metálica galvanizada Z2 de 70 mm y placa Gypsotech Externa Light de 13 mm. Adecuado para soluciones exteriores según diseño del proyecto.",
-      "uso_recomendado": "Aplicaciones exteriores protegidas, fachadas ligeras o zonas expuestas según prescripción del proyecto.",
-      "descripcion_tecnica_corta": "Sistema exterior ligero 70 mm, placa Gypsotech Externa Light 13 mm, perfilería FassaBortolo Z2. Para aplicación exterior protegida. Ideal cerramientos exteriores protegidos.",
+      "titulo_pdf": "Sistema semi-intemperie ligero 70 mm (Externa Light 13 mm)",
+      "descripcion_sistema": "Sistema de cerramiento/revestimiento ligero para aplicaciones en semi-intemperie (protegido) con estructura metálica galvanizada Z2 de 70 mm y placa Gypsotech Externa Light de 13 mm. Adecuado para soluciones en semi-intemperie según diseño del proyecto.",
+      "uso_recomendado": "Aplicaciones en semi-intemperie (protegido), fachadas ligeras o zonas expuestas según prescripción del proyecto.",
+      "descripcion_tecnica_corta": "Sistema semi-intemperie ligero 70 mm, placa Gypsotech Externa Light 13 mm, perfilería FassaBortolo Z2. Para aplicación en semi-intemperie (protegido). Ideal cerramientos en semi-intemperie.",
       "placa_tipo": "EXTERNA_LIGHT",
       "es_humedo": false,
       "es_exterior": true,
       "es_doble_capa": false,
       "perfil_tipo": "montante/rail",
       "ambiente_tags": [
-        "exterior"
+        "semi-intemperie"
       ],
       "placa_tipos": [
         "EXTERNA_LIGHT"
@@ -1325,17 +1325,17 @@
       "csv": "EL-90-13-1.csv",
       "nombre_comercial": "Externa Light 90 Z2 13 (1 capa)",
       "_perfil_deprecated": "90 Z2",
-      "titulo_pdf": "Sistema exterior ligero 90 mm (Externa Light 13 mm)",
-      "descripcion_sistema": "Sistema de cerramiento/revestimiento ligero para aplicaciones exteriores protegidas con estructura metálica galvanizada Z2 de 90 mm y placa Gypsotech Externa Light de 13 mm. Mayor profundidad de estructura para soluciones exteriores según diseño del proyecto.",
-      "uso_recomendado": "Aplicaciones exteriores protegidas con mayor espesor de estructura.",
-      "descripcion_tecnica_corta": "Sistema exterior ligero 90 mm, placa Gypsotech Externa Light 13 mm, perfilería FassaBortolo Z2. Para aplicación exterior protegida. Ideal cerramientos exteriores protegidos.",
+      "titulo_pdf": "Sistema semi-intemperie ligero 90 mm (Externa Light 13 mm)",
+      "descripcion_sistema": "Sistema de cerramiento/revestimiento ligero para aplicaciones en semi-intemperie (protegido) con estructura metálica galvanizada Z2 de 90 mm y placa Gypsotech Externa Light de 13 mm. Mayor profundidad de estructura para soluciones en semi-intemperie según diseño del proyecto.",
+      "uso_recomendado": "Aplicaciones en semi-intemperie (protegido) con mayor espesor de estructura.",
+      "descripcion_tecnica_corta": "Sistema semi-intemperie ligero 90 mm, placa Gypsotech Externa Light 13 mm, perfilería FassaBortolo Z2. Para aplicación en semi-intemperie (protegido). Ideal cerramientos en semi-intemperie.",
       "placa_tipo": "EXTERNA_LIGHT",
       "es_humedo": false,
       "es_exterior": true,
       "es_doble_capa": false,
       "perfil_tipo": "montante/rail",
       "ambiente_tags": [
-        "exterior"
+        "semi-intemperie"
       ],
       "placa_tipos": [
         "EXTERNA_LIGHT"
