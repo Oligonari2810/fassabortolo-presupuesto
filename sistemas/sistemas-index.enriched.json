@@ -660,6 +660,99 @@
       "estructura_tipo": "montante_rail"
     },
     {
+      "id": "M-100-13-DBL-2",
+      "tipo": "MURO",
+      "estructura": "montante_rail",
+      "perfil_mm": 100,
+      "zincado": "Z1",
+      "modulacion_mm": 600,
+      "capas_por_cara": 2,
+      "placas": [
+        {
+          "tipo": "STD",
+          "espesor_mm": 13
+        }
+      ],
+      "Hmax_m": 3,
+      "csv": "M-100-13-DBL-2.csv",
+      "nombre_comercial": "Muro 100+100 Z1 STD-13 (2+2) — doble estructura 25 mm",
+      "_perfil_deprecated": "100 Z1 (DBL 25 mm)",
+      "titulo_pdf": "Tabique interior doble estructura 100+100 (STD 13 mm, 2+2)",
+      "descripcion_sistema": "Sistema de muro interior con doble estructura metálica galvanizada Z1 (100+100) y separación 25 mm entre estructuras. Dos placas Gypsotech STD BA de 13 mm por cada cara (2+2).",
+      "uso_recomendado": "Divisiones interiores en seco con mayores prestaciones (doble estructura + cámara). Aislamiento interior a definir en proyecto/obra.",
+      "descripcion_tecnica_corta": "Muro doble estructura 100+100 Z1, placas Gypsotech STD BA 13 mm (2+2). Separación 25 mm. Formato de placa 1.2x2.5 para logística.",
+      "placa_tipo": "STD",
+      "es_humedo": false,
+      "es_exterior": false,
+      "es_doble_capa": true,
+      "perfil_tipo": "montante/rail (doble)",
+      "doble_estructura": true,
+      "separacion_mm": 25,
+      "placa_formato_mm": [
+        1200,
+        2500
+      ],
+      "ambiente_tags": [
+        "seco"
+      ],
+      "placa_tipos": [
+        "STD"
+      ],
+      "elemento": "MURO",
+      "estructura_tipo": "montante_rail"
+    },
+    {
+      "id": "M-100-13-AQSTD-DBL-2",
+      "tipo": "MURO",
+      "estructura": "montante_rail",
+      "perfil_mm": 100,
+      "zincado": "Z1",
+      "modulacion_mm": 600,
+      "capas_por_cara": 2,
+      "placas": [
+        {
+          "tipo": "STD",
+          "espesor_mm": 13
+        },
+        {
+          "tipo": "AQUA",
+          "espesor_mm": 13
+        }
+      ],
+      "Hmax_m": 3,
+      "csv": "M-100-13-AQSTD-DBL-2.csv",
+      "nombre_comercial": "Muro 100+100 Z1 AQUA-STD 13 (2+2) — doble estructura 25 mm",
+      "_perfil_deprecated": "100 Z1 (AQSTD, DBL 25 mm)",
+      "titulo_pdf": "Tabique mixto doble estructura 100+100 (STD + AQUA 13 mm, 2+2)",
+      "descripcion_sistema": "Sistema de muro interior con doble estructura metálica galvanizada Z1 (100+100) y separación 25 mm entre estructuras. Dos placas por cara (2+2), con combinación STD/AQUA para criterio de cara seca/cara húmeda según proyecto.",
+      "uso_recomendado": "Proyectos mixtos con estancias secas y húmedas (baños/cocinas) con criterio de placa por cara. Aislamiento interior a definir en proyecto/obra.",
+      "descripcion_tecnica_corta": "Muro doble estructura 100+100 Z1, combinación de placa STD BA y AQUA H2 BA 13 mm (2+2). Separación 25 mm. Formato de placa 1.2x2.5 para logística.",
+      "placa_tipo": "STD+AQUA",
+      "es_humedo": true,
+      "es_exterior": false,
+      "es_doble_capa": true,
+      "perfil_tipo": "montante/rail (doble)",
+      "doble_estructura": true,
+      "separacion_mm": 25,
+      "placa_formato_mm": [
+        1200,
+        2500
+      ],
+      "requiere_definir_caras": true,
+      "configuracion_caras": "AQUA/STD",
+      "cara_humeda": "AQUA",
+      "ambiente_tags": [
+        "humedo",
+        "seco"
+      ],
+      "placa_tipos": [
+        "STD",
+        "AQUA"
+      ],
+      "elemento": "MURO",
+      "estructura_tipo": "montante_rail"
+    },
+    {
       "id": "TA-70-13-1",
       "tipo": "TRASDOSADO",
       "estructura": "montante_rail",
@@ -1351,5 +1444,5 @@
     }
   },
   "_enriched": true,
-  "_enriched_at": "2026-01-04T04:59:44.389Z"
+  "_enriched_at": "2026-01-04T23:16:54.079Z"
 }
