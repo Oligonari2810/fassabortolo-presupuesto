@@ -198,6 +198,19 @@
       text-align:left;
       white-space:nowrap;
     }
+    .materials-table th:first-child,
+    .materials-table td:first-child{min-width:220px;}
+    .materials-table tbody tr:nth-child(even){background:#fafafa}
+    .materials-table tbody tr:nth-child(odd){background:#fcfcff}
+    .materials-table tbody tr:hover{background:#f2f6ff}
+    @media(max-width:900px){
+      .materials-table{min-width:0;border-collapse:separate;border-spacing:0 var(--space-xs);}
+      .materials-table thead{display:none;}
+      .materials-table tr{display:grid;grid-template-columns:1fr 1fr;gap:var(--space-xs);padding:var(--space-sm);border:1px solid #e0e7ff;border-radius:0.5rem;background:#fff;}
+      .materials-table td{border:0;white-space:normal;padding:var(--space-xs) var(--space-sm);}
+      .materials-table td::before{content:attr(data-label);display:block;font-size:0.75rem;font-weight:700;color:#6c7a89;margin-bottom:2px;}
+      .materials-table td:last-child{grid-column:1/-1;text-align:right;font-weight:700;color:#c0392b;}
+    }
     th{
       font-size:0.75rem;
       text-transform:uppercase;
@@ -483,10 +496,18 @@
       </div>
       
       <div class="table-wrapper">
-        <table id="tbl">
+        <table id="tbl" class="materials-table">
           <thead>
             <tr>
-              <th>SKU</th><th>Concepto</th><th>Unidad</th><th>Precio Cat.</th><th>Dto %</th><th>Precio Neto</th><th>Coef</th><th>Cantidad</th><th>Importe Neto</th>
+              <th>Descripción</th>
+              <th>Código / SKU</th>
+              <th>Unidad de venta</th>
+              <th>Precio cat. (€)</th>
+              <th>Dto. distrib. %</th>
+              <th>Precio neto (€)</th>
+              <th>Rendimiento (coef.)</th>
+              <th>Cantidad requerida</th>
+              <th>Coste neto (€)</th>
             </tr>
           </thead>
           <tbody></tbody>
@@ -760,15 +781,15 @@
           // Determinar decimales según unidad
           const decimalsQty = r.unidad === 'ud' ? 0 : 3;
           tr.innerHTML = `
-            <td class="num">${r.codigo || r.sku}</td>
-            <td>${r.concepto}</td>
-            <td class="num">${r.unidad}</td>
-            <td class="num">${fmtEUR(precioCatalogo)}</td>
-            <td class="num">${dtoDistribuidorPct}%</td>
-            <td class="num">${fmtEUR(precioNeto)}</td>
-            <td class="num">${fmtNumber(rendimiento, 2)}</td>
-            <td class="num">${fmtNumber(qty, decimalsQty)}</td>
-            <td class="num">${fmtEUR(importeNeto)}</td>
+            <td data-label="Descripción">${r.concepto}</td>
+            <td class="num" data-label="Código / SKU">${r.codigo || r.sku}</td>
+            <td class="num" data-label="Unidad de venta">${r.unidad}</td>
+            <td class="num" data-label="Precio cat. (€)">${fmtEUR(precioCatalogo)}</td>
+            <td class="num" data-label="Dto. distrib. %">${dtoDistribuidorPct}%</td>
+            <td class="num" data-label="Precio neto (€)">${fmtEUR(precioNeto)}</td>
+            <td class="num" data-label="Rendimiento (coef.)">${fmtNumber(rendimiento, 2)}</td>
+            <td class="num" data-label="Cantidad requerida">${fmtNumber(qty, decimalsQty)}</td>
+            <td class="num" data-label="Coste neto (€)">${fmtEUR(importeNeto)}</td>
           `;
           tbody.appendChild(tr);
         } catch(err) {
@@ -1911,7 +1932,7 @@
           ['Precio venta €/m²:', precioM2],
           ['Total sistema €:', precioVenta],
           [''],
-          ['Código','Concepto','Unidad','Coef','Cantidad','Precio Cat.','Dto %','Precio Neto','Importe Neto'],
+          ['Código / SKU','Descripción','Unidad de venta','Rendimiento (coef.)','Cantidad requerida','Precio cat. (€)','Dto. distrib. %','Precio neto (€)','Coste neto (€)'],
           ...p.rows.map(r => {
             const precioCatalogo = r.precioCatalogo || 0;
             const dtoPct = r.dtoDistribuidorPct || 0;
