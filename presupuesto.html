@@ -499,15 +499,15 @@
         <table id="tbl" class="materials-table">
           <thead>
             <tr>
-              <th>Concepto</th>
-              <th>SKU</th>
-              <th>Unidad</th>
-              <th>Precio Cat.</th>
-              <th>Dto %</th>
-              <th>Precio Neto</th>
-              <th>Coef</th>
-              <th>Cantidad</th>
-              <th>Importe Neto</th>
+              <th title="Descripción del material o servicio">Descripción</th>
+              <th title="Código interno o SKU del material">Código / SKU</th>
+              <th title="Unidad con la que se comercializa">Unidad de venta</th>
+              <th title="Precio de catálogo antes de descuentos">Precio cat. (€)</th>
+              <th title="Descuento aplicado al distribuidor">Dto. distrib. %</th>
+              <th title="Precio final después del descuento">Precio neto (€)</th>
+              <th title="Rendimiento o coeficiente de consumo">Rendimiento (coef.)</th>
+              <th title="Cantidad necesaria según el sistema">Cantidad requerida</th>
+              <th title="Importe resultante del material">Coste neto (€)</th>
             </tr>
           </thead>
           <tbody></tbody>
@@ -781,15 +781,15 @@
           // Determinar decimales según unidad
           const decimalsQty = r.unidad === 'ud' ? 0 : 3;
           tr.innerHTML = `
-            <td data-label="Concepto">${r.concepto}</td>
-            <td class="num" data-label="SKU">${r.codigo || r.sku}</td>
-            <td class="num" data-label="Unidad">${r.unidad}</td>
-            <td class="num" data-label="Precio Cat.">${fmtEUR(precioCatalogo)}</td>
-            <td class="num" data-label="Dto %">${dtoDistribuidorPct}%</td>
-            <td class="num" data-label="Precio Neto">${fmtEUR(precioNeto)}</td>
-            <td class="num" data-label="Coef">${fmtNumber(rendimiento, 2)}</td>
-            <td class="num" data-label="Cantidad">${fmtNumber(qty, decimalsQty)}</td>
-            <td class="num" data-label="Importe Neto">${fmtEUR(importeNeto)}</td>
+            <td data-label="Descripción">${r.concepto}</td>
+            <td class="num" data-label="Código / SKU">${r.codigo || r.sku}</td>
+            <td class="num" data-label="Unidad de venta">${r.unidad}</td>
+            <td class="num" data-label="Precio cat. (€)">${fmtEUR(precioCatalogo)}</td>
+            <td class="num" data-label="Dto. distrib. %">${dtoDistribuidorPct}%</td>
+            <td class="num" data-label="Precio neto (€)">${fmtEUR(precioNeto)}</td>
+            <td class="num" data-label="Rendimiento (coef.)">${fmtNumber(rendimiento, 2)}</td>
+            <td class="num" data-label="Cantidad requerida">${fmtNumber(qty, decimalsQty)}</td>
+            <td class="num" data-label="Coste neto (€)">${fmtEUR(importeNeto)}</td>
           `;
           tbody.appendChild(tr);
         } catch(err) {
@@ -1932,7 +1932,7 @@
           ['Precio venta €/m²:', precioM2],
           ['Total sistema €:', precioVenta],
           [''],
-          ['Código','Concepto','Unidad','Coef','Cantidad','Precio Cat.','Dto %','Precio Neto','Importe Neto'],
+          ['Código / SKU','Descripción','Unidad de venta','Rendimiento (coef.)','Cantidad requerida','Precio cat. (€)','Dto. distrib. %','Precio neto (€)','Coste neto (€)'],
           ...p.rows.map(r => {
             const precioCatalogo = r.precioCatalogo || 0;
             const dtoPct = r.dtoDistribuidorPct || 0;
