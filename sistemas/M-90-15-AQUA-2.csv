@@ -1,11 +1,11 @@
-codigo,concepto,unidad,rendimiento_m2,precio_catalogo_almeria,familia_precio
-L00H005200A0,Gypsotech AQUA H2 BA 15,m2,4.10,12.10,PLACA
-C399041299A,Montante 90/40 Z1,ml,2.8,0.743,RESTO
-U309030300A,Rail 90 Z1,ml,0.40,0.583,RESTO
-304101,Tornillo PM 3.5x25,ud,24,0.014,RESTO
-304104,Tornillo PM 3.5x35,ud,16,0.017,RESTO
-304134,Tornillo MM 3.5x9.5,ud,3,0.014,RESTO
-304058,Cinta juntas papel,ml,4.00,0.056,RESTO
-304065,Cinta guardavivos,ml,0.3,0.579,RESTO
-304077,Banda estanca 90 mm,ml,0.6,0.753,RESTO
-353E1,FASSAJOINT 2H,kg,0.40,1.327,RESTO
+codigo,concepto,unidad,rendimiento_m2
+L00H005200A0,Gypsotech AQUA H2 BA 15,m2,4.10
+C399041299A,Montante 90/40 Z1,ml,2.8
+U309030300A,Rail 90 Z1,ml,0.40
+304101,Tornillo PM 3.5x25,ud,24
+304104,Tornillo PM 3.5x35,ud,16
+304134,Tornillo MM 3.5x9.5,ud,3
+304058,Cinta juntas papel,ml,4.00
+304065,Cinta guardavivos,ml,0.3
+304077,Banda estanca 90 mm,ml,0.6
+353E1,FASSAJOINT 2H,kg,0.40

@@ -108,45 +108,53 @@ json.systems.forEach(sys => {
     if (lines.length > 1) {
       const header = lines[0].toLowerCase();
       const headerCols = lines[0].split(',');
-      const idxFamilia = headerCols.findIndex(h => h.trim().toLowerCase() === 'familia_precio');
-      const idxPrecio = headerCols.findIndex(h => h.trim().toLowerCase() === 'precio_catalogo_almeria');
       const idxCodigo = headerCols.findIndex(h => h.trim().toLowerCase() === 'codigo' || h.trim().toLowerCase() === 'sku');
       const idxConcepto = headerCols.findIndex(h => h.trim().toLowerCase() === 'concepto');
+      const idxUnidad = headerCols.findIndex(h => h.trim().toLowerCase() === 'unidad');
+      const idxRendimiento = headerCols.findIndex(h => h.trim().toLowerCase() === 'rendimiento_m2' || h.trim().toLowerCase() === 'coef');
       
       // Validar header tiene campos requeridos (formato nuevo)
-      if (!header.includes('precio_catalogo_almeria')) {
-        errors.push(`❌ ${sysId}: CSV ${sys.csv} falta precio_catalogo_almeria en header`);
+      if (!header.includes('codigo')) {
+        errors.push(`❌ ${sysId}: CSV ${sys.csv} falta codigo en header`);
       }
-      if (!header.includes('familia_precio')) {
-        errors.push(`❌ ${sysId}: CSV ${sys.csv} falta familia_precio en header (formato legacy no permitido)`);
+      if (!header.includes('concepto')) {
+        errors.push(`❌ ${sysId}: CSV ${sys.csv} falta concepto en header`);
+      }
+      if (!header.includes('unidad')) {
+        errors.push(`❌ ${sysId}: CSV ${sys.csv} falta unidad en header`);
+      }
+      if (!header.includes('rendimiento_m2') && !header.includes('coef')) {
+        errors.push(`❌ ${sysId}: CSV ${sys.csv} falta rendimiento_m2 en header`);
+      }
+      if (header.includes('precio_catalogo_almeria') || header.includes('familia_precio')) {
+        warnings.push(`⚠️  ${sysId}: CSV ${sys.csv} contiene precios/familia; deben estar solo en catálogo maestro`);
       }
       
       // Validar líneas
-      if (idxFamilia >= 0) {
+      if (idxRendimiento >= 0) {
         for (let i = 1; i < lines.length; i++) {
           if (!lines[i].trim()) continue;
           const cols = lines[i].split(',');
           
-          // Validar familia_precio presente y válida
-          const familia = cols[idxFamilia] ? cols[idxFamilia].trim().toUpperCase() : '';
-          if (!familia) {
-            const codigo = idxCodigo >= 0 && cols[idxCodigo] ? cols[idxCodigo].trim() : '';
-            const concepto = idxConcepto >= 0 && cols[idxConcepto] ? cols[idxConcepto].trim() : '';
-            errors.push(`❌ ${sysId}: CSV ${sys.csv} línea ${i + 1} (${codigo || concepto || 'sin código'}) falta familia_precio`);
-          } else if (familia !== 'PLACA' && familia !== 'RESTO') {
-            errors.push(`❌ ${sysId}: CSV ${sys.csv} línea ${i + 1} tiene familia_precio inválida: ${familia} (debe ser PLACA o RESTO)`);
+          const codigo = idxCodigo >= 0 && cols[idxCodigo] ? cols[idxCodigo].trim() : '';
+          const concepto = idxConcepto >= 0 && cols[idxConcepto] ? cols[idxConcepto].trim() : '';
+          const unidad = idxUnidad >= 0 && cols[idxUnidad] ? cols[idxUnidad].trim() : '';
+          const rendimientoStr = cols[idxRendimiento] ? cols[idxRendimiento].trim() : '';
+          if (!codigo) {
+            errors.push(`❌ ${sysId}: CSV ${sys.csv} línea ${i + 1} (${concepto || 'sin concepto'}) falta codigo`);
           }
-          
-          // Validar precio_catalogo_almeria existe y es numérico
-          if (idxPrecio >= 0) {
-            const precioStr = cols[idxPrecio] ? cols[idxPrecio].trim() : '';
-            if (!precioStr) {
-              errors.push(`❌ ${sysId}: CSV ${sys.csv} línea ${i + 1} falta precio_catalogo_almeria`);
-            } else {
-              const precio = parseFloat(precioStr.replace(',', '.'));
-              if (isNaN(precio) || precio <= 0) {
-                errors.push(`❌ ${sysId}: CSV ${sys.csv} línea ${i + 1} tiene precio_catalogo_almeria inválido: ${precioStr}`);
-              }
+          if (!concepto) {
+            errors.push(`❌ ${sysId}: CSV ${sys.csv} línea ${i + 1} (${codigo || 'sin código'}) falta concepto`);
+          }
+          if (!unidad) {
+            errors.push(`❌ ${sysId}: CSV ${sys.csv} línea ${i + 1} (${codigo || concepto || 'sin código'}) falta unidad`);
+          }
+          if (!rendimientoStr) {
+            errors.push(`❌ ${sysId}: CSV ${sys.csv} línea ${i + 1} (${codigo || concepto || 'sin código'}) falta rendimiento_m2`);
+          } else {
+            const rendimiento = parseFloat(rendimientoStr.replace(',', '.'));
+            if (isNaN(rendimiento) || rendimiento <= 0) {
+              errors.push(`❌ ${sysId}: CSV ${sys.csv} línea ${i + 1} rendimiento_m2 inválido: ${rendimientoStr}`);
             }
           }
         }
@@ -179,4 +187,3 @@ if (errors.length > 0) {
   console.log(`\n💥 Build fallido: ${errors.length} error(es) encontrado(s)\n`);
   process.exit(1);
 }
-

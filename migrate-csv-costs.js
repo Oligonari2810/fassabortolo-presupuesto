@@ -40,8 +40,8 @@ function migrateCSV(csvPath, sistemaId) {
   }
   
   const newLines = [];
-  // Nuevo header (6 columnas según especificación)
-  newLines.push('codigo,concepto,unidad,rendimiento_m2,precio_catalogo_almeria,familia_precio');
+  // Nuevo header (4 columnas según especificación)
+  newLines.push('codigo,concepto,unidad,rendimiento_m2');
   
   // Migrar cada línea
   for (let i = 1; i < lines.length; i++) {
@@ -51,19 +51,13 @@ function migrateCSV(csvPath, sistemaId) {
     const codigo = cols[idxSku]?.trim() || '';
     const concepto = cols[idxConcepto]?.trim() || '';
     const unidad = cols[idxUnidad]?.trim() || '';
-    const precioCatalogo = cols[idxPrecio]?.trim() || '0';
     const rendimiento = cols[idxCoef]?.trim() || '0';
-    
-    // Detectar familia
-    const familia = detectarFamilia(concepto, codigo);
-    
+
     newLines.push([
       codigo,
       concepto,
       unidad,
-      rendimiento,
-      precioCatalogo,
-      familia
+      rendimiento
     ].join(','));
   }
   

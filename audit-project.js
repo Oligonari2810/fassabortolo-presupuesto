@@ -114,7 +114,7 @@ console.log(`   Warnings encontrados: ${warnings.filter(w => w.tipo === 'WARNING
 // B) Consistencia CSV (por sistema)
 console.log('B) Verificando consistencia CSV...\n');
 
-const headersEsperados = ['codigo', 'concepto', 'unidad', 'rendimiento_m2', 'precio_catalogo_almeria', 'familia_precio'];
+const headersEsperados = ['codigo', 'concepto', 'unidad', 'rendimiento_m2'];
 
 systems.forEach(sys => {
   if (!sys.csv) return;
@@ -136,6 +136,9 @@ systems.forEach(sys => {
       errors.push({ tipo: 'ERROR', sistema: sys.id, csv: sys.csv, mensaje: `Falta columna en cabecera: ${h}` });
     }
   });
+  if (header.includes('precio_catalogo_almeria') || header.includes('familia_precio')) {
+    warnings.push({ tipo: 'WARNING', sistema: sys.id, csv: sys.csv, mensaje: 'CSV contiene precios/familia; deben estar solo en catálogo maestro' });
+  }
   
   // Verificar datos
   const placasEnCSV = [];
@@ -145,36 +148,27 @@ systems.forEach(sys => {
     if (row.length < header.length) continue;
     
     const codigoIdx = header.indexOf('codigo');
-    const precioIdx = header.indexOf('precio_catalogo_almeria');
-    const familiaIdx = header.indexOf('familia_precio');
     const conceptoIdx = header.indexOf('concepto');
+    const rendimientoIdx = header.indexOf('rendimiento_m2');
     
     // codigo no vacío (bloqueante)
     if (codigoIdx >= 0 && (!row[codigoIdx] || row[codigoIdx] === '')) {
       errors.push({ tipo: 'ERROR', sistema: sys.id, csv: sys.csv, linea: i+1, mensaje: 'Código vacío' });
     }
     
-    // precio_catalogo_almeria numérico
-    if (precioIdx >= 0) {
-      const precio = parseFloat(row[precioIdx]);
-      if (isNaN(precio) || precio <= 0) {
-        errors.push({ tipo: 'ERROR', sistema: sys.id, csv: sys.csv, linea: i+1, mensaje: `Precio inválido: ${row[precioIdx]}` });
+    // rendimiento_m2 numérico
+    if (rendimientoIdx >= 0) {
+      const rendimiento = parseFloat(row[rendimientoIdx]);
+      if (isNaN(rendimiento) || rendimiento <= 0) {
+        errors.push({ tipo: 'ERROR', sistema: sys.id, csv: sys.csv, linea: i+1, mensaje: `Rendimiento inválido: ${row[rendimientoIdx]}` });
       }
     }
     
-    // familia_precio = PLACA o RESTO (bloqueante)
-    if (familiaIdx >= 0) {
-      const familia = row[familiaIdx].toUpperCase().trim();
-      if (familia !== 'PLACA' && familia !== 'RESTO') {
-        errors.push({ tipo: 'ERROR', sistema: sys.id, csv: sys.csv, linea: i+1, mensaje: `Familia inválida: ${familia} (debe ser PLACA o RESTO)` });
-      }
-      
-      // Detectar placas para verificar sistema mixto
-      if (familia === 'PLACA') {
-        const concepto = row[conceptoIdx] || '';
-        if (concepto.toUpperCase().includes('STD')) placasEnCSV.push('STD');
-        if (concepto.toUpperCase().includes('AQUA')) placasEnCSV.push('AQUA');
-      }
+    // Detectar placas para verificar sistema mixto (por concepto)
+    if (conceptoIdx >= 0) {
+      const concepto = row[conceptoIdx] || '';
+      if (concepto.toUpperCase().includes('STD')) placasEnCSV.push('STD');
+      if (concepto.toUpperCase().includes('AQUA')) placasEnCSV.push('AQUA');
     }
   }
   
@@ -259,4 +253,3 @@ if (errorCount === 0 && warningCount === 0) {
   console.log(`❌ Auditoría fallida: ${errorCount} errores bloqueantes\n`);
   process.exit(1);
 }
-
