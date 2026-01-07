@@ -1,8 +1,7 @@
-codigo,concepto,unidad,rendimiento_m2,precio_catalogo_almeria,familia_precio
-L00A003250A0,Gypsotech STD BA 13 1200x2500,m2,1.025,6.36,PLACA
-E168218300Z1,Perfil omega 35,ml,1.67,0.443,RESTO
-TORN-TA-60,Tornillo TA 5.5x60,ud,6,0.025,RESTO
-304101,Tornillo PM 3.5x25,ud,10,0.014,RESTO
-304058,Cinta juntas papel,ml,1.0,0.056,RESTO
-351E1,Pasta JN,kg,0.20,1.330,RESTO
-
+codigo,concepto,unidad,rendimiento_m2
+L00A003250A0,Gypsotech STD BA 13 1200x2500,m2,1.025
+E168218300Z1,Perfil omega 35,ml,1.67
+TORN-TA-60,Tornillo TA 5.5x60,ud,6
+304101,Tornillo PM 3.5x25,ud,10
+304058,Cinta juntas papel,ml,1.0
+351E1,Pasta JN,kg,0.20
