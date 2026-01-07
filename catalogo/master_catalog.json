@@ -1,0 +1,830 @@
+{
+  "L001313STD": {
+    "concepto": "Placa Gypsotech STD BA 13x1200x2500",
+    "unidad": "ud",
+    "precio_catalogo_almeria": 4.2,
+    "familia_precio": "PLACA"
+  },
+  "L001515STD": {
+    "concepto": "Placa Gypsotech STD BA 15x1200x2500",
+    "unidad": "ud",
+    "precio_catalogo_almeria": 5.1,
+    "familia_precio": "PLACA"
+  },
+  "L00H003200A0": {
+    "concepto": "Placa Gypsotech AQUA BA 13x1200x2000",
+    "unidad": "ud",
+    "precio_catalogo_almeria": 7.66,
+    "familia_precio": "PLACA"
+  },
+  "L00H003250A0": {
+    "concepto": "Placa Gypsotech AQUA BA 13x1200x2500",
+    "unidad": "ud",
+    "precio_catalogo_almeria": 7.66,
+    "familia_precio": "PLACA"
+  },
+  "L00H003260A0": {
+    "concepto": "Placa Gypsotech AQUA BA 13x1200x2600",
+    "unidad": "ud",
+    "precio_catalogo_almeria": 7.66,
+    "familia_precio": "PLACA"
+  },
+  "L00H003280A0": {
+    "concepto": "Placa Gypsotech AQUA BA 13x1200x2800",
+    "unidad": "ud",
+    "precio_catalogo_almeria": 7.66,
+    "familia_precio": "PLACA"
+  },
+  "L00H003300A0": {
+    "concepto": "Placa Gypsotech AQUA BA 13x1200x3000",
+    "unidad": "ud",
+    "precio_catalogo_almeria": 7.66,
+    "familia_precio": "PLACA"
+  },
+  "L00H005200A0": {
+    "concepto": "Placa Gypsotech AQUA BA 15x1200x2000",
+    "unidad": "ud",
+    "precio_catalogo_almeria": 9.5,
+    "familia_precio": "PLACA"
+  },
+  "L00H005260A0": {
+    "concepto": "Placa Gypsotech AQUA BA 15x1200x2600",
+    "unidad": "ud",
+    "precio_catalogo_almeria": 9.5,
+    "familia_precio": "PLACA"
+  },
+  "L00H005300A0": {
+    "concepto": "Placa Gypsotech AQUA BA 15x1200x3000",
+    "unidad": "ud",
+    "precio_catalogo_almeria": 9.5,
+    "familia_precio": "PLACA"
+  },
+  "L00XL03200EI": {
+    "concepto": "Placa Gypsotech Externa Light 13x1200x2000",
+    "unidad": "ud",
+    "precio_catalogo_almeria": 29.04,
+    "familia_precio": "PLACA"
+  },
+  "L00LB03200AC": {
+    "concepto": "Placa Gypsotech GypsoLIGNUM BA 13x1200x2000",
+    "unidad": "ud",
+    "precio_catalogo_almeria": 12.85,
+    "familia_precio": "PLACA"
+  },
+  "L00LB03250AC": {
+    "concepto": "Placa Gypsotech GypsoLIGNUM BA 13x1200x2500",
+    "unidad": "ud",
+    "precio_catalogo_almeria": 12.85,
+    "familia_precio": "PLACA"
+  },
+  "L00LB03260AC": {
+    "concepto": "Placa Gypsotech GypsoLIGNUM BA 13x1200x2600",
+    "unidad": "ud",
+    "precio_catalogo_almeria": 12.85,
+    "familia_precio": "PLACA"
+  },
+  "L00LB03300AC": {
+    "concepto": "Placa Gypsotech GypsoLIGNUM BA 13x1200x3000",
+    "unidad": "ud",
+    "precio_catalogo_almeria": 12.85,
+    "familia_precio": "PLACA"
+  },
+  "L00LB05200AC": {
+    "concepto": "Placa Gypsotech GypsoLIGNUM BA 15x1200x2000",
+    "unidad": "ud",
+    "precio_catalogo_almeria": 17.85,
+    "familia_precio": "PLACA"
+  },
+  "C344836249A": {
+    "concepto": "Montante 48/35 Z1 2.490 mm",
+    "unidad": "ml",
+    "precio_catalogo_almeria": 1.4,
+    "familia_precio": "RESTO"
+  },
+  "C344836259A": {
+    "concepto": "Montante 48/35 Z1 2.590 mm",
+    "unidad": "ml",
+    "precio_catalogo_almeria": 1.4,
+    "familia_precio": "RESTO"
+  },
+  "C344836269A": {
+    "concepto": "Montante 48/35 Z1 2.690 mm",
+    "unidad": "ml",
+    "precio_catalogo_almeria": 1.4,
+    "familia_precio": "RESTO"
+  },
+  "C344836279A": {
+    "concepto": "Montante 48/35 Z1 2.790 mm",
+    "unidad": "ml",
+    "precio_catalogo_almeria": 1.4,
+    "familia_precio": "RESTO"
+  },
+  "C344836299A": {
+    "concepto": "Montante 48/35 Z1 2.990 mm",
+    "unidad": "ml",
+    "precio_catalogo_almeria": 1.4,
+    "familia_precio": "RESTO"
+  },
+  "C344836359A": {
+    "concepto": "Montante 48/35 Z1 3.590 mm",
+    "unidad": "ml",
+    "precio_catalogo_almeria": 1.4,
+    "familia_precio": "RESTO"
+  },
+  "C344836399A": {
+    "concepto": "Montante 48/35 Z1 3.990 mm",
+    "unidad": "ml",
+    "precio_catalogo_almeria": 1.4,
+    "familia_precio": "RESTO"
+  },
+  "C344836299B": {
+    "concepto": "Montante 48/35 Z2 2.990 mm",
+    "unidad": "ml",
+    "precio_catalogo_almeria": 2.15,
+    "familia_precio": "RESTO"
+  },
+  "C367038269A": {
+    "concepto": "Montante 70/37 Z1 2.690 mm",
+    "unidad": "ml",
+    "precio_catalogo_almeria": 1.78,
+    "familia_precio": "RESTO"
+  },
+  "C367038279A": {
+    "concepto": "Montante 70/37 Z1 2.790 mm",
+    "unidad": "ml",
+    "precio_catalogo_almeria": 1.78,
+    "familia_precio": "RESTO"
+  },
+  "C367038299A": {
+    "concepto": "Montante 70/37 Z1 2.990 mm",
+    "unidad": "ml",
+    "precio_catalogo_almeria": 1.78,
+    "familia_precio": "RESTO"
+  },
+  "C367038359A": {
+    "concepto": "Montante 70/37 Z1 3.590 mm",
+    "unidad": "ml",
+    "precio_catalogo_almeria": 1.78,
+    "familia_precio": "RESTO"
+  },
+  "C367038399A": {
+    "concepto": "Montante 70/37 Z1 3.990 mm",
+    "unidad": "ml",
+    "precio_catalogo_almeria": 1.78,
+    "familia_precio": "RESTO"
+  },
+  "C367038299B": {
+    "concepto": "Montante 70/37 Z2 2.990 mm",
+    "unidad": "ml",
+    "precio_catalogo_almeria": 2.53,
+    "familia_precio": "RESTO"
+  },
+  "C399041299A": {
+    "concepto": "Montante 90/40 Z1 2.990 mm",
+    "unidad": "ml",
+    "precio_catalogo_almeria": 2.23,
+    "familia_precio": "RESTO"
+  },
+  "C399041359A": {
+    "concepto": "Montante 90/40 Z1 3.590 mm",
+    "unidad": "ml",
+    "precio_catalogo_almeria": 2.23,
+    "familia_precio": "RESTO"
+  },
+  "C399041399A": {
+    "concepto": "Montante 90/40 Z1 3.990 mm",
+    "unidad": "ml",
+    "precio_catalogo_almeria": 2.23,
+    "familia_precio": "RESTO"
+  },
+  "C399041299B": {
+    "concepto": "Montante 90/40 Z2 2.990 mm",
+    "unidad": "ml",
+    "precio_catalogo_almeria": 3.23,
+    "familia_precio": "RESTO"
+  },
+  "C3910041299A": {
+    "concepto": "Montante 100/40 Z1 2.990 mm",
+    "unidad": "ml",
+    "precio_catalogo_almeria": 2.5,
+    "familia_precio": "RESTO"
+  },
+  "C4612548399A": {
+    "concepto": "Montante 125/47 Z1 3.990 mm",
+    "unidad": "ml",
+    "precio_catalogo_almeria": 3.13,
+    "familia_precio": "RESTO"
+  },
+  "C4615048399A": {
+    "concepto": "Montante 150/47 Z1 3.990 mm",
+    "unidad": "ml",
+    "precio_catalogo_almeria": 3.69,
+    "familia_precio": "RESTO"
+  },
+  "U304830300A": {
+    "concepto": "Rail 48 Z1 3.000 mm",
+    "unidad": "ml",
+    "precio_catalogo_almeria": 1.18,
+    "familia_precio": "RESTO"
+  },
+  "U304830300B": {
+    "concepto": "Rail 48 Z2 3.000 mm",
+    "unidad": "ml",
+    "precio_catalogo_almeria": 2.15,
+    "familia_precio": "RESTO"
+  },
+  "U307030300A": {
+    "concepto": "Rail 70 Z1 3.000 mm",
+    "unidad": "ml",
+    "precio_catalogo_almeria": 1.43,
+    "familia_precio": "RESTO"
+  },
+  "U307030300B": {
+    "concepto": "Rail 70 Z2 3.000 mm",
+    "unidad": "ml",
+    "precio_catalogo_almeria": 2.38,
+    "familia_precio": "RESTO"
+  },
+  "U309030300A": {
+    "concepto": "Rail 90 Z1 3.000 mm",
+    "unidad": "ml",
+    "precio_catalogo_almeria": 1.75,
+    "familia_precio": "RESTO"
+  },
+  "U309030300B": {
+    "concepto": "Rail 90 Z2 3.000 mm",
+    "unidad": "ml",
+    "precio_catalogo_almeria": 2.75,
+    "familia_precio": "RESTO"
+  },
+  "U3010030300A": {
+    "concepto": "Rail 100 Z1 3.000 mm",
+    "unidad": "ml",
+    "precio_catalogo_almeria": 2.13,
+    "familia_precio": "RESTO"
+  },
+  "U3512535300A": {
+    "concepto": "Rail 125 Z1 3.000 mm",
+    "unidad": "ml",
+    "precio_catalogo_almeria": 2.75,
+    "familia_precio": "RESTO"
+  },
+  "U4015040300A": {
+    "concepto": "Rail 150 Z1 3.000 mm",
+    "unidad": "ml",
+    "precio_catalogo_almeria": 3.0,
+    "familia_precio": "RESTO"
+  },
+  "E168218300A": {
+    "concepto": "Perfil Omega 35 Z1 3.000 mm",
+    "unidad": "ml",
+    "precio_catalogo_almeria": 1.33,
+    "familia_precio": "RESTO"
+  },
+  "C174717300A": {
+    "concepto": "Perfil TC 47 Z1 3.000 mm",
+    "unidad": "ml",
+    "precio_catalogo_almeria": 1.13,
+    "familia_precio": "RESTO"
+  },
+  "C174717300B": {
+    "concepto": "Perfil TC 47 Z2 3.000 mm",
+    "unidad": "ml",
+    "precio_catalogo_almeria": 1.88,
+    "familia_precio": "RESTO"
+  },
+  "C286028300A": {
+    "concepto": "Perfil TC 60 Z1 3.000 mm",
+    "unidad": "ml",
+    "precio_catalogo_almeria": 1.7,
+    "familia_precio": "RESTO"
+  },
+  "L2334300A": {
+    "concepto": "Perfil Angular Z1 3.000 mm",
+    "unidad": "ml",
+    "precio_catalogo_almeria": 0.84,
+    "familia_precio": "RESTO"
+  },
+  "L2334300B": {
+    "concepto": "Perfil Angular Z2 3.000 mm",
+    "unidad": "ml",
+    "precio_catalogo_almeria": 1.24,
+    "familia_precio": "RESTO"
+  },
+  "U201928300A": {
+    "concepto": "Perfil Clip Z1 3.000 mm",
+    "unidad": "ml",
+    "precio_catalogo_almeria": 0.85,
+    "familia_precio": "RESTO"
+  },
+  "U193019300A": {
+    "concepto": "Perfil U 30 Z1 3.000 mm",
+    "unidad": "ml",
+    "precio_catalogo_almeria": 1.1,
+    "familia_precio": "RESTO"
+  },
+  "304000": {
+    "concepto": "Horquilla cuellgue rápida M6 TC 47",
+    "unidad": "ud",
+    "precio_catalogo_almeria": 0.195,
+    "familia_precio": "RESTO"
+  },
+  "301008": {
+    "concepto": "Horquilla cuellgue M6 TC 48",
+    "unidad": "ud",
+    "precio_catalogo_almeria": 0.362,
+    "familia_precio": "RESTO"
+  },
+  "304001": {
+    "concepto": "Horquilla cuellgue M6 TC 60",
+    "unidad": "ud",
+    "precio_catalogo_almeria": 0.408,
+    "familia_precio": "RESTO"
+  },
+  "304007": {
+    "concepto": "Pieza de empalme TC 47",
+    "unidad": "ud",
+    "precio_catalogo_almeria": 0.213,
+    "familia_precio": "RESTO"
+  },
+  "304008": {
+    "concepto": "Pieza de empalme TC 60",
+    "unidad": "ud",
+    "precio_catalogo_almeria": 0.298,
+    "familia_precio": "RESTO"
+  },
+  "304014": {
+    "concepto": "Cruceta TC 47",
+    "unidad": "ud",
+    "precio_catalogo_almeria": 0.448,
+    "familia_precio": "RESTO"
+  },
+  "304015": {
+    "concepto": "Cruceta TC 60",
+    "unidad": "ud",
+    "precio_catalogo_almeria": 0.55,
+    "familia_precio": "RESTO"
+  },
+  "304021": {
+    "concepto": "Suspensión TC 47 90 mm",
+    "unidad": "ud",
+    "precio_catalogo_almeria": 0.136,
+    "familia_precio": "RESTO"
+  },
+  "304022": {
+    "concepto": "Suspensión TC 47 180 mm",
+    "unidad": "ud",
+    "precio_catalogo_almeria": 0.207,
+    "familia_precio": "RESTO"
+  },
+  "304023": {
+    "concepto": "Suspensión TC 47 240 mm",
+    "unidad": "ud",
+    "precio_catalogo_almeria": 0.484,
+    "familia_precio": "RESTO"
+  },
+  "301060": {
+    "concepto": "Gancho fijación viga ≤16 mm",
+    "unidad": "ud",
+    "precio_catalogo_almeria": 5.74,
+    "familia_precio": "RESTO"
+  },
+  "304029": {
+    "concepto": "Anclaje directo 47x120",
+    "unidad": "ud",
+    "precio_catalogo_almeria": 0.34,
+    "familia_precio": "RESTO"
+  },
+  "304030": {
+    "concepto": "Anclaje directo 60x120",
+    "unidad": "ud",
+    "precio_catalogo_almeria": 0.386,
+    "familia_precio": "RESTO"
+  },
+  "304042": {
+    "concepto": "Clip horizontal 4-10 mm",
+    "unidad": "ud",
+    "precio_catalogo_almeria": 0.675,
+    "familia_precio": "RESTO"
+  },
+  "304043": {
+    "concepto": "Clip horizontal 10-15 mm",
+    "unidad": "ud",
+    "precio_catalogo_almeria": 0.714,
+    "familia_precio": "RESTO"
+  },
+  "304049": {
+    "concepto": "Aislador acústico TC 47",
+    "unidad": "ud",
+    "precio_catalogo_almeria": 3.348,
+    "familia_precio": "RESTO"
+  },
+  "304050": {
+    "concepto": "Aislador acústico trasdosado",
+    "unidad": "ud",
+    "precio_catalogo_almeria": 6.857,
+    "familia_precio": "RESTO"
+  },
+  "304095": {
+    "concepto": "Varilla roscada Ø6x1000",
+    "unidad": "ml",
+    "precio_catalogo_almeria": 0.009,
+    "familia_precio": "RESTO"
+  },
+  "304096": {
+    "concepto": "Varilla roscada Ø6x2000",
+    "unidad": "ml",
+    "precio_catalogo_almeria": 0.038,
+    "familia_precio": "RESTO"
+  },
+  "304097": {
+    "concepto": "Manguito cilíndrico Ø6x20",
+    "unidad": "ud",
+    "precio_catalogo_almeria": 0.249,
+    "familia_precio": "RESTO"
+  },
+  "304036": {
+    "concepto": "Anclaje Omega M6 20 mm",
+    "unidad": "ud",
+    "precio_catalogo_almeria": 0.394,
+    "familia_precio": "RESTO"
+  },
+  "304056": {
+    "concepto": "Cinta juntas papel 23 m",
+    "unidad": "ml",
+    "precio_catalogo_almeria": 0.103,
+    "familia_precio": "RESTO"
+  },
+  "304057": {
+    "concepto": "Cinta juntas papel 75 m",
+    "unidad": "ml",
+    "precio_catalogo_almeria": 0.282,
+    "familia_precio": "RESTO"
+  },
+  "304058": {
+    "concepto": "Cinta juntas papel 150 m",
+    "unidad": "ml",
+    "precio_catalogo_almeria": 0.838,
+    "familia_precio": "RESTO"
+  },
+  "304064": {
+    "concepto": "Cinta guardavivos 12.5 m",
+    "unidad": "ml",
+    "precio_catalogo_almeria": 1.125,
+    "familia_precio": "RESTO"
+  },
+  "304065": {
+    "concepto": "Cinta guardavivos 30 m",
+    "unidad": "ml",
+    "precio_catalogo_almeria": 1.738,
+    "familia_precio": "RESTO"
+  },
+  "304078": {
+    "concepto": "Cinta refuerzo fibra vidrio 45 m",
+    "unidad": "ml",
+    "precio_catalogo_almeria": 0.088,
+    "familia_precio": "RESTO"
+  },
+  "304079": {
+    "concepto": "Cinta refuerzo fibra vidrio 153 m",
+    "unidad": "ml",
+    "precio_catalogo_almeria": 1.198,
+    "familia_precio": "RESTO"
+  },
+  "301121": {
+    "concepto": "Malla Externa Light 50 m",
+    "unidad": "m",
+    "precio_catalogo_almeria": 33.6,
+    "familia_precio": "RESTO"
+  },
+  "304075": {
+    "concepto": "Banda estanca 50x30 mm",
+    "unidad": "ml",
+    "precio_catalogo_almeria": 0.526,
+    "familia_precio": "RESTO"
+  },
+  "304076": {
+    "concepto": "Banda estanca 70x30 mm",
+    "unidad": "ml",
+    "precio_catalogo_almeria": 1.161,
+    "familia_precio": "RESTO"
+  },
+  "304077": {
+    "concepto": "Banda estanca 90x30 mm",
+    "unidad": "ml",
+    "precio_catalogo_almeria": 2.053,
+    "familia_precio": "RESTO"
+  },
+  "304100": {
+    "concepto": "Tornillo placa-metal Ø3.5x25 mm",
+    "unidad": "ud",
+    "precio_catalogo_almeria": 0.018,
+    "familia_precio": "RESTO"
+  },
+  "304101": {
+    "concepto": "Tornillo placa-metal Ø3.5x25 mm (1000)",
+    "unidad": "ud",
+    "precio_catalogo_almeria": 0.014,
+    "familia_precio": "RESTO"
+  },
+  "304102": {
+    "concepto": "Tornillo placa-metal Ø3.5x25 mm (5000)",
+    "unidad": "ud",
+    "precio_catalogo_almeria": 0.013,
+    "familia_precio": "RESTO"
+  },
+  "304103": {
+    "concepto": "Tornillo placa-metal Ø3.5x35 mm",
+    "unidad": "ud",
+    "precio_catalogo_almeria": 0.023,
+    "familia_precio": "RESTO"
+  },
+  "304104": {
+    "concepto": "Tornillo placa-metal Ø3.5x35 mm (1000)",
+    "unidad": "ud",
+    "precio_catalogo_almeria": 0.017,
+    "familia_precio": "RESTO"
+  },
+  "304105": {
+    "concepto": "Tornillo placa-metal Ø3.5x35 mm (3000)",
+    "unidad": "ud",
+    "precio_catalogo_almeria": 0.015,
+    "familia_precio": "RESTO"
+  },
+  "304106": {
+    "concepto": "Tornillo placa-metal Ø3.5x45 mm",
+    "unidad": "ud",
+    "precio_catalogo_almeria": 0.023,
+    "familia_precio": "RESTO"
+  },
+  "304107": {
+    "concepto": "Tornillo placa-metal Ø3.5x55 mm",
+    "unidad": "ud",
+    "precio_catalogo_almeria": 0.029,
+    "familia_precio": "RESTO"
+  },
+  "304108": {
+    "concepto": "Tornillo placa-metal Ø4.2x70 mm",
+    "unidad": "ud",
+    "precio_catalogo_almeria": 0.048,
+    "familia_precio": "RESTO"
+  },
+  "304109": {
+    "concepto": "Tornillo placa-metal Ø4.8x90 mm",
+    "unidad": "ud",
+    "precio_catalogo_almeria": 0.111,
+    "familia_precio": "RESTO"
+  },
+  "304115": {
+    "concepto": "Tornillo broca Ø3.5x25 mm",
+    "unidad": "ud",
+    "precio_catalogo_almeria": 0.022,
+    "familia_precio": "RESTO"
+  },
+  "304116": {
+    "concepto": "Tornillo broca Ø3.5x35 mm",
+    "unidad": "ud",
+    "precio_catalogo_almeria": 0.028,
+    "familia_precio": "RESTO"
+  },
+  "304117": {
+    "concepto": "Tornillo broca Ø3.5x45 mm",
+    "unidad": "ud",
+    "precio_catalogo_almeria": 0.032,
+    "familia_precio": "RESTO"
+  },
+  "304123": {
+    "concepto": "Tornillo alta densidad Ø3.9x25 mm",
+    "unidad": "ud",
+    "precio_catalogo_almeria": 0.026,
+    "familia_precio": "RESTO"
+  },
+  "304124": {
+    "concepto": "Tornillo alta densidad Ø3.9x35 mm",
+    "unidad": "ud",
+    "precio_catalogo_almeria": 0.033,
+    "familia_precio": "RESTO"
+  },
+  "304125": {
+    "concepto": "Tornillo alta densidad Ø3.9x45 mm",
+    "unidad": "ud",
+    "precio_catalogo_almeria": 0.038,
+    "familia_precio": "RESTO"
+  },
+  "304126": {
+    "concepto": "Tornillo alta densidad Ø3.9x55 mm",
+    "unidad": "ud",
+    "precio_catalogo_almeria": 0.04,
+    "familia_precio": "RESTO"
+  },
+  "304127": {
+    "concepto": "Tornillo alta densidad Ø3.9x70 mm",
+    "unidad": "ud",
+    "precio_catalogo_almeria": 0.09,
+    "familia_precio": "RESTO"
+  },
+  "304133": {
+    "concepto": "Tornillo metal-metal Ø3.5x9.5 mm",
+    "unidad": "ud",
+    "precio_catalogo_almeria": 0.019,
+    "familia_precio": "RESTO"
+  },
+  "304134": {
+    "concepto": "Tornillo metal-metal Ø3.5x9.5 mm (1000)",
+    "unidad": "ud",
+    "precio_catalogo_almeria": 0.014,
+    "familia_precio": "RESTO"
+  },
+  "304135": {
+    "concepto": "Tornillo metal-metal Ø13x9.5 mm",
+    "unidad": "ud",
+    "precio_catalogo_almeria": 0.018,
+    "familia_precio": "RESTO"
+  },
+  "301244": {
+    "concepto": "Tornillo exterior Externa Light Ø4.0x42 mm",
+    "unidad": "ud",
+    "precio_catalogo_almeria": 0.159,
+    "familia_precio": "RESTO"
+  },
+  "301245": {
+    "concepto": "Tornillo exterior Externa Light Ø4.0x41 mm",
+    "unidad": "ud",
+    "precio_catalogo_almeria": 0.191,
+    "familia_precio": "RESTO"
+  },
+  "301240": {
+    "concepto": "Tornillo exterior Spoon Ø4.0x42 mm",
+    "unidad": "ud",
+    "precio_catalogo_almeria": 0.074,
+    "familia_precio": "RESTO"
+  },
+  "301241": {
+    "concepto": "Tornillo exterior Spoon Ø4.0x41 mm",
+    "unidad": "ud",
+    "precio_catalogo_almeria": 0.087,
+    "familia_precio": "RESTO"
+  },
+  "304080": {
+    "concepto": "Trampilla metálica lacada 200x200 mm",
+    "unidad": "ud",
+    "precio_catalogo_almeria": 20.63,
+    "familia_precio": "RESTO"
+  },
+  "304085": {
+    "concepto": "Trampilla aluminio AQUA 200x200 mm",
+    "unidad": "ud",
+    "precio_catalogo_almeria": 25.44,
+    "familia_precio": "RESTO"
+  },
+  "301761": {
+    "concepto": "Trampilla ignífuga EI60 300x300 mm",
+    "unidad": "ud",
+    "precio_catalogo_almeria": 298.08,
+    "familia_precio": "RESTO"
+  },
+  "301461": {
+    "concepto": "Trampilla ignífuga EI120 300x300 mm",
+    "unidad": "ud",
+    "precio_catalogo_almeria": 332.69,
+    "familia_precio": "RESTO"
+  },
+  "301605": {
+    "concepto": "GYPSOCOMETE LINE 120x2000 mm (LED 18/40 mm)",
+    "unidad": "ml",
+    "precio_catalogo_almeria": 64.18,
+    "familia_precio": "RESTO"
+  },
+  "301600": {
+    "concepto": "GYPSOCOMETE ANGLE 240x240 mm (LED 18/40 mm)",
+    "unidad": "ud",
+    "precio_catalogo_almeria": 60.83,
+    "familia_precio": "RESTO"
+  },
+  "301601": {
+    "concepto": "GYPSOCOMETE CROSS 360x240 mm (LED 18/40 mm)",
+    "unidad": "ud",
+    "precio_catalogo_almeria": 99.18,
+    "familia_precio": "RESTO"
+  },
+  "301602": {
+    "concepto": "GYPSOCOMETE STAR 360x360 mm (LED 18/40 mm)",
+    "unidad": "ud",
+    "precio_catalogo_almeria": 148.5,
+    "familia_precio": "RESTO"
+  },
+  "301605GY": {
+    "concepto": "GYPSOCOMETE GALAXY LINE 120x2000 mm (LED 24 mm)",
+    "unidad": "ml",
+    "precio_catalogo_almeria": 66.98,
+    "familia_precio": "RESTO"
+  },
+  "301600GY": {
+    "concepto": "GYPSOCOMETE GALAXY ANGLE 120x120 mm (LED 24 mm)",
+    "unidad": "ud",
+    "precio_catalogo_almeria": 53.61,
+    "familia_precio": "RESTO"
+  },
+  "301601GY": {
+    "concepto": "GYPSOCOMETE GALAXY CROSS 120x120 mm (LED 24 mm)",
+    "unidad": "ud",
+    "precio_catalogo_almeria": 58.98,
+    "familia_precio": "RESTO"
+  },
+  "301602GY": {
+    "concepto": "GYPSOCOMETE GALAXY STAR 120x120 mm (LED 24 mm)",
+    "unidad": "ud",
+    "precio_catalogo_almeria": 69.7,
+    "familia_precio": "RESTO"
+  },
+  "301606": {
+    "concepto": "Recambio pantalla protectora 18x2000 mm",
+    "unidad": "ml",
+    "precio_catalogo_almeria": 9.82,
+    "familia_precio": "RESTO"
+  },
+  "301606GY": {
+    "concepto": "Recambio pantalla protectora 24x2000 mm",
+    "unidad": "ml",
+    "precio_catalogo_almeria": 9.01,
+    "familia_precio": "RESTO"
+  },
+  "301606XL": {
+    "concepto": "Recambio pantalla protectora 40x2000 mm",
+    "unidad": "ml",
+    "precio_catalogo_almeria": 10.88,
+    "familia_precio": "RESTO"
+  },
+  "349E1": {
+    "concepto": "FASSAFLASH 5 kg",
+    "unidad": "saco",
+    "precio_catalogo_almeria": 8.17,
+    "familia_precio": "RESTO"
+  },
+  "351E1": {
+    "concepto": "FASSAJOINT 1H 10 kg",
+    "unidad": "saco",
+    "precio_catalogo_almeria": 13.27,
+    "familia_precio": "RESTO"
+  },
+  "352E1": {
+    "concepto": "FASSAJOINT 2H 5 kg",
+    "unidad": "saco",
+    "precio_catalogo_almeria": 7.41,
+    "familia_precio": "RESTO"
+  },
+  "353E1": {
+    "concepto": "FASSAJOINT 2H 10 kg",
+    "unidad": "saco",
+    "precio_catalogo_almeria": 13.27,
+    "familia_precio": "RESTO"
+  },
+  "354": {
+    "concepto": "FASSAJOINT 2H 25 kg",
+    "unidad": "saco",
+    "precio_catalogo_almeria": 22.06,
+    "familia_precio": "RESTO"
+  },
+  "356": {
+    "concepto": "FASSAJOINT 3H 25 kg",
+    "unidad": "saco",
+    "precio_catalogo_almeria": 22.06,
+    "familia_precio": "RESTO"
+  },
+  "358": {
+    "concepto": "FASSAJOINT 8H 25 kg",
+    "unidad": "saco",
+    "precio_catalogo_almeria": 22.06,
+    "familia_precio": "RESTO"
+  },
+  "502001": {
+    "concepto": "Masilla Gypsotech BA 25 kg",
+    "unidad": "saco",
+    "precio_catalogo_almeria": 12.5,
+    "familia_precio": "RESTO"
+  },
+  "360E1": {
+    "concepto": "GYPSOMAF 10 kg",
+    "unidad": "saco",
+    "precio_catalogo_almeria": 7.35,
+    "familia_precio": "RESTO"
+  },
+  "359": {
+    "concepto": "GYPSOMAF 25 kg",
+    "unidad": "saco",
+    "precio_catalogo_almeria": 14.99,
+    "familia_precio": "RESTO"
+  },
+  "372": {
+    "concepto": "GYPSOFILLER 10 kg",
+    "unidad": "bote",
+    "precio_catalogo_almeria": 22.47,
+    "familia_precio": "RESTO"
+  },
+  "370": {
+    "concepto": "GYPSOFILLER 25 kg",
+    "unidad": "bote",
+    "precio_catalogo_almeria": 44.91,
+    "familia_precio": "RESTO"
+  }
+}

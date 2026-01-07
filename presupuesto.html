@@ -590,6 +590,9 @@ const h = header.map(x => x.trim().toLowerCase());
 if (h.includes('precio_catalogo_almeria') && h.includes('familia_precio')) {
 return 'nuevo';
 }
+if (h.includes('rendimiento_m2') || h.includes('coef')) {
+return 'sistema';
+}
 return 'legacy';
 }
 function detectarFamilia(concepto, codigo) {
@@ -599,6 +602,30 @@ if (upper.includes('PLACA') || upper.includes('GYPSOTECH') || codUpper.startsWit
 return 'PLACA';
 }
 return 'RESTO';
+}
+let catalogByCode = new Map();
+let catalogLoaded = false;
+function parseMasterCatalog(jsonData) {
+const map = new Map();
+Object.entries(jsonData || {}).forEach(([codigo, data]) => {
+if (!codigo) return;
+map.set(codigo, {
+codigo,
+concepto: data.concepto || '',
+unidad: data.unidad || '',
+precio_catalogo_almeria: data.precio_catalogo_almeria || '',
+familia_precio: data.familia_precio || ''
+});
+});
+return map;
+}
+async function ensureCatalogLoaded() {
+if (catalogLoaded) return;
+const res = await fetch('catalogo/master_catalog.json');
+if (!res.ok) throw new Error('No se pudo cargar catalogo/master_catalog.json');
+const jsonData = await res.json();
+catalogByCode = parseMasterCatalog(jsonData);
+catalogLoaded = true;
 }
 function esPlaca(sku) {
 return typeof sku === "string" && sku.toUpperCase().startsWith("L00");
@@ -676,6 +703,7 @@ return null;
 }
 renderFichaTecnica(meta);
 renderDescripcionTecnica(meta);
+await ensureCatalogLoaded();
 const csvText = await loadCSV(meta.csv);
 const rows = parseCSV(csvText);
 const tbody = document.querySelector('#tbl tbody');
@@ -684,18 +712,21 @@ let costeNetoSistema = 0;
 const rowsData = [];
 for(const r of rows){
 try {
-const precioCatalogo = toNum(r.precio_catalogo_almeria);
-const familia = (r.familia_precio || detectarFamilia(r.concepto, r.codigo || r.sku)).trim().toUpperCase();
+const sku = (r.codigo || r.sku || '').toString();
+const catalogEntry = catalogByCode.get(sku) || {};
+const concepto = r.concepto || catalogEntry.concepto || '';
+const unidad = r.unidad || catalogEntry.unidad || '';
+const precioCatalogo = toNum(catalogEntry.precio_catalogo_almeria || r.precio_catalogo_almeria);
+const familia = (catalogEntry.familia_precio || r.familia_precio || detectarFamilia(concepto, sku)).trim().toUpperCase();
 if (!precioCatalogo) {
-throw new Error(`Falta precio_catalogo_almeria para ${r.codigo || r.concepto}`);
+throw new Error(`Falta precio_catalogo_almeria para ${sku || concepto}`);
 }
 if (!familia || (familia !== 'PLACA' && familia !== 'RESTO')) {
-throw new Error(`Falta o inválida familia_precio para ${r.codigo || r.concepto}`);
+throw new Error(`Falta o inválida familia_precio para ${sku || concepto}`);
 }
 const dtoDistribuidorPct = familia === 'PLACA' ? 60 : 55;
 const precioNeto = precioCatalogo * (1 - dtoDistribuidorPct / 100);
 const rendimiento = toNum(r.rendimiento_m2);
-const sku = (r.codigo || r.sku || '').toString();
 const aplicarDesperdicio = esPlaca(sku) || esPerfileria(sku);
 const factorDesperdicio = aplicarDesperdicio ? (1 + waste/100) : 1;
 const qty = area * rendimiento * factorDesperdicio;
@@ -703,6 +734,9 @@ const importeNeto = qty * precioNeto;
 costeNetoSistema += importeNeto;
 rowsData.push({
 ...r,
+concepto,
+unidad,
+codigo: sku,
 precioCatalogo,
 familia,
 dtoDistribuidorPct,
@@ -713,11 +747,11 @@ importeNeto,
 aplicarDesperdicio
 });
 const tr = document.createElement('tr');
-const decimalsQty = r.unidad === 'ud' ? 0 : 3;
+const decimalsQty = unidad === 'ud' ? 0 : 3;
 tr.innerHTML = `
-<td data-label="Descripción">${r.concepto}</td>
-<td class="num" data-label="Código / SKU">${r.codigo || r.sku}</td>
-<td class="num" data-label="Unidad de venta">${r.unidad}</td>
+<td data-label="Descripción">${concepto}</td>
+<td class="num" data-label="Código / SKU">${sku}</td>
+<td class="num" data-label="Unidad de venta">${unidad}</td>
 <td class="num" data-label="Precio cat. (€)">${fmtEUR(precioCatalogo)}</td>
 <td class="num" data-label="Dto. distrib. %">${dtoDistribuidorPct}%</td>
 <td class="num" data-label="Precio neto (€)">${fmtEUR(precioNeto)}</td>
@@ -1143,6 +1177,9 @@ if (formato === 'legacy') {
 obj.rendimiento_m2 = obj.coef || obj.rendimiento_m2 || '0';
 obj.precio_catalogo_almeria = obj.precio || obj.precio_catalogo_almeria || '0';
 obj.familia_precio = obj.familia_precio || detectarFamilia(obj.concepto, obj.sku || obj.codigo);
+obj.codigo = obj.codigo || obj.sku || '';
+} else if (formato === 'sistema') {
+obj.rendimiento_m2 = obj.coef || obj.rendimiento_m2 || '0';
 obj.codigo = obj.codigo || obj.sku || '';
 }
 obj._formato = formato;
