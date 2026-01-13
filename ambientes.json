@@ -1,0 +1,17 @@
+[
+  {
+    "id": "seco",
+    "nombre": "Interior seco",
+    "descripcion": "Ambientes interiores sin humedad permanente."
+  },
+  {
+    "id": "humedo",
+    "nombre": "Interior húmedo",
+    "descripcion": "Ambientes interiores con humedad ocasional o permanente."
+  },
+  {
+    "id": "semi-intemperie",
+    "nombre": "Semi-intemperie",
+    "descripcion": "Áreas exteriores protegidas o fachadas ligeras."
+  }
+]
