@@ -892,6 +892,89 @@ helper.textContent = outOfRange
 }
 });
 }
+function updateWizardProgress() {
+const selectAmbiente = document.getElementById('selectAmbiente');
+const selectElemento = document.getElementById('selectElemento');
+const selectPlaca = document.getElementById('selectPlaca');
+const selectEstructura = document.getElementById('selectEstructura');
+const selectCapas = document.getElementById('selectCapas');
+const progress = document.getElementById('wizardProgress');
+if (!progress) return;
+let step = 1;
+if (selectAmbiente?.value) step = 2;
+if (selectElemento?.value) step = 3;
+if (selectPlaca?.value) step = 4;
+if (selectEstructura?.value) step = 5;
+if (selectCapas?.value) step = 5;
+progress.textContent = `Paso ${step} de 5`;
+}
+function updateStepHelpers() {
+const helpElemento = document.getElementById('helpElemento');
+const helpPlaca = document.getElementById('helpPlaca');
+const helpEstructura = document.getElementById('helpEstructura');
+const helpCapas = document.getElementById('helpCapas');
+const selectAmbiente = document.getElementById('selectAmbiente');
+const selectElemento = document.getElementById('selectElemento');
+const selectPlaca = document.getElementById('selectPlaca');
+const selectEstructura = document.getElementById('selectEstructura');
+if (helpElemento) {
+helpElemento.textContent = selectAmbiente?.value ? 'Selecciona Elemento para continuar.' : 'Selecciona Ambiente para cargar Elementos.';
+}
+if (helpPlaca) {
+helpPlaca.textContent = selectElemento?.value ? 'Selecciona Placa para continuar.' : 'Selecciona Elemento para cargar Placas.';
+}
+if (helpEstructura) {
+helpEstructura.textContent = selectPlaca?.value ? 'Selecciona Estructura para continuar.' : 'Selecciona Placa para cargar Estructuras.';
+}
+if (helpCapas) {
+helpCapas.textContent = selectEstructura?.value ? 'Selecciona Capas para continuar.' : 'Selecciona Estructura para cargar Capas.';
+}
+}
+function updatePrecioPreview(precioVentaM2, reasonHint) {
+const preview = document.getElementById('precioObjetivoPreview');
+const hint = document.getElementById('precioObjetivoHint');
+if (!preview || !hint) return;
+if (precioVentaM2 && precioVentaM2 > 0) {
+preview.textContent = fmtEUR(precioVentaM2);
+hint.textContent = 'Actualizado con materiales + logística + margen.';
+return;
+}
+preview.textContent = '—';
+hint.textContent = reasonHint || 'Completa el sistema y los m² para ver el cálculo.';
+}
+function updateActionStates() {
+const addBtn = document.getElementById('addBtn');
+const pdfBtn = document.getElementById('pdfBtn');
+const excelBtn = document.getElementById('excelBtn');
+const area = toNum(document.getElementById('area')?.value);
+const hasSystem = Boolean(sistemaActualMeta);
+const hasRows = Array.isArray(lastRowsData) && lastRowsData.length > 0;
+const canExport = hasSystem && hasRows && area > 0;
+if (addBtn) addBtn.disabled = !canExport;
+if (pdfBtn) pdfBtn.disabled = proyecto.length === 0;
+if (excelBtn) excelBtn.disabled = proyecto.length === 0;
+}
+function updateRangeWarnings() {
+const ranges = [
+{ inputId: 'waste', groupId: 'wasteGroup', min: 0, max: 20, defaultText: 'Recomendado: 0–20% según complejidad.' },
+{ inputId: 'logisticaPct', groupId: 'logisticaGroup', min: 0, max: 40, defaultText: 'Rango sugerido: 0–40%.' },
+{ inputId: 'margenPct', groupId: 'margenGroup', min: 0, max: 60, defaultText: 'Rango sugerido: 0–60%.' }
+];
+ranges.forEach(range => {
+const input = document.getElementById(range.inputId);
+const group = document.getElementById(range.groupId);
+if (!input || !group) return;
+const helper = group.querySelector('.helper-text');
+const value = toNum(input.value);
+const outOfRange = value < range.min || value > range.max;
+group.classList.toggle('input-warning', outOfRange);
+if (helper) {
+helper.textContent = outOfRange
+? `Fuera de rango sugerido (${range.min}–${range.max}%).`
+: range.defaultText;
+}
+});
+}
 function clearSelectionResult() {
 const resultadoContainer = document.getElementById('resultadoContainer');
 if (resultadoContainer) resultadoContainer.innerHTML = '';
