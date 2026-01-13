@@ -11,6 +11,8 @@
 --rojo:#e74c3c;
 --gris:#2c3e50;
 --light:#ecf0f1;
+--azul:#1f5fbf;
+--ambar:#f1c40f;
 --font-base:16px;
 --space-xs:0.5rem;
 --space-sm:0.75rem;
@@ -45,7 +47,7 @@ box-shadow:0 2px 4px rgba(0,0,0,.1);
 .header .logo{
 font-size:1.125rem;
 font-weight:800;
-color:var(--rojo);
+color:var(--azul);
 flex:1;
 min-width:0;
 }
@@ -78,7 +80,7 @@ margin-bottom:var(--space-md);
 h3{
 margin:0 0 var(--space-md) 0;
 color:var(--gris);
-border-bottom:2px solid var(--rojo);
+border-bottom:2px solid var(--azul);
 padding-bottom:var(--space-xs);
 font-size:1.125rem;
 font-weight:700;
@@ -110,9 +112,9 @@ min-height:var(--tap-target);
 appearance:none;
 }
 input:focus,select:focus{
-outline:2px solid var(--rojo);
+outline:2px solid var(--azul);
 outline-offset:2px;
-border-color:var(--rojo);
+border-color:var(--azul);
 }
 select{
 background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23333' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
@@ -127,7 +129,7 @@ width:100%;
 padding:var(--space-md);
 border:0;
 border-radius:0.5rem;
-background:var(--rojo);
+background:var(--azul);
 color:#fff;
 font-size:var(--font-base);
 font-weight:600;
@@ -142,8 +144,74 @@ position:relative;
 overflow:hidden;
 }
 button:active{
-background:#c0392b;
+background:#184b96;
 transform:scale(0.98);
+}
+button:disabled{
+background:#b0bec5;
+cursor:not-allowed;
+}
+.helper-text{
+font-size:0.75rem;
+color:#6c757d;
+}
+.step-header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+gap:var(--space-sm);
+margin-bottom:var(--space-sm);
+}
+.step-progress{
+font-size:0.8125rem;
+color:#6c757d;
+background:#f1f5f9;
+padding:0.25rem 0.5rem;
+border-radius:999px;
+}
+.input-block{
+background:#f8f9fa;
+border-radius:0.75rem;
+padding:var(--space-md);
+border:1px solid #e9ecef;
+flex:1;
+}
+.input-block h4{
+margin:0 0 var(--space-sm) 0;
+font-size:0.9rem;
+color:var(--gris);
+}
+.price-preview{
+background:#fff;
+border-radius:0.75rem;
+border:1px solid #e3e8ef;
+padding:var(--space-md);
+display:flex;
+flex-direction:column;
+gap:0.5rem;
+justify-content:center;
+align-items:flex-start;
+flex:1;
+}
+.price-preview .label{
+font-size:0.8rem;
+color:#6c757d;
+}
+.price-preview .value{
+font-size:1.75rem;
+font-weight:800;
+color:var(--azul);
+}
+.price-preview .hint{
+font-size:0.75rem;
+color:#6c757d;
+}
+.input-warning input{
+border-color:var(--ambar);
+background:#fffaf0;
+}
+.input-warning .helper-text{
+color:#b9770e;
 }
 button:active::after{
 content:'';
@@ -275,7 +343,7 @@ margin-top:var(--space-sm);
 line-height:1.6;
 }
 #projTable th{
-background:var(--rojo);
+background:var(--azul);
 color:#fff;
 }
 #fileInput{display:none}
@@ -362,6 +430,10 @@ Nombre del Proyecto
 <h3>Añadir Sistema al Proyecto</h3>
 <!-- Flujo de selección por criterios -->
 <div id="selectionFlow" style="margin-bottom: 1rem;">
+<div class="step-header">
+<div style="font-weight:600;color:#2c3e50;">Asistente de selección</div>
+<div id="wizardProgress" class="step-progress">Paso 1 de 5</div>
+</div>
 <!-- Paso 1: Ambiente -->
 <div id="step1" class="step-container">
 <div class="row">
@@ -373,6 +445,7 @@ Ambiente
 <option value="humedo">humedo</option>
 <option value="semi-intemperie">semi-intemperie</option>
 </select>
+<div class="helper-text">Selecciona el ambiente para habilitar los siguientes pasos.</div>
 </label>
 </div>
 </div>
@@ -388,6 +461,7 @@ Elemento
 <option value="TECHO">techo</option>
 <!-- ❌ Eliminada opción oculta: <option value="EXTERIOR" style="display: none;">semi-intemperie</option> -->
 </select>
+<div id="helpElemento" class="helper-text">Selecciona Ambiente para cargar Elementos.</div>
 </label>
 </div>
 </div>
@@ -399,6 +473,7 @@ Placa
 <select id="selectPlaca" disabled>
 <option value="">Primero selecciona Elemento</option>
 </select>
+<div id="helpPlaca" class="helper-text">Selecciona Elemento para cargar Placas.</div>
 </label>
 </div>
 </div>
@@ -410,6 +485,7 @@ Estructura/Perfilería
 <select id="selectEstructura" disabled>
 <option value="">Primero selecciona Placa</option>
 </select>
+<div id="helpEstructura" class="helper-text">Selecciona Placa para cargar Estructuras.</div>
 </label>
 </div>
 </div>
@@ -421,6 +497,7 @@ Capas
 <select id="selectCapas" disabled>
 <option value="">Primero selecciona Estructura/Perfilería</option>
 </select>
+<div id="helpCapas" class="helper-text">Selecciona Estructura para cargar Capas.</div>
 </label>
 </div>
 </div>
@@ -433,33 +510,48 @@ Capas
 </div>
 <!-- Campos de entrada -->
 <div class="row" style="margin-top: 1rem;">
-<label>
+<div class="input-block">
+<h4>Geometría</h4>
+<label id="areaGroup">
 m² (superficie)
 <input id="area" type="number" step="0.01" value="100" />
+<div class="helper-text">Requerido para calcular el sistema.</div>
 </label>
-<label>
+<label id="wasteGroup">
 Desperdicio %
 <input id="waste" type="number" step="0.1" value="5" />
+<div class="helper-text">Recomendado: 0–20% según complejidad.</div>
 </label>
-<button id="addBtn"><i class="fas fa-plus" aria-hidden="true"></i> Añadir</button>
 </div>
-<div class="row" style="border-top: 1px solid #eee; padding-top: 1rem; margin-top: 1rem; background: #f8f9fa; padding: 1rem; border-radius: 4px;">
+<div class="input-block">
+<h4>Precio</h4>
 <label>
 Incoterm
-<select id="incoterm">
+<select id="incoterm" title="EXW: Ex Works, FOB: Free On Board, CIF: Coste+Seguro+Flete">
 <option value="EXW">EXW</option>
 <option value="FOB">FOB</option>
 <option value="CIF" selected>CIF</option>
 </select>
 </label>
-<label>
+<label id="logisticaGroup">
 Logística %
 <input id="logisticaPct" type="number" step="0.1" value="12" />
+<div class="helper-text">Rango sugerido: 0–40%.</div>
 </label>
-<label>
+<label id="margenGroup">
 Margen %
 <input id="margenPct" type="number" step="0.1" value="30" />
+<div class="helper-text">Rango sugerido: 0–60%.</div>
 </label>
+</div>
+<div class="price-preview" aria-live="polite">
+<div class="label">Precio objetivo /m²</div>
+<div id="precioObjetivoPreview" class="value">—</div>
+<div id="precioObjetivoHint" class="hint">Completa el sistema y los m² para ver el cálculo.</div>
+</div>
+</div>
+<div class="row" style="margin-top: 1rem;">
+<button id="addBtn"><i class="fas fa-plus" aria-hidden="true"></i> Añadir</button>
 </div>
 <!-- Información del sistema (read-only) -->
 <div id="fichaTecnica" style="margin-top: 1.5rem; padding: 1rem; background: #f8f9fa; border: 1px solid #dee2e6; border-radius: 4px; display: none;">
@@ -471,6 +563,7 @@ Margen %
 <h4 style="margin-top: 0; margin-bottom: 0.5rem; color: #2c3e50; font-size: 0.95rem;">Descripción del sistema</h4>
 <div id="descripcionTecnicaContent" style="font-size: 0.875rem; color: #495057; line-height: 1.6;"></div>
 </div>
+<div id="dataWarnings" style="margin-top: 1rem; padding: 0.75rem 1rem; background: #fff4e6; border: 1px solid #ffe8cc; border-radius: 6px; color: #8a5a00; font-size: 0.85rem; display: none;"></div>
 <div id="resumenSistema" style="margin-top: 1rem; padding: 1rem; background: #e8f4f8; border-radius: 4px; display: none;">
 <h4 style="margin-top: 0;">Resumen del Sistema</h4>
 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0.5rem;">
@@ -479,8 +572,10 @@ Margen %
 <div><strong>Coste total:</strong> <span id="resumenCosteTotal">—</span></div>
 <div><strong>Margen:</strong> <span id="resumenMargen">—</span></div>
 <div><strong>Precio <span id="resumenIncotermLabel">CIF</span> /m²:</strong> <span id="resumenVentaM2">—</span></div>
-<div><strong>Total sistema:</strong> <span id="resumenTotal" style="font-size: 1.1em; font-weight: bold; color: #e74c3c;">—</span></div>
+<div><strong>Total sistema:</strong> <span id="resumenTotal" style="font-size: 1.1em; font-weight: bold; color: var(--azul);">—</span></div>
+<div><strong>Precio objetivo /m²:</strong> <span id="resumenObjetivoM2">—</span></div>
 </div>
+<div style="margin-top:0.5rem;font-size:0.8rem;color:#6c757d;">Incluye: materiales + logística + margen (sin mano de obra).</div>
 </div>
 <div class="table-wrapper">
 <table id="tbl" class="materials-table">
@@ -523,6 +618,7 @@ Margen %
 <button id="pdfBtn" class="btn-icon-only" style="background:#e74c3c"><i class="fas fa-file-pdf" aria-hidden="true"></i> <span class="btn-label">PDF (Cliente)</span></button>
 <button id="excelBtn" class="btn-icon-only" style="background:#27ae60"><i class="fas fa-file-excel" aria-hidden="true"></i> <span class="btn-label">Excel (Control Interno)</span></button>
 </div>
+<div class="helper-text" style="margin-top:0.5rem;">Validez del presupuesto: 15 días. Condiciones: sin mano de obra ni impuestos.</div>
 <div class="muted">
 <strong>PDF:</strong> Resumen para cliente (sistemas, materiales, rendimiento, precio/m², total)<br>
 <strong>Excel:</strong> Desglose completo para control interno
@@ -650,16 +746,105 @@ let systemsIndexEnriched = [];
 let systemsIndexBase = [];
 let sistemaActualMeta = null;
 let selectionFlowInitialized = false;
+let lastPrecioVentaM2 = null;
+let lastRowsData = [];
 function setStepVisible(stepId, visible) {
 const el = document.getElementById(stepId);
 if (!el) return;
 el.style.display = visible ? 'block' : 'none';
+}
+function updateWizardProgress() {
+const selectAmbiente = document.getElementById('selectAmbiente');
+const selectElemento = document.getElementById('selectElemento');
+const selectPlaca = document.getElementById('selectPlaca');
+const selectEstructura = document.getElementById('selectEstructura');
+const selectCapas = document.getElementById('selectCapas');
+const progress = document.getElementById('wizardProgress');
+if (!progress) return;
+let step = 1;
+if (selectAmbiente?.value) step = 2;
+if (selectElemento?.value) step = 3;
+if (selectPlaca?.value) step = 4;
+if (selectEstructura?.value) step = 5;
+if (selectCapas?.value) step = 5;
+progress.textContent = `Paso ${step} de 5`;
+}
+function updateStepHelpers() {
+const helpElemento = document.getElementById('helpElemento');
+const helpPlaca = document.getElementById('helpPlaca');
+const helpEstructura = document.getElementById('helpEstructura');
+const helpCapas = document.getElementById('helpCapas');
+const selectAmbiente = document.getElementById('selectAmbiente');
+const selectElemento = document.getElementById('selectElemento');
+const selectPlaca = document.getElementById('selectPlaca');
+const selectEstructura = document.getElementById('selectEstructura');
+if (helpElemento) {
+helpElemento.textContent = selectAmbiente?.value ? 'Selecciona Elemento para continuar.' : 'Selecciona Ambiente para cargar Elementos.';
+}
+if (helpPlaca) {
+helpPlaca.textContent = selectElemento?.value ? 'Selecciona Placa para continuar.' : 'Selecciona Elemento para cargar Placas.';
+}
+if (helpEstructura) {
+helpEstructura.textContent = selectPlaca?.value ? 'Selecciona Estructura para continuar.' : 'Selecciona Placa para cargar Estructuras.';
+}
+if (helpCapas) {
+helpCapas.textContent = selectEstructura?.value ? 'Selecciona Capas para continuar.' : 'Selecciona Estructura para cargar Capas.';
+}
+}
+function updatePrecioPreview(precioVentaM2, reasonHint) {
+const preview = document.getElementById('precioObjetivoPreview');
+const hint = document.getElementById('precioObjetivoHint');
+if (!preview || !hint) return;
+if (precioVentaM2 && precioVentaM2 > 0) {
+preview.textContent = fmtEUR(precioVentaM2);
+hint.textContent = 'Actualizado con materiales + logística + margen.';
+return;
+}
+preview.textContent = '—';
+hint.textContent = reasonHint || 'Completa el sistema y los m² para ver el cálculo.';
+}
+function updateActionStates() {
+const addBtn = document.getElementById('addBtn');
+const pdfBtn = document.getElementById('pdfBtn');
+const excelBtn = document.getElementById('excelBtn');
+const area = toNum(document.getElementById('area')?.value);
+const hasSystem = Boolean(sistemaActualMeta);
+const hasRows = Array.isArray(lastRowsData) && lastRowsData.length > 0;
+const canExport = hasSystem && hasRows && area > 0;
+if (addBtn) addBtn.disabled = !canExport;
+if (pdfBtn) pdfBtn.disabled = proyecto.length === 0;
+if (excelBtn) excelBtn.disabled = proyecto.length === 0;
+}
+function updateRangeWarnings() {
+const ranges = [
+{ inputId: 'waste', groupId: 'wasteGroup', min: 0, max: 20, defaultText: 'Recomendado: 0–20% según complejidad.' },
+{ inputId: 'logisticaPct', groupId: 'logisticaGroup', min: 0, max: 40, defaultText: 'Rango sugerido: 0–40%.' },
+{ inputId: 'margenPct', groupId: 'margenGroup', min: 0, max: 60, defaultText: 'Rango sugerido: 0–60%.' }
+];
+ranges.forEach(range => {
+const input = document.getElementById(range.inputId);
+const group = document.getElementById(range.groupId);
+if (!input || !group) return;
+const helper = group.querySelector('.helper-text');
+const value = toNum(input.value);
+const outOfRange = value < range.min || value > range.max;
+group.classList.toggle('input-warning', outOfRange);
+if (helper) {
+helper.textContent = outOfRange
+? `Fuera de rango sugerido (${range.min}–${range.max}%).`
+: range.defaultText;
+}
+});
 }
 function clearSelectionResult() {
 const resultadoContainer = document.getElementById('resultadoContainer');
 if (resultadoContainer) resultadoContainer.innerHTML = '';
 setStepVisible('stepResult', false);
 sistemaActualMeta = null;
+lastPrecioVentaM2 = null;
+lastRowsData = [];
+updatePrecioPreview(null, 'Selecciona un sistema para ver el precio objetivo.');
+updateActionStates();
 }
 function hideSistemaOutputs() {
 const resumen = document.getElementById('resumenSistema');
@@ -668,6 +853,8 @@ const desc = document.getElementById('descripcionTecnica');
 if (resumen) resumen.style.display = 'none';
 if (ficha) ficha.style.display = 'none';
 if (desc) desc.style.display = 'none';
+updatePrecioPreview(lastPrecioVentaM2, 'Completa el sistema y los m² para ver el cálculo.');
+updateActionStates();
 }
 async function loadIndexEnriched() {
 const res = await fetch('sistemas/sistemas-index.enriched.json');
@@ -687,6 +874,9 @@ if (systemsIndexBase.length === 0) {
 systemsIndexBase = await loadIndexBase();
 }
 initSelectionFlow();
+updateRangeWarnings();
+updatePrecioPreview(null, 'Completa la selección y los m² para ver el precio objetivo.');
+updateActionStates();
 });
 async function cargarCSV(systemId) {
 if (systemsIndexBase.length === 0) {
@@ -705,10 +895,17 @@ const waste = toNum(document.getElementById('waste').value);
 const logisticaPct = toNum(document.getElementById('logisticaPct').value);
 const margenPct = toNum(document.getElementById('margenPct').value);
 const incoterm = document.getElementById('incoterm').value;
+const warnings = [];
 if (!meta || area <= 0) {
 document.getElementById('resumenSistema').style.display = 'none';
 document.getElementById('fichaTecnica').style.display = 'none';
 document.getElementById('descripcionTecnica').style.display = 'none';
+const dataWarnings = document.getElementById('dataWarnings');
+if (dataWarnings) dataWarnings.style.display = 'none';
+lastPrecioVentaM2 = null;
+lastRowsData = [];
+updatePrecioPreview(null, area <= 0 ? 'Ingresa m² válidos para calcular.' : 'Selecciona un sistema para calcular.');
+updateActionStates();
 return null;
 }
 renderFichaTecnica(meta);
@@ -772,8 +969,10 @@ tr.innerHTML = `
 tbody.appendChild(tr);
 } catch(err) {
 console.error('Error procesando fila:', err, r);
+warnings.push(err.message || 'Error al procesar material.');
 }
 }
+lastRowsData = rowsData;
 const costeTotalSistema = costeNetoSistema * (1 + logisticaPct / 100);
 const precioVentaSistema = costeTotalSistema / (1 - margenPct / 100);
 const precioVentaM2 = precioVentaSistema / area;
@@ -784,7 +983,20 @@ document.getElementById('resumenMargen').textContent = `${fmtNumber(margenPct, 1
 document.getElementById('resumenIncotermLabel').textContent = incoterm;
 document.getElementById('resumenVentaM2').textContent = fmtEUR(precioVentaM2);
 document.getElementById('resumenTotal').textContent = fmtEUR(precioVentaSistema);
+document.getElementById('resumenObjetivoM2').textContent = fmtEUR(precioVentaM2);
 document.getElementById('resumenSistema').style.display = 'block';
+const dataWarnings = document.getElementById('dataWarnings');
+if (dataWarnings) {
+if (warnings.length > 0) {
+dataWarnings.innerHTML = `⚠️ ${warnings.slice(0, 3).join(' · ')}${warnings.length > 3 ? '…' : ''}`;
+dataWarnings.style.display = 'block';
+} else {
+dataWarnings.style.display = 'none';
+}
+}
+lastPrecioVentaM2 = precioVentaM2;
+updatePrecioPreview(precioVentaM2);
+updateActionStates();
 const result = {
 system: meta.id,
 systemName: meta.nombre_comercial || meta.id,
@@ -802,6 +1014,9 @@ rows: rowsData,
 meta
 };
 if(addToProject){
+if (area > 10000 && !window.confirm('El área supera 10.000 m². ¿Seguro que deseas continuar?')) {
+return result;
+}
 proyecto.push(result);
 renderProyecto();
 }
@@ -1117,6 +1332,8 @@ setStepVisible('step4', false);
 setStepVisible('step5', false);
 clearSelectionResult();
 hideSistemaOutputs();
+updateWizardProgress();
+updateStepHelpers();
 selectAmbiente.addEventListener('change', async () => {
 const ambiente = selectAmbiente.value;
 clearSelectionResult();
@@ -1129,6 +1346,8 @@ setStepVisible('step2', true);
 await updateElementoOptions(ambiente);
 await filtrarYMostrarSistemas();
 } else setStepVisible('step2', false);
+updateWizardProgress();
+updateStepHelpers();
 });
 selectElemento.addEventListener('change', async () => {
 const ambiente = selectAmbiente.value;
@@ -1142,6 +1361,8 @@ setStepVisible('step3', true);
 await updatePlacaOptions(ambiente, elemento);
 await filtrarYMostrarSistemas();
 } else setStepVisible('step3', false);
+updateWizardProgress();
+updateStepHelpers();
 });
 selectPlaca.addEventListener('change', async () => {
 const ambiente = selectAmbiente.value;
@@ -1155,6 +1376,8 @@ setStepVisible('step4', true);
 await updateEstructuraOptions(ambiente, elemento, placa);
 await filtrarYMostrarSistemas();
 } else setStepVisible('step4', false);
+updateWizardProgress();
+updateStepHelpers();
 });
 selectEstructura.addEventListener('change', async () => {
 const ambiente = selectAmbiente.value;
@@ -1168,11 +1391,15 @@ setStepVisible('step5', true);
 await updateCapasOptions(ambiente, elemento, placa, estructura);
 await filtrarYMostrarSistemas();
 } else setStepVisible('step5', false);
+updateWizardProgress();
+updateStepHelpers();
 });
 selectCapas.addEventListener('change', async () => {
 clearSelectionResult();
 hideSistemaOutputs();
 await filtrarYMostrarSistemas();
+updateWizardProgress();
+updateStepHelpers();
 });
 }
 function parseCSV(text){
@@ -1246,10 +1473,16 @@ container.style.display = 'block';
 }
 let proyecto = [];
 async function calcularYMostrar(addToProject = false){
+updateRangeWarnings();
 if (sistemaActualMeta) return await calcularYMostrarConSistema(sistemaActualMeta, addToProject);
 document.getElementById('resumenSistema').style.display = 'none';
 document.getElementById('fichaTecnica').style.display = 'none';
 document.getElementById('descripcionTecnica').style.display = 'none';
+const dataWarnings = document.getElementById('dataWarnings');
+if (dataWarnings) dataWarnings.style.display = 'none';
+updatePrecioPreview(null, 'Selecciona un sistema y m² válidos para calcular.');
+lastRowsData = [];
+updateActionStates();
 return null;
 }
 function renderProyecto(){
@@ -1273,6 +1506,7 @@ tr.innerHTML = `
 tbody.appendChild(tr);
 });
 document.getElementById('projTotal').textContent = fmtEUR(projTotalVenta);
+updateActionStates();
 }
 window.eliminarSistema = function(idx){
 proyecto.splice(idx, 1);

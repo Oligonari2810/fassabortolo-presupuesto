@@ -624,42 +624,6 @@
       "estructura_tipo": "montante_rail"
     },
     {
-      "id": "M-70-15-AQUA-4",
-      "tipo": "MURO",
-      "estructura": "montante_rail",
-      "perfil_mm": 70,
-      "zincado": "Z1",
-      "modulacion_mm": 600,
-      "capas_por_cara": 2,
-      "placas": [
-        {
-          "tipo": "AQUA",
-          "espesor_mm": 15
-        }
-      ],
-      "Hmax_m": 3.2,
-      "csv": "M-70-15-AQUA-4.csv",
-      "nombre_comercial": "Muro 70 Z1 AQUA-15 (2+2)",
-      "_perfil_deprecated": "70 Z1",
-      "titulo_pdf": "Tabique zonas húmedas 70 mm (AQUA 15 mm, 2+2)",
-      "descripcion_sistema": "Sistema de tabique interior autoportante con estructura metálica galvanizada de 70 mm y doble placa Gypsotech AQUA H2 BA de 15 mm por ambas caras (2+2). Solución de máxima robustez para ambientes húmedos.",
-      "uso_recomendado": "Zonas húmedas con alta exigencia de robustez.",
-      "descripcion_tecnica_corta": "Muro autoportante 70 mm, doble placa Gypsotech AQUA H2 BA 15 mm por cara, perfilería FassaBortolo Z1. Acabado resistente a humedad. Ideal baños y cocinas.",
-      "placa_tipo": "AQUA",
-      "es_humedo": true,
-      "es_exterior": false,
-      "es_doble_capa": true,
-      "perfil_tipo": "montante/rail",
-      "ambiente_tags": [
-        "humedo"
-      ],
-      "placa_tipos": [
-        "AQUA"
-      ],
-      "elemento": "MURO",
-      "estructura_tipo": "montante_rail"
-    },
-    {
       "id": "M-100-13-DBL-2",
       "tipo": "MURO",
       "estructura": "montante_rail",
