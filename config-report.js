@@ -11,6 +11,19 @@ function readJson(filePath) {
   return JSON.parse(fs.readFileSync(filePath, 'utf8'));
 }
 
+function readJsonSafe(filePath, fallbackValue) {
+  if (!fs.existsSync(filePath)) {
+    console.warn(`⚠️  Archivo no encontrado: ${filePath}. Usando valores por defecto.`);
+    return fallbackValue;
+  }
+  const data = readJson(filePath);
+  if (!Array.isArray(data) && typeof data !== 'object') {
+    console.warn(`⚠️  Formato inesperado en ${filePath}. Usando valores por defecto.`);
+    return fallbackValue;
+  }
+  return data;
+}
+
 function groupBy(arr, keyFn) {
   return arr.reduce((acc, item) => {
     const key = keyFn(item);
@@ -28,7 +41,7 @@ function formatEntries(obj) {
 
 function main() {
   const sistemasIndex = readJson(sistemasPath);
-  const ambientes = readJson(ambientesPath);
+  const ambientes = readJsonSafe(ambientesPath, []);
   const systems = sistemasIndex.systems || [];
 
   console.log('\n=== REVISIÓN DE CONFIGURACIÓN ===\n');
