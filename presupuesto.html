@@ -563,6 +563,7 @@ Margen %
 <h4 style="margin-top: 0; margin-bottom: 0.5rem; color: #2c3e50; font-size: 0.95rem;">Descripción del sistema</h4>
 <div id="descripcionTecnicaContent" style="font-size: 0.875rem; color: #495057; line-height: 1.6;"></div>
 </div>
+<div id="dataWarnings" style="margin-top: 1rem; padding: 0.75rem 1rem; background: #fff4e6; border: 1px solid #ffe8cc; border-radius: 6px; color: #8a5a00; font-size: 0.85rem; display: none;"></div>
 <div id="resumenSistema" style="margin-top: 1rem; padding: 1rem; background: #e8f4f8; border-radius: 4px; display: none;">
 <h4 style="margin-top: 0;">Resumen del Sistema</h4>
 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0.5rem;">
@@ -617,6 +618,7 @@ Margen %
 <button id="pdfBtn" class="btn-icon-only" style="background:#e74c3c"><i class="fas fa-file-pdf" aria-hidden="true"></i> <span class="btn-label">PDF (Cliente)</span></button>
 <button id="excelBtn" class="btn-icon-only" style="background:#27ae60"><i class="fas fa-file-excel" aria-hidden="true"></i> <span class="btn-label">Excel (Control Interno)</span></button>
 </div>
+<div class="helper-text" style="margin-top:0.5rem;">Validez del presupuesto: 15 días. Condiciones: sin mano de obra ni impuestos.</div>
 <div class="muted">
 <strong>PDF:</strong> Resumen para cliente (sistemas, materiales, rendimiento, precio/m², total)<br>
 <strong>Excel:</strong> Desglose completo para control interno
@@ -745,6 +747,7 @@ let systemsIndexBase = [];
 let sistemaActualMeta = null;
 let selectionFlowInitialized = false;
 let lastPrecioVentaM2 = null;
+let lastRowsData = [];
 function setStepVisible(stepId, visible) {
 const el = document.getElementById(stepId);
 if (!el) return;
@@ -800,6 +803,18 @@ return;
 preview.textContent = '—';
 hint.textContent = reasonHint || 'Completa el sistema y los m² para ver el cálculo.';
 }
+function updateActionStates() {
+const addBtn = document.getElementById('addBtn');
+const pdfBtn = document.getElementById('pdfBtn');
+const excelBtn = document.getElementById('excelBtn');
+const area = toNum(document.getElementById('area')?.value);
+const hasSystem = Boolean(sistemaActualMeta);
+const hasRows = Array.isArray(lastRowsData) && lastRowsData.length > 0;
+const canExport = hasSystem && hasRows && area > 0;
+if (addBtn) addBtn.disabled = !canExport;
+if (pdfBtn) pdfBtn.disabled = proyecto.length === 0;
+if (excelBtn) excelBtn.disabled = proyecto.length === 0;
+}
 function updateRangeWarnings() {
 const ranges = [
 { inputId: 'waste', groupId: 'wasteGroup', min: 0, max: 20, defaultText: 'Recomendado: 0–20% según complejidad.' },
@@ -827,7 +842,9 @@ if (resultadoContainer) resultadoContainer.innerHTML = '';
 setStepVisible('stepResult', false);
 sistemaActualMeta = null;
 lastPrecioVentaM2 = null;
+lastRowsData = [];
 updatePrecioPreview(null, 'Selecciona un sistema para ver el precio objetivo.');
+updateActionStates();
 }
 function hideSistemaOutputs() {
 const resumen = document.getElementById('resumenSistema');
@@ -837,6 +854,7 @@ if (resumen) resumen.style.display = 'none';
 if (ficha) ficha.style.display = 'none';
 if (desc) desc.style.display = 'none';
 updatePrecioPreview(lastPrecioVentaM2, 'Completa el sistema y los m² para ver el cálculo.');
+updateActionStates();
 }
 async function loadIndexEnriched() {
 const res = await fetch('sistemas/sistemas-index.enriched.json');
@@ -858,6 +876,7 @@ systemsIndexBase = await loadIndexBase();
 initSelectionFlow();
 updateRangeWarnings();
 updatePrecioPreview(null, 'Completa la selección y los m² para ver el precio objetivo.');
+updateActionStates();
 });
 async function cargarCSV(systemId) {
 if (systemsIndexBase.length === 0) {
@@ -876,12 +895,17 @@ const waste = toNum(document.getElementById('waste').value);
 const logisticaPct = toNum(document.getElementById('logisticaPct').value);
 const margenPct = toNum(document.getElementById('margenPct').value);
 const incoterm = document.getElementById('incoterm').value;
+const warnings = [];
 if (!meta || area <= 0) {
 document.getElementById('resumenSistema').style.display = 'none';
 document.getElementById('fichaTecnica').style.display = 'none';
 document.getElementById('descripcionTecnica').style.display = 'none';
+const dataWarnings = document.getElementById('dataWarnings');
+if (dataWarnings) dataWarnings.style.display = 'none';
 lastPrecioVentaM2 = null;
+lastRowsData = [];
 updatePrecioPreview(null, area <= 0 ? 'Ingresa m² válidos para calcular.' : 'Selecciona un sistema para calcular.');
+updateActionStates();
 return null;
 }
 renderFichaTecnica(meta);
@@ -945,8 +969,10 @@ tr.innerHTML = `
 tbody.appendChild(tr);
 } catch(err) {
 console.error('Error procesando fila:', err, r);
+warnings.push(err.message || 'Error al procesar material.');
 }
 }
+lastRowsData = rowsData;
 const costeTotalSistema = costeNetoSistema * (1 + logisticaPct / 100);
 const precioVentaSistema = costeTotalSistema / (1 - margenPct / 100);
 const precioVentaM2 = precioVentaSistema / area;
@@ -959,8 +985,18 @@ document.getElementById('resumenVentaM2').textContent = fmtEUR(precioVentaM2);
 document.getElementById('resumenTotal').textContent = fmtEUR(precioVentaSistema);
 document.getElementById('resumenObjetivoM2').textContent = fmtEUR(precioVentaM2);
 document.getElementById('resumenSistema').style.display = 'block';
+const dataWarnings = document.getElementById('dataWarnings');
+if (dataWarnings) {
+if (warnings.length > 0) {
+dataWarnings.innerHTML = `⚠️ ${warnings.slice(0, 3).join(' · ')}${warnings.length > 3 ? '…' : ''}`;
+dataWarnings.style.display = 'block';
+} else {
+dataWarnings.style.display = 'none';
+}
+}
 lastPrecioVentaM2 = precioVentaM2;
 updatePrecioPreview(precioVentaM2);
+updateActionStates();
 const result = {
 system: meta.id,
 systemName: meta.nombre_comercial || meta.id,
@@ -978,6 +1014,9 @@ rows: rowsData,
 meta
 };
 if(addToProject){
+if (area > 10000 && !window.confirm('El área supera 10.000 m². ¿Seguro que deseas continuar?')) {
+return result;
+}
 proyecto.push(result);
 renderProyecto();
 }
@@ -1439,7 +1478,11 @@ if (sistemaActualMeta) return await calcularYMostrarConSistema(sistemaActualMeta
 document.getElementById('resumenSistema').style.display = 'none';
 document.getElementById('fichaTecnica').style.display = 'none';
 document.getElementById('descripcionTecnica').style.display = 'none';
+const dataWarnings = document.getElementById('dataWarnings');
+if (dataWarnings) dataWarnings.style.display = 'none';
 updatePrecioPreview(null, 'Selecciona un sistema y m² válidos para calcular.');
+lastRowsData = [];
+updateActionStates();
 return null;
 }
 function renderProyecto(){
@@ -1463,6 +1506,7 @@ tr.innerHTML = `
 tbody.appendChild(tr);
 });
 document.getElementById('projTotal').textContent = fmtEUR(projTotalVenta);
+updateActionStates();
 }
 window.eliminarSistema = function(idx){
 proyecto.splice(idx, 1);
